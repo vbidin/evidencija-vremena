@@ -6,23 +6,27 @@
 
 <h4>Evidencija predmeta</h4>
 
-<hr />
-
 @foreach (var predmet in Model.Predmeti)
 {
+    <hr />
     <p>@Html.DisplayFor(x => predmet.Ime)</p>
+    <hr />
     foreach (var aktivnost in predmet.Aktivnost)
     {
         <p>
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            @Html.DisplayFor(x => aktivnost.Ime) -
-            @Html.ActionLink("Dodaj", "Add", new { id = aktivnost.ID })
+            @Html.DisplayFor(x => aktivnost.Ime)
+            @using (Html.BeginForm("Add", "Evidencija"))
+            {
+                @Html.Hidden("AktivnostID", aktivnost.ID)
+                @Html.TextBox("Trajanje")
+                <input type="submit" value="Dodaj" />
+}
         </p>
 
         foreach (var evidencija in aktivnost.Evidencija)
         {
             <p>
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 @Html.DisplayFor(x => evidencija.Trajanje) minuta -
                 @Html.DisplayFor(x => evidencija.DatumUnosa) -
                 @Html.ActionLink("Izbriši", "Delete", new { id = evidencija.ID })
@@ -30,6 +34,3 @@
         }
     }
 }
-
-
-<hr />

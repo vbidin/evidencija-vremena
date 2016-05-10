@@ -28,22 +28,27 @@ namespace EvidencijaVremena.Controllers
 			foreach (Pretplata pretplata in pretplate)
 			{
 				Predmet predmet = pretplata.Predmet;
-				if (predmet.Aktivnost.Count != 0)
-					predmeti.Add(predmet);
+				predmeti.Add(predmet);
 			}
 
 			EvidencijeModel model = new EvidencijeModel() { Predmeti = predmeti };
 			return View(model);
 		}
 
-		public ActionResult Add(int ID)
+		[HttpPost]
+		public ActionResult Add(EvidencijeModel model)
 		{
+			int ID = Int32.Parse(Request["AktivnostID"]);
+			int trajanje = Int32.Parse(Request["Trajanje"]);
+			Evidencija evidencija = new Evidencija() { Trajanje = trajanje, DatumUnosa = DateTime.Now, KorisnikID = Korisnik.ID, AktivnostID = ID };
+			db.Evidencija.Add(evidencija);
+			db.SaveChanges();
 			return RedirectToAction("Index");
 		}
 
 		public ActionResult Delete(int ID)
 		{
-			Evidencija evidencija = db.Evidencija.First(p => p.KorisnikID == Korisnik.ID && p.AktivnostID == ID);
+			Evidencija evidencija = db.Evidencija.First(e => e.ID == ID);
 			db.Evidencija.Remove(evidencija);
 			db.SaveChanges();
 			return RedirectToAction("Index");
