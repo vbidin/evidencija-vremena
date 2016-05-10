@@ -189,6 +189,7 @@
     <Compile Include="Korisnik.cs">
       <DependentUpon>EvidencijaVremenaModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\EvidencijeModel.cs" />
     <Compile Include="Models\PredmetiModel.cs" />
     <Compile Include="Predmet.cs">
       <DependentUpon>EvidencijaVremenaModel.tt</DependentUpon>
@@ -264,6 +265,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Partial\" />
     <Folder Include="Views\Autorizacija\" />
   </ItemGroup>
   <ItemGroup>

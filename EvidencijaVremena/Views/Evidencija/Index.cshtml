@@ -1,16 +1,35 @@
-﻿@{
-    ViewBag.Title = "Home Page";
+﻿@model EvidencijaVremena.Models.EvidencijeModel
+
+@{
+    ViewBag.Title = "Evidencije";
 }
 
-<div class="row">
-    <div class="col-md-6">
-        <h2>Evidencija predmeta</h2>
+<h4>Evidencija predmeta</h4>
+
+<hr />
+
+@foreach (var predmet in Model.Predmeti)
+{
+    <p>@Html.DisplayFor(x => predmet.Ime)</p>
+    foreach (var aktivnost in predmet.Aktivnost)
+    {
         <p>
-            Ovdje je combo box u kojem se odabire predmet (od liste svih trenutno pretplaćenih predmeta).
-            Nakon odabira predmeta, osvježuje se popis aktivnosti (stvara se lista imena svih aktivnosti predmeta).
-            Kraj svake aktivnost postoji tipka DODAJ zajedno sa kućicom u koju se unosi broj minuta (zasad samo minute).
-            Za svaku aktivnost stvara se popis evidencija (stvara se lista potrošenih minuta za svaku evidenciju).
-            Kraj svake evidencije postoji tipka DELETE, čime se ona briše.
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            @Html.DisplayFor(x => aktivnost.Ime) -
+            @Html.ActionLink("Dodaj", "Add", new { id = aktivnost.ID })
         </p>
-    </div>
-</div>
+
+        foreach (var evidencija in aktivnost.Evidencija)
+        {
+            <p>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                @Html.DisplayFor(x => evidencija.Trajanje) minuta -
+                @Html.DisplayFor(x => evidencija.DatumUnosa) -
+                @Html.ActionLink("Izbriši", "Delete", new { id = evidencija.ID })
+            </p>
+        }
+    }
+}
+
+
+<hr />
