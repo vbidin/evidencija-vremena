@@ -1,0 +1,466 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="EvidencijaVremenaModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Aktivnost">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Ime" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="PredmetID" Type="int" Nullable="false" />
+          <Property Name="TipAktivnostiID" Type="int" Nullable="false" />
+          <Property Name="Termin" Type="datetime" />
+          <Property Name="Trajanje" Type="int" />
+        </EntityType>
+        <EntityType Name="Evidencija">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Trajanje" Type="int" Nullable="false" />
+          <Property Name="DatumUnosa" Type="datetime" Nullable="false" />
+          <Property Name="KorisnikID" Type="int" Nullable="false" />
+          <Property Name="AktivnostID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Korisnik">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="KorisnickoIme" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Lozinka" Type="binary" MaxLength="128" Nullable="false" />
+          <Property Name="Email" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Uloga" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Predmet">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Ime" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Godina" Type="nvarchar" MaxLength="20" />
+          <Property Name="ECTS" Type="int" />
+        </EntityType>
+        <EntityType Name="Pretplata">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="KorisnikID" Type="int" Nullable="false" />
+          <Property Name="PredmetID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <EntityType Name="TipAktivnosti">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Ime" Type="nvarchar" MaxLength="100" Nullable="false" />
+        </EntityType>
+        <Association Name="FK__Aktivnost__Predm__2A4B4B5E">
+          <End Role="Predmet" Type="Self.Predmet" Multiplicity="1" />
+          <End Role="Aktivnost" Type="Self.Aktivnost" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Predmet">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Aktivnost">
+              <PropertyRef Name="PredmetID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Aktivnost__TipAk__2B3F6F97">
+          <End Role="TipAktivnosti" Type="Self.TipAktivnosti" Multiplicity="1" />
+          <End Role="Aktivnost" Type="Self.Aktivnost" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TipAktivnosti">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Aktivnost">
+              <PropertyRef Name="TipAktivnostiID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Evidencij__Aktiv__36B12243">
+          <End Role="Aktivnost" Type="Self.Aktivnost" Multiplicity="1" />
+          <End Role="Evidencija" Type="Self.Evidencija" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Aktivnost">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Evidencija">
+              <PropertyRef Name="AktivnostID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Evidencij__Koris__35BCFE0A">
+          <End Role="Korisnik" Type="Self.Korisnik" Multiplicity="1" />
+          <End Role="Evidencija" Type="Self.Evidencija" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Korisnik">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Evidencija">
+              <PropertyRef Name="KorisnikID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Pretplata__Koris__31EC6D26">
+          <End Role="Korisnik" Type="Self.Korisnik" Multiplicity="1" />
+          <End Role="Pretplata" Type="Self.Pretplata" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Korisnik">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Pretplata">
+              <PropertyRef Name="KorisnikID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Pretplata__Predm__32E0915F">
+          <End Role="Predmet" Type="Self.Predmet" Multiplicity="1" />
+          <End Role="Pretplata" Type="Self.Pretplata" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Predmet">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Pretplata">
+              <PropertyRef Name="PredmetID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="EvidencijaVremenaModelStoreContainer">
+          <EntitySet Name="Aktivnost" EntityType="Self.Aktivnost" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Evidencija" EntityType="Self.Evidencija" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Korisnik" EntityType="Self.Korisnik" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Predmet" EntityType="Self.Predmet" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Pretplata" EntityType="Self.Pretplata" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TipAktivnosti" EntityType="Self.TipAktivnosti" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__Aktivnost__Predm__2A4B4B5E" Association="Self.FK__Aktivnost__Predm__2A4B4B5E">
+            <End Role="Predmet" EntitySet="Predmet" />
+            <End Role="Aktivnost" EntitySet="Aktivnost" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Aktivnost__TipAk__2B3F6F97" Association="Self.FK__Aktivnost__TipAk__2B3F6F97">
+            <End Role="TipAktivnosti" EntitySet="TipAktivnosti" />
+            <End Role="Aktivnost" EntitySet="Aktivnost" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Evidencij__Aktiv__36B12243" Association="Self.FK__Evidencij__Aktiv__36B12243">
+            <End Role="Aktivnost" EntitySet="Aktivnost" />
+            <End Role="Evidencija" EntitySet="Evidencija" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Evidencij__Koris__35BCFE0A" Association="Self.FK__Evidencij__Koris__35BCFE0A">
+            <End Role="Korisnik" EntitySet="Korisnik" />
+            <End Role="Evidencija" EntitySet="Evidencija" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Pretplata__Koris__31EC6D26" Association="Self.FK__Pretplata__Koris__31EC6D26">
+            <End Role="Korisnik" EntitySet="Korisnik" />
+            <End Role="Pretplata" EntitySet="Pretplata" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Pretplata__Predm__32E0915F" Association="Self.FK__Pretplata__Predm__32E0915F">
+            <End Role="Predmet" EntitySet="Predmet" />
+            <End Role="Pretplata" EntitySet="Pretplata" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="EvidencijaVremenaModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Aktivnost">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Ime" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="PredmetID" Type="Int32" Nullable="false" />
+          <Property Name="TipAktivnostiID" Type="Int32" Nullable="false" />
+          <Property Name="Termin" Type="DateTime" Precision="3" />
+          <Property Name="Trajanje" Type="Int32" />
+          <NavigationProperty Name="Predmet" Relationship="Self.FK__Aktivnost__Predm__2A4B4B5E" FromRole="Aktivnost" ToRole="Predmet" />
+          <NavigationProperty Name="TipAktivnosti" Relationship="Self.FK__Aktivnost__TipAk__2B3F6F97" FromRole="Aktivnost" ToRole="TipAktivnosti" />
+          <NavigationProperty Name="Evidencija" Relationship="Self.FK__Evidencij__Aktiv__36B12243" FromRole="Aktivnost" ToRole="Evidencija" />
+        </EntityType>
+        <EntityType Name="Evidencija">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Trajanje" Type="Int32" Nullable="false" />
+          <Property Name="DatumUnosa" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="KorisnikID" Type="Int32" Nullable="false" />
+          <Property Name="AktivnostID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Aktivnost" Relationship="Self.FK__Evidencij__Aktiv__36B12243" FromRole="Evidencija" ToRole="Aktivnost" />
+          <NavigationProperty Name="Korisnik" Relationship="Self.FK__Evidencij__Koris__35BCFE0A" FromRole="Evidencija" ToRole="Korisnik" />
+        </EntityType>
+        <EntityType Name="Korisnik">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="KorisnickoIme" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Lozinka" Type="Binary" MaxLength="128" FixedLength="true" Nullable="false" />
+          <Property Name="Email" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Uloga" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Evidencija" Relationship="Self.FK__Evidencij__Koris__35BCFE0A" FromRole="Korisnik" ToRole="Evidencija" />
+          <NavigationProperty Name="Pretplata" Relationship="Self.FK__Pretplata__Koris__31EC6D26" FromRole="Korisnik" ToRole="Pretplata" />
+        </EntityType>
+        <EntityType Name="Predmet">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Ime" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Godina" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="ECTS" Type="Int32" />
+          <NavigationProperty Name="Aktivnost" Relationship="Self.FK__Aktivnost__Predm__2A4B4B5E" FromRole="Predmet" ToRole="Aktivnost" />
+          <NavigationProperty Name="Pretplata" Relationship="Self.FK__Pretplata__Predm__32E0915F" FromRole="Predmet" ToRole="Pretplata" />
+        </EntityType>
+        <EntityType Name="Pretplata">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="KorisnikID" Type="Int32" Nullable="false" />
+          <Property Name="PredmetID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Korisnik" Relationship="Self.FK__Pretplata__Koris__31EC6D26" FromRole="Pretplata" ToRole="Korisnik" />
+          <NavigationProperty Name="Predmet" Relationship="Self.FK__Pretplata__Predm__32E0915F" FromRole="Pretplata" ToRole="Predmet" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="TipAktivnosti">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Ime" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Aktivnost" Relationship="Self.FK__Aktivnost__TipAk__2B3F6F97" FromRole="TipAktivnosti" ToRole="Aktivnost" />
+        </EntityType>
+        <Association Name="FK__Aktivnost__Predm__2A4B4B5E">
+          <End Role="Predmet" Type="Self.Predmet" Multiplicity="1" />
+          <End Role="Aktivnost" Type="Self.Aktivnost" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Predmet">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Aktivnost">
+              <PropertyRef Name="PredmetID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Aktivnost__TipAk__2B3F6F97">
+          <End Role="TipAktivnosti" Type="Self.TipAktivnosti" Multiplicity="1" />
+          <End Role="Aktivnost" Type="Self.Aktivnost" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TipAktivnosti">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Aktivnost">
+              <PropertyRef Name="TipAktivnostiID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Evidencij__Aktiv__36B12243">
+          <End Role="Aktivnost" Type="Self.Aktivnost" Multiplicity="1" />
+          <End Role="Evidencija" Type="Self.Evidencija" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Aktivnost">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Evidencija">
+              <PropertyRef Name="AktivnostID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Evidencij__Koris__35BCFE0A">
+          <End Role="Korisnik" Type="Self.Korisnik" Multiplicity="1" />
+          <End Role="Evidencija" Type="Self.Evidencija" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Korisnik">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Evidencija">
+              <PropertyRef Name="KorisnikID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Pretplata__Koris__31EC6D26">
+          <End Role="Korisnik" Type="Self.Korisnik" Multiplicity="1" />
+          <End Role="Pretplata" Type="Self.Pretplata" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Korisnik">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Pretplata">
+              <PropertyRef Name="KorisnikID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Pretplata__Predm__32E0915F">
+          <End Role="Predmet" Type="Self.Predmet" Multiplicity="1" />
+          <End Role="Pretplata" Type="Self.Pretplata" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Predmet">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Pretplata">
+              <PropertyRef Name="PredmetID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="EvidencijaVremenaEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Aktivnost" EntityType="Self.Aktivnost" />
+          <EntitySet Name="Evidencija" EntityType="Self.Evidencija" />
+          <EntitySet Name="Korisnik" EntityType="Self.Korisnik" />
+          <EntitySet Name="Predmet" EntityType="Self.Predmet" />
+          <EntitySet Name="Pretplata" EntityType="Self.Pretplata" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
+          <EntitySet Name="TipAktivnosti" EntityType="Self.TipAktivnosti" />
+          <AssociationSet Name="FK__Aktivnost__Predm__2A4B4B5E" Association="Self.FK__Aktivnost__Predm__2A4B4B5E">
+            <End Role="Predmet" EntitySet="Predmet" />
+            <End Role="Aktivnost" EntitySet="Aktivnost" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Aktivnost__TipAk__2B3F6F97" Association="Self.FK__Aktivnost__TipAk__2B3F6F97">
+            <End Role="TipAktivnosti" EntitySet="TipAktivnosti" />
+            <End Role="Aktivnost" EntitySet="Aktivnost" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Evidencij__Aktiv__36B12243" Association="Self.FK__Evidencij__Aktiv__36B12243">
+            <End Role="Aktivnost" EntitySet="Aktivnost" />
+            <End Role="Evidencija" EntitySet="Evidencija" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Evidencij__Koris__35BCFE0A" Association="Self.FK__Evidencij__Koris__35BCFE0A">
+            <End Role="Korisnik" EntitySet="Korisnik" />
+            <End Role="Evidencija" EntitySet="Evidencija" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Pretplata__Koris__31EC6D26" Association="Self.FK__Pretplata__Koris__31EC6D26">
+            <End Role="Korisnik" EntitySet="Korisnik" />
+            <End Role="Pretplata" EntitySet="Pretplata" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Pretplata__Predm__32E0915F" Association="Self.FK__Pretplata__Predm__32E0915F">
+            <End Role="Predmet" EntitySet="Predmet" />
+            <End Role="Pretplata" EntitySet="Pretplata" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="EvidencijaVremenaModelStoreContainer" CdmEntityContainer="EvidencijaVremenaEntities">
+          <EntitySetMapping Name="Aktivnost">
+            <EntityTypeMapping TypeName="EvidencijaVremenaModel.Aktivnost">
+              <MappingFragment StoreEntitySet="Aktivnost">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Ime" ColumnName="Ime" />
+                <ScalarProperty Name="PredmetID" ColumnName="PredmetID" />
+                <ScalarProperty Name="TipAktivnostiID" ColumnName="TipAktivnostiID" />
+                <ScalarProperty Name="Termin" ColumnName="Termin" />
+                <ScalarProperty Name="Trajanje" ColumnName="Trajanje" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Evidencija">
+            <EntityTypeMapping TypeName="EvidencijaVremenaModel.Evidencija">
+              <MappingFragment StoreEntitySet="Evidencija">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Trajanje" ColumnName="Trajanje" />
+                <ScalarProperty Name="DatumUnosa" ColumnName="DatumUnosa" />
+                <ScalarProperty Name="KorisnikID" ColumnName="KorisnikID" />
+                <ScalarProperty Name="AktivnostID" ColumnName="AktivnostID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Korisnik">
+            <EntityTypeMapping TypeName="EvidencijaVremenaModel.Korisnik">
+              <MappingFragment StoreEntitySet="Korisnik">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="KorisnickoIme" ColumnName="KorisnickoIme" />
+                <ScalarProperty Name="Lozinka" ColumnName="Lozinka" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Uloga" ColumnName="Uloga" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Predmet">
+            <EntityTypeMapping TypeName="EvidencijaVremenaModel.Predmet">
+              <MappingFragment StoreEntitySet="Predmet">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Ime" ColumnName="Ime" />
+                <ScalarProperty Name="Godina" ColumnName="Godina" />
+                <ScalarProperty Name="ECTS" ColumnName="ECTS" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Pretplata">
+            <EntityTypeMapping TypeName="EvidencijaVremenaModel.Pretplata">
+              <MappingFragment StoreEntitySet="Pretplata">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="KorisnikID" ColumnName="KorisnikID" />
+                <ScalarProperty Name="PredmetID" ColumnName="PredmetID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="EvidencijaVremenaModel.sysdiagrams">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TipAktivnosti">
+            <EntityTypeMapping TypeName="EvidencijaVremenaModel.TipAktivnosti">
+              <MappingFragment StoreEntitySet="TipAktivnosti">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Ime" ColumnName="Ime" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

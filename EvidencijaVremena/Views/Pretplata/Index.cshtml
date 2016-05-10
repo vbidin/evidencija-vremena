@@ -1,0 +1,79 @@
+﻿@model EvidencijaVremena.Models.PredmetiModel
+
+@{
+    ViewBag.Title = "Pretplate";
+}
+
+<h4>Pretplata predmeta</h4>
+
+<hr />
+
+<p>
+    Ovdje su svi trenutačno pretplaćeni predmeti:
+</p>
+<table>
+    <tr>
+        <th>ID    </th>
+        <th>Ime   </th>
+        <th>Godina</th>
+        <th>ECTS  </th>
+        <th></th>
+    </tr>
+
+    @foreach (var predmet in Model.Pretplaceni)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(p => predmet.ID)
+            </td>
+            <td>
+                @Html.DisplayFor(p => predmet.Ime)
+            </td>
+            <td>
+                @Html.DisplayFor(p => predmet.Godina)
+            </td>
+            <td>
+                @Html.DisplayFor(p => predmet.ECTS)
+            </td>
+            <td>
+                @Html.ActionLink("Izbriši", "Delete", new { id = predmet.ID })
+            </td>
+        </tr>
+    }
+</table>
+
+<hr />
+
+<p>
+    Ovdje su svi predmeti na koje se možete pretplatiti:
+</p>
+<table>
+    <tr>
+        <th>ID    </th>
+        <th>Ime   </th>
+        <th>Godina</th>
+        <th>ECTS  </th>
+        <th></th>
+    </tr>
+
+    @foreach (var predmet in Model.Nepretplaceni)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(p => predmet.ID)
+            </td>
+            <td>
+                @Html.DisplayFor(p => predmet.Ime)
+            </td>
+            <td>
+                @Html.DisplayFor(p => predmet.Godina)
+            </td>
+            <td>
+                @Html.DisplayFor(p => predmet.ECTS)
+            </td>
+            <td>
+                @Html.ActionLink("Dodaj", "Add", new { id = predmet.ID })
+            </td>
+        </tr>
+    }
+</table>
