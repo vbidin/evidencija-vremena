@@ -193,6 +193,7 @@
     </Compile>
     <Compile Include="Models\EvidencijeModel.cs" />
     <Compile Include="Models\PredmetiModel.cs" />
+    <Compile Include="Models\PretplateModel.cs" />
     <Compile Include="Opterecenje.cs">
       <DependentUpon>EvidencijaVremenaModel.tt</DependentUpon>
     </Compile>
