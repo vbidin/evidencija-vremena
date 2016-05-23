@@ -36,6 +36,15 @@
           <Property Name="Email" Type="nvarchar" MaxLength="100" Nullable="false" />
           <Property Name="Uloga" Type="int" Nullable="false" />
         </EntityType>
+        <EntityType Name="Opterecenje">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PredmetID" Type="int" Nullable="false" />
+          <Property Name="TipAktivnostiID" Type="int" Nullable="false" />
+          <Property Name="Iznos" Type="int" />
+        </EntityType>
         <EntityType Name="Predmet">
           <Key>
             <PropertyRef Name="ID" />
@@ -53,16 +62,6 @@
           <Property Name="KorisnikID" Type="int" Nullable="false" />
           <Property Name="PredmetID" Type="int" Nullable="false" />
         </EntityType>
-        <EntityType Name="sysdiagrams">
-          <Key>
-            <PropertyRef Name="diagram_id" />
-          </Key>
-          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
-          <Property Name="principal_id" Type="int" Nullable="false" />
-          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="version" Type="int" />
-          <Property Name="definition" Type="varbinary(max)" />
-        </EntityType>
         <EntityType Name="TipAktivnosti">
           <Key>
             <PropertyRef Name="ID" />
@@ -70,7 +69,7 @@
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Ime" Type="nvarchar" MaxLength="100" Nullable="false" />
         </EntityType>
-        <Association Name="FK__Aktivnost__Predm__2A4B4B5E">
+        <Association Name="FK__Aktivnost__Predm__1BFD2C07">
           <End Role="Predmet" Type="Self.Predmet" Multiplicity="1" />
           <End Role="Aktivnost" Type="Self.Aktivnost" Multiplicity="*" />
           <ReferentialConstraint>
@@ -82,7 +81,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Aktivnost__TipAk__2B3F6F97">
+        <Association Name="FK__Aktivnost__TipAk__1CF15040">
           <End Role="TipAktivnosti" Type="Self.TipAktivnosti" Multiplicity="1" />
           <End Role="Aktivnost" Type="Self.Aktivnost" Multiplicity="*" />
           <ReferentialConstraint>
@@ -94,7 +93,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Evidencij__Aktiv__36B12243">
+        <Association Name="FK__Evidencij__Aktiv__286302EC">
           <End Role="Aktivnost" Type="Self.Aktivnost" Multiplicity="1" />
           <End Role="Evidencija" Type="Self.Evidencija" Multiplicity="*" />
           <ReferentialConstraint>
@@ -106,7 +105,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Evidencij__Koris__35BCFE0A">
+        <Association Name="FK__Evidencij__Koris__276EDEB3">
           <End Role="Korisnik" Type="Self.Korisnik" Multiplicity="1" />
           <End Role="Evidencija" Type="Self.Evidencija" Multiplicity="*" />
           <ReferentialConstraint>
@@ -118,7 +117,31 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Pretplata__Koris__31EC6D26">
+        <Association Name="FK__Opterecen__Predm__173876EA">
+          <End Role="Predmet" Type="Self.Predmet" Multiplicity="1" />
+          <End Role="Opterecenje" Type="Self.Opterecenje" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Predmet">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Opterecenje">
+              <PropertyRef Name="PredmetID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Opterecen__TipAk__182C9B23">
+          <End Role="TipAktivnosti" Type="Self.TipAktivnosti" Multiplicity="1" />
+          <End Role="Opterecenje" Type="Self.Opterecenje" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TipAktivnosti">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Opterecenje">
+              <PropertyRef Name="TipAktivnostiID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Pretplata__Koris__239E4DCF">
           <End Role="Korisnik" Type="Self.Korisnik" Multiplicity="1" />
           <End Role="Pretplata" Type="Self.Pretplata" Multiplicity="*" />
           <ReferentialConstraint>
@@ -130,7 +153,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Pretplata__Predm__32E0915F">
+        <Association Name="FK__Pretplata__Predm__24927208">
           <End Role="Predmet" Type="Self.Predmet" Multiplicity="1" />
           <End Role="Pretplata" Type="Self.Pretplata" Multiplicity="*" />
           <ReferentialConstraint>
@@ -146,31 +169,39 @@
           <EntitySet Name="Aktivnost" EntityType="Self.Aktivnost" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Evidencija" EntityType="Self.Evidencija" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Korisnik" EntityType="Self.Korisnik" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Opterecenje" EntityType="Self.Opterecenje" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Predmet" EntityType="Self.Predmet" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Pretplata" EntityType="Self.Pretplata" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TipAktivnosti" EntityType="Self.TipAktivnosti" Schema="dbo" store:Type="Tables" />
-          <AssociationSet Name="FK__Aktivnost__Predm__2A4B4B5E" Association="Self.FK__Aktivnost__Predm__2A4B4B5E">
+          <AssociationSet Name="FK__Aktivnost__Predm__1BFD2C07" Association="Self.FK__Aktivnost__Predm__1BFD2C07">
             <End Role="Predmet" EntitySet="Predmet" />
             <End Role="Aktivnost" EntitySet="Aktivnost" />
           </AssociationSet>
-          <AssociationSet Name="FK__Aktivnost__TipAk__2B3F6F97" Association="Self.FK__Aktivnost__TipAk__2B3F6F97">
+          <AssociationSet Name="FK__Aktivnost__TipAk__1CF15040" Association="Self.FK__Aktivnost__TipAk__1CF15040">
             <End Role="TipAktivnosti" EntitySet="TipAktivnosti" />
             <End Role="Aktivnost" EntitySet="Aktivnost" />
           </AssociationSet>
-          <AssociationSet Name="FK__Evidencij__Aktiv__36B12243" Association="Self.FK__Evidencij__Aktiv__36B12243">
+          <AssociationSet Name="FK__Evidencij__Aktiv__286302EC" Association="Self.FK__Evidencij__Aktiv__286302EC">
             <End Role="Aktivnost" EntitySet="Aktivnost" />
             <End Role="Evidencija" EntitySet="Evidencija" />
           </AssociationSet>
-          <AssociationSet Name="FK__Evidencij__Koris__35BCFE0A" Association="Self.FK__Evidencij__Koris__35BCFE0A">
+          <AssociationSet Name="FK__Evidencij__Koris__276EDEB3" Association="Self.FK__Evidencij__Koris__276EDEB3">
             <End Role="Korisnik" EntitySet="Korisnik" />
             <End Role="Evidencija" EntitySet="Evidencija" />
           </AssociationSet>
-          <AssociationSet Name="FK__Pretplata__Koris__31EC6D26" Association="Self.FK__Pretplata__Koris__31EC6D26">
+          <AssociationSet Name="FK__Opterecen__Predm__173876EA" Association="Self.FK__Opterecen__Predm__173876EA">
+            <End Role="Predmet" EntitySet="Predmet" />
+            <End Role="Opterecenje" EntitySet="Opterecenje" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Opterecen__TipAk__182C9B23" Association="Self.FK__Opterecen__TipAk__182C9B23">
+            <End Role="TipAktivnosti" EntitySet="TipAktivnosti" />
+            <End Role="Opterecenje" EntitySet="Opterecenje" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Pretplata__Koris__239E4DCF" Association="Self.FK__Pretplata__Koris__239E4DCF">
             <End Role="Korisnik" EntitySet="Korisnik" />
             <End Role="Pretplata" EntitySet="Pretplata" />
           </AssociationSet>
-          <AssociationSet Name="FK__Pretplata__Predm__32E0915F" Association="Self.FK__Pretplata__Predm__32E0915F">
+          <AssociationSet Name="FK__Pretplata__Predm__24927208" Association="Self.FK__Pretplata__Predm__24927208">
             <End Role="Predmet" EntitySet="Predmet" />
             <End Role="Pretplata" EntitySet="Pretplata" />
           </AssociationSet>
@@ -190,9 +221,9 @@
           <Property Name="TipAktivnostiID" Type="Int32" Nullable="false" />
           <Property Name="Termin" Type="DateTime" Precision="3" />
           <Property Name="Trajanje" Type="Int32" />
-          <NavigationProperty Name="Predmet" Relationship="Self.FK__Aktivnost__Predm__2A4B4B5E" FromRole="Aktivnost" ToRole="Predmet" />
-          <NavigationProperty Name="TipAktivnosti" Relationship="Self.FK__Aktivnost__TipAk__2B3F6F97" FromRole="Aktivnost" ToRole="TipAktivnosti" />
-          <NavigationProperty Name="Evidencija" Relationship="Self.FK__Evidencij__Aktiv__36B12243" FromRole="Aktivnost" ToRole="Evidencija" />
+          <NavigationProperty Name="Predmet" Relationship="Self.FK__Aktivnost__Predm__1BFD2C07" FromRole="Aktivnost" ToRole="Predmet" />
+          <NavigationProperty Name="TipAktivnosti" Relationship="Self.FK__Aktivnost__TipAk__1CF15040" FromRole="Aktivnost" ToRole="TipAktivnosti" />
+          <NavigationProperty Name="Evidencija" Relationship="Self.FK__Evidencij__Aktiv__286302EC" FromRole="Aktivnost" ToRole="Evidencija" />
         </EntityType>
         <EntityType Name="Evidencija">
           <Key>
@@ -203,8 +234,8 @@
           <Property Name="DatumUnosa" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="KorisnikID" Type="Int32" Nullable="false" />
           <Property Name="AktivnostID" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Aktivnost" Relationship="Self.FK__Evidencij__Aktiv__36B12243" FromRole="Evidencija" ToRole="Aktivnost" />
-          <NavigationProperty Name="Korisnik" Relationship="Self.FK__Evidencij__Koris__35BCFE0A" FromRole="Evidencija" ToRole="Korisnik" />
+          <NavigationProperty Name="Aktivnost" Relationship="Self.FK__Evidencij__Aktiv__286302EC" FromRole="Evidencija" ToRole="Aktivnost" />
+          <NavigationProperty Name="Korisnik" Relationship="Self.FK__Evidencij__Koris__276EDEB3" FromRole="Evidencija" ToRole="Korisnik" />
         </EntityType>
         <EntityType Name="Korisnik">
           <Key>
@@ -215,8 +246,19 @@
           <Property Name="Lozinka" Type="Binary" MaxLength="128" FixedLength="true" Nullable="false" />
           <Property Name="Email" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Uloga" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Evidencija" Relationship="Self.FK__Evidencij__Koris__35BCFE0A" FromRole="Korisnik" ToRole="Evidencija" />
-          <NavigationProperty Name="Pretplata" Relationship="Self.FK__Pretplata__Koris__31EC6D26" FromRole="Korisnik" ToRole="Pretplata" />
+          <NavigationProperty Name="Evidencija" Relationship="Self.FK__Evidencij__Koris__276EDEB3" FromRole="Korisnik" ToRole="Evidencija" />
+          <NavigationProperty Name="Pretplata" Relationship="Self.FK__Pretplata__Koris__239E4DCF" FromRole="Korisnik" ToRole="Pretplata" />
+        </EntityType>
+        <EntityType Name="Opterecenje">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PredmetID" Type="Int32" Nullable="false" />
+          <Property Name="TipAktivnostiID" Type="Int32" Nullable="false" />
+          <Property Name="Iznos" Type="Int32" />
+          <NavigationProperty Name="Predmet" Relationship="Self.FK__Opterecen__Predm__173876EA" FromRole="Opterecenje" ToRole="Predmet" />
+          <NavigationProperty Name="TipAktivnosti" Relationship="Self.FK__Opterecen__TipAk__182C9B23" FromRole="Opterecenje" ToRole="TipAktivnosti" />
         </EntityType>
         <EntityType Name="Predmet">
           <Key>
@@ -226,8 +268,9 @@
           <Property Name="Ime" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Godina" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
           <Property Name="ECTS" Type="Int32" />
-          <NavigationProperty Name="Aktivnost" Relationship="Self.FK__Aktivnost__Predm__2A4B4B5E" FromRole="Predmet" ToRole="Aktivnost" />
-          <NavigationProperty Name="Pretplata" Relationship="Self.FK__Pretplata__Predm__32E0915F" FromRole="Predmet" ToRole="Pretplata" />
+          <NavigationProperty Name="Aktivnost" Relationship="Self.FK__Aktivnost__Predm__1BFD2C07" FromRole="Predmet" ToRole="Aktivnost" />
+          <NavigationProperty Name="Opterecenje" Relationship="Self.FK__Opterecen__Predm__173876EA" FromRole="Predmet" ToRole="Opterecenje" />
+          <NavigationProperty Name="Pretplata" Relationship="Self.FK__Pretplata__Predm__24927208" FromRole="Predmet" ToRole="Pretplata" />
         </EntityType>
         <EntityType Name="Pretplata">
           <Key>
@@ -236,18 +279,8 @@
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="KorisnikID" Type="Int32" Nullable="false" />
           <Property Name="PredmetID" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Korisnik" Relationship="Self.FK__Pretplata__Koris__31EC6D26" FromRole="Pretplata" ToRole="Korisnik" />
-          <NavigationProperty Name="Predmet" Relationship="Self.FK__Pretplata__Predm__32E0915F" FromRole="Pretplata" ToRole="Predmet" />
-        </EntityType>
-        <EntityType Name="sysdiagrams">
-          <Key>
-            <PropertyRef Name="diagram_id" />
-          </Key>
-          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="principal_id" Type="Int32" Nullable="false" />
-          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="version" Type="Int32" />
-          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <NavigationProperty Name="Korisnik" Relationship="Self.FK__Pretplata__Koris__239E4DCF" FromRole="Pretplata" ToRole="Korisnik" />
+          <NavigationProperty Name="Predmet" Relationship="Self.FK__Pretplata__Predm__24927208" FromRole="Pretplata" ToRole="Predmet" />
         </EntityType>
         <EntityType Name="TipAktivnosti">
           <Key>
@@ -255,9 +288,10 @@
           </Key>
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Ime" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
-          <NavigationProperty Name="Aktivnost" Relationship="Self.FK__Aktivnost__TipAk__2B3F6F97" FromRole="TipAktivnosti" ToRole="Aktivnost" />
+          <NavigationProperty Name="Aktivnost" Relationship="Self.FK__Aktivnost__TipAk__1CF15040" FromRole="TipAktivnosti" ToRole="Aktivnost" />
+          <NavigationProperty Name="Opterecenje" Relationship="Self.FK__Opterecen__TipAk__182C9B23" FromRole="TipAktivnosti" ToRole="Opterecenje" />
         </EntityType>
-        <Association Name="FK__Aktivnost__Predm__2A4B4B5E">
+        <Association Name="FK__Aktivnost__Predm__1BFD2C07">
           <End Role="Predmet" Type="Self.Predmet" Multiplicity="1" />
           <End Role="Aktivnost" Type="Self.Aktivnost" Multiplicity="*" />
           <ReferentialConstraint>
@@ -269,7 +303,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Aktivnost__TipAk__2B3F6F97">
+        <Association Name="FK__Aktivnost__TipAk__1CF15040">
           <End Role="TipAktivnosti" Type="Self.TipAktivnosti" Multiplicity="1" />
           <End Role="Aktivnost" Type="Self.Aktivnost" Multiplicity="*" />
           <ReferentialConstraint>
@@ -281,7 +315,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Evidencij__Aktiv__36B12243">
+        <Association Name="FK__Evidencij__Aktiv__286302EC">
           <End Role="Aktivnost" Type="Self.Aktivnost" Multiplicity="1" />
           <End Role="Evidencija" Type="Self.Evidencija" Multiplicity="*" />
           <ReferentialConstraint>
@@ -293,7 +327,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Evidencij__Koris__35BCFE0A">
+        <Association Name="FK__Evidencij__Koris__276EDEB3">
           <End Role="Korisnik" Type="Self.Korisnik" Multiplicity="1" />
           <End Role="Evidencija" Type="Self.Evidencija" Multiplicity="*" />
           <ReferentialConstraint>
@@ -305,7 +339,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Pretplata__Koris__31EC6D26">
+        <Association Name="FK__Pretplata__Koris__239E4DCF">
           <End Role="Korisnik" Type="Self.Korisnik" Multiplicity="1" />
           <End Role="Pretplata" Type="Self.Pretplata" Multiplicity="*" />
           <ReferentialConstraint>
@@ -317,7 +351,31 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Pretplata__Predm__32E0915F">
+        <Association Name="FK__Opterecen__Predm__173876EA">
+          <End Role="Predmet" Type="Self.Predmet" Multiplicity="1" />
+          <End Role="Opterecenje" Type="Self.Opterecenje" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Predmet">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Opterecenje">
+              <PropertyRef Name="PredmetID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Opterecen__TipAk__182C9B23">
+          <End Role="TipAktivnosti" Type="Self.TipAktivnosti" Multiplicity="1" />
+          <End Role="Opterecenje" Type="Self.Opterecenje" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TipAktivnosti">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Opterecenje">
+              <PropertyRef Name="TipAktivnostiID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Pretplata__Predm__24927208">
           <End Role="Predmet" Type="Self.Predmet" Multiplicity="1" />
           <End Role="Pretplata" Type="Self.Pretplata" Multiplicity="*" />
           <ReferentialConstraint>
@@ -333,31 +391,39 @@
           <EntitySet Name="Aktivnost" EntityType="Self.Aktivnost" />
           <EntitySet Name="Evidencija" EntityType="Self.Evidencija" />
           <EntitySet Name="Korisnik" EntityType="Self.Korisnik" />
+          <EntitySet Name="Opterecenje" EntityType="Self.Opterecenje" />
           <EntitySet Name="Predmet" EntityType="Self.Predmet" />
           <EntitySet Name="Pretplata" EntityType="Self.Pretplata" />
-          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
           <EntitySet Name="TipAktivnosti" EntityType="Self.TipAktivnosti" />
-          <AssociationSet Name="FK__Aktivnost__Predm__2A4B4B5E" Association="Self.FK__Aktivnost__Predm__2A4B4B5E">
+          <AssociationSet Name="FK__Aktivnost__Predm__1BFD2C07" Association="Self.FK__Aktivnost__Predm__1BFD2C07">
             <End Role="Predmet" EntitySet="Predmet" />
             <End Role="Aktivnost" EntitySet="Aktivnost" />
           </AssociationSet>
-          <AssociationSet Name="FK__Aktivnost__TipAk__2B3F6F97" Association="Self.FK__Aktivnost__TipAk__2B3F6F97">
+          <AssociationSet Name="FK__Aktivnost__TipAk__1CF15040" Association="Self.FK__Aktivnost__TipAk__1CF15040">
             <End Role="TipAktivnosti" EntitySet="TipAktivnosti" />
             <End Role="Aktivnost" EntitySet="Aktivnost" />
           </AssociationSet>
-          <AssociationSet Name="FK__Evidencij__Aktiv__36B12243" Association="Self.FK__Evidencij__Aktiv__36B12243">
+          <AssociationSet Name="FK__Evidencij__Aktiv__286302EC" Association="Self.FK__Evidencij__Aktiv__286302EC">
             <End Role="Aktivnost" EntitySet="Aktivnost" />
             <End Role="Evidencija" EntitySet="Evidencija" />
           </AssociationSet>
-          <AssociationSet Name="FK__Evidencij__Koris__35BCFE0A" Association="Self.FK__Evidencij__Koris__35BCFE0A">
+          <AssociationSet Name="FK__Evidencij__Koris__276EDEB3" Association="Self.FK__Evidencij__Koris__276EDEB3">
             <End Role="Korisnik" EntitySet="Korisnik" />
             <End Role="Evidencija" EntitySet="Evidencija" />
           </AssociationSet>
-          <AssociationSet Name="FK__Pretplata__Koris__31EC6D26" Association="Self.FK__Pretplata__Koris__31EC6D26">
+          <AssociationSet Name="FK__Pretplata__Koris__239E4DCF" Association="Self.FK__Pretplata__Koris__239E4DCF">
             <End Role="Korisnik" EntitySet="Korisnik" />
             <End Role="Pretplata" EntitySet="Pretplata" />
           </AssociationSet>
-          <AssociationSet Name="FK__Pretplata__Predm__32E0915F" Association="Self.FK__Pretplata__Predm__32E0915F">
+          <AssociationSet Name="FK__Opterecen__Predm__173876EA" Association="Self.FK__Opterecen__Predm__173876EA">
+            <End Role="Predmet" EntitySet="Predmet" />
+            <End Role="Opterecenje" EntitySet="Opterecenje" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Opterecen__TipAk__182C9B23" Association="Self.FK__Opterecen__TipAk__182C9B23">
+            <End Role="TipAktivnosti" EntitySet="TipAktivnosti" />
+            <End Role="Opterecenje" EntitySet="Opterecenje" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Pretplata__Predm__24927208" Association="Self.FK__Pretplata__Predm__24927208">
             <End Role="Predmet" EntitySet="Predmet" />
             <End Role="Pretplata" EntitySet="Pretplata" />
           </AssociationSet>
@@ -402,6 +468,16 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="Opterecenje">
+            <EntityTypeMapping TypeName="EvidencijaVremenaModel.Opterecenje">
+              <MappingFragment StoreEntitySet="Opterecenje">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="PredmetID" ColumnName="PredmetID" />
+                <ScalarProperty Name="TipAktivnostiID" ColumnName="TipAktivnostiID" />
+                <ScalarProperty Name="Iznos" ColumnName="Iznos" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="Predmet">
             <EntityTypeMapping TypeName="EvidencijaVremenaModel.Predmet">
               <MappingFragment StoreEntitySet="Predmet">
@@ -418,17 +494,6 @@
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="KorisnikID" ColumnName="KorisnikID" />
                 <ScalarProperty Name="PredmetID" ColumnName="PredmetID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="sysdiagrams">
-            <EntityTypeMapping TypeName="EvidencijaVremenaModel.sysdiagrams">
-              <MappingFragment StoreEntitySet="sysdiagrams">
-                <ScalarProperty Name="name" ColumnName="name" />
-                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
-                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
-                <ScalarProperty Name="version" ColumnName="version" />
-                <ScalarProperty Name="definition" ColumnName="definition" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

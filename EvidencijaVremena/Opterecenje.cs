@@ -12,12 +12,14 @@ namespace EvidencijaVremena
     using System;
     using System.Collections.Generic;
     
-    public partial class sysdiagrams
+    public partial class Opterecenje
     {
-        public string name { get; set; }
-        public int principal_id { get; set; }
-        public int diagram_id { get; set; }
-        public Nullable<int> version { get; set; }
-        public byte[] definition { get; set; }
+        public int ID { get; set; }
+        public int PredmetID { get; set; }
+        public int TipAktivnostiID { get; set; }
+        public Nullable<int> Iznos { get; set; }
+    
+        public virtual Predmet Predmet { get; set; }
+        public virtual TipAktivnosti TipAktivnosti { get; set; }
     }
 }

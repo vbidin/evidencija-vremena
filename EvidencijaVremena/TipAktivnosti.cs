@@ -18,6 +18,7 @@ namespace EvidencijaVremena
         public TipAktivnosti()
         {
             this.Aktivnost = new HashSet<Aktivnost>();
+            this.Opterecenje = new HashSet<Opterecenje>();
         }
     
         public int ID { get; set; }
@@ -25,5 +26,7 @@ namespace EvidencijaVremena
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Aktivnost> Aktivnost { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Opterecenje> Opterecenje { get; set; }
     }
 }

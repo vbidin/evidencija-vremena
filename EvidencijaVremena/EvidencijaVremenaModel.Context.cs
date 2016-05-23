@@ -28,9 +28,9 @@ namespace EvidencijaVremena
         public virtual DbSet<Aktivnost> Aktivnost { get; set; }
         public virtual DbSet<Evidencija> Evidencija { get; set; }
         public virtual DbSet<Korisnik> Korisnik { get; set; }
+        public virtual DbSet<Opterecenje> Opterecenje { get; set; }
         public virtual DbSet<Predmet> Predmet { get; set; }
         public virtual DbSet<Pretplata> Pretplata { get; set; }
-        public virtual DbSet<sysdiagrams> sysdiagrams { get; set; }
         public virtual DbSet<TipAktivnosti> TipAktivnosti { get; set; }
     }
 }
