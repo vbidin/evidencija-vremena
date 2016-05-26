@@ -269,7 +269,7 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\Statistika\Pregled.cshtml" />
+    <Content Include="Views\Statistika\Index.cshtml" />
     <Content Include="Views\Predmet\Index.cshtml" />
     <Content Include="Views\Evidencija\Index.cshtml" />
   </ItemGroup>

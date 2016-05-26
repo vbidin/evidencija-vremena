@@ -19,7 +19,7 @@ namespace EvidencijaVremena.Controllers
 			Korisnik = db.Korisnik.First();
 		}
 
-		public ActionResult Pregled(StatistikaModel model)
+		public ActionResult Index(StatistikaModel model)
         {
 			ICollection<Predmet> predmeti = db.Pretplata.Where(p => p.KorisnikID == Korisnik.ID).Select(p => p.Predmet).ToList();
 			ICollection<OpisPredmeta> opisi = new List<OpisPredmeta>();

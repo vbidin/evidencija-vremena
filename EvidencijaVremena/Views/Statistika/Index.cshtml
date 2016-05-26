@@ -1,0 +1,117 @@
+﻿@model EvidencijaVremena.Models.StatistikaModel
+
+<div class="row">
+    <div class="col-xs-12">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <ul class="nav nav-pills">
+                    <li class="active"><a data-toggle="pill" href="#predmeti">Predmeti</a></li>
+                    <li><a data-toggle="pill" href="#tipoviAktivnosti">Tipovi Aktivnosti</a></li>
+                    <li><a data-toggle="pill" href="#aktivnosti">Aktivnosti</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="tab-content">
+    <div id="predmeti" class="tab-pane fade in active">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <h4><b>Statistika predmeta</b></h4>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-xs-8" style="text-justify:distribute">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <div class="form-inline">
+                                    <div class="form-group">
+                                        @Html.LabelFor(m => m.OdabraniPredmetID)
+                                        @Html.DropDownListFor(m => m.OdabraniPredmetID, Model.SelectListPredmeta,
+                                    new { id = "predmeti", onChange = "OdabranPredmet()", @class = "form-control", style = "width:auto; display:inline-block;" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel-body">
+                                <p>
+                                    The oldest classical Greek and Latin writing had little or no space between words, and could be written in boustrophedon (alternating directions). Over time, text direction (left to right) became standardized, and word dividers and terminal punctuation became common. The first way to divide sentences into groups was the original paragraphos, similar to an underscore at the beginning of the new group. The Greek paragraphos evolved into the pilcrow, which in English manuscripts in the Middle Ages can be seen inserted inline between sentences. The hedera leaf has also been used in the same way.
+                                </p>
+                                <p>
+                                    In ancient manuscripts, another means to divide sentences into paragraphs was a line break (newline) followed by an initial at the beginning of the next paragraph. An initial is an oversize capital letter, sometimes outdented beyond the margin of text. This style can be seen, for example, in the original Old English manuscript of Beowulf. Outdenting is still used in English typography, though not commonly. Modern English typography usually indicates a new paragraph by indenting the first line. This style can be seen in the (handwritten) United States Constitution from 1787. For additional ornamentation, a hedera leaf or other symbol can be added to the inter-paragraph whitespace, or put in the indentation space.
+                                </p>
+                                <p>
+                                    A second common modern English style is to use no indenting, but add vertical whitespace to create "block paragraphs." On a typewriter, a double carriage return produces a blank line for this purpose; professional typesetters (or word processing software) may put in an arbitrary vertical space by adjusting leading. This style is very common in electronic formats, such as on the World Wide Web and email.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-4">
+                        <div class="panel panel-default">
+                            <div class="panel-body">
+                                <canvas id="predmetGraf" height="400"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="tipoviAktivnosti" class="tab-pane fade">
+        <div class="row">
+            <div class="col-xs-12">
+                <h3><b>TODO</b></h3>
+            </div>
+        </div>
+    </div>
+    <div id="aktivnosti" class="tab-pane fade">
+        <div class="row">
+            <div class="col-xs-12">
+                <h3><b>TODO</b></h3>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript" language="javascript">
+    function OdabranPredmet() {
+        console.log("Odabran novi predmet...");
+        $.post('@Url.Action("OsvjeziPredmet", "Statistika")', { id: ('#predmeti').value }, OsvjeziPredmet, "json");
+    }
+
+    function OsvjeziPredmet(data) {
+        console.log("Osvjezujem graf...");
+        console.log("Podaci: " + data);
+        var ctx = document.getElementById("predmetGraf");
+        var myChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ["Vi", "Prosjek", "Predmet"],
+                datasets: [
+                    {
+                        fillColor: "#48A497",
+                        strokeColor: "#48A4D1",
+                        data: [5.18, 4.32, 7]
+                    }
+                ]
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }]
+                }
+            }
+        });
+    }
+
+    $(document).ready(function () {
+        console.log("Loadirana stranica...");
+        OdabranPredmet();
+    });
+</script>
