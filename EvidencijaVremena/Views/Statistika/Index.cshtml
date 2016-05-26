@@ -51,6 +51,17 @@
                     </div>
                     <div class="col-xs-4">
                         <div class="panel panel-default">
+                                <div class="btn-group btn-group-justified" data-toggle="buttons">
+                                    <label class="btn btn-primary btn-sm active">
+                                        <input type="radio" name="options" id="ects" autocomplete="off" checked>ECTS
+                                    </label>
+                                    <label class="btn btn-primary btn-sm">
+                                        <input type="radio" name="options" id="sati" autocomplete="off">Sati
+                                    </label>
+                                    <label class="btn btn-primary btn-sm">
+                                        <input type="radio" name="options" id="postotci" autocomplete="off">%
+                                    </label>
+                                </div>
                             <div class="panel-body">
                                 <canvas id="predmetGraf" height="400"></canvas>
                             </div>
@@ -80,19 +91,24 @@
     $("#predmeti").change(function () {
         var id = $(this).children(":selected")[0].value;
         $.post('@Url.Action("OsvjeziPredmet", "Statistika")', { predmetId: id }, OsvjeziPredmet, "json");
-    }).change();
+    });
+
+
+    $('#ects').on('click', function (event) {
+        console.log("test");
+    });
 
     function OsvjeziPredmet(data) {
         console.log("Osvjezujem graf...");
         var ctx = document.getElementById("predmetGraf");
-        var myChart = new Chart(ctx, {
+        var predmetGraf = new Chart(ctx, {
             type: 'bar',
             data: {
                 labels: [""],
                 datasets: [
                     {
-                        backgroundColor: "rgba(30,144,255,0.5)",
-                        borderColor: "rgba(0,0,255,1)",
+                        backgroundColor: "rgba(255,99,71,0.5)",
+                        borderColor: "rgba(255,0,0,1)",
                         borderWidth: 1,
                         data: [data.korisnikECTS.toFixed(2)],
                         label: "Ja",
@@ -105,8 +121,8 @@
                         label: "Prosjek"
                     },
                     {
-                        backgroundColor: "rgba(255,99,71,0.5)",
-                        borderColor: "rgba(255,0,0,1)",
+                        backgroundColor: "rgba(30,144,255,0.5)",
+                        borderColor: "rgba(0,0,255,1)",
                         borderWidth: 1,
                         data: [data.predmetECTS.toFixed(2)],
                         label: "Predmet"
@@ -123,8 +139,11 @@
                 }
             }
         });
+        predmetGraf.data.datasets[0].data[0] = 60;
+        predmetGraf.update();
     }
 
     $(document).ready(function () {
+        $("#predmeti").change();
     });
 </script>
