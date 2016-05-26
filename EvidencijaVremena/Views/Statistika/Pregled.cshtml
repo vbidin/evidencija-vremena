@@ -1,0 +1,133 @@
+﻿@model EvidencijaVremena.Models.StatistikaModel
+
+<div class="row">
+    <div class="col-xs-12">
+        <hr />
+        <ul class="nav nav-pills">
+            <li class="active"><a data-toggle="pill" href="#predmeti">Predmeti</a></li>
+            <li><a data-toggle="pill" href="#aktivnosti">Aktivnosti</a></li>
+        </ul>
+    </div>
+</div>
+<div class="tab-content">
+    <div id="predmeti" class="tab-pane fade in active">
+        <div class="row">
+            <div class="col-xs-12">
+                <hr />
+                <h3><b>Statistika predmeta</b></h3>
+                <hr />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <form class="form-inline">
+                    <fieldset class="form-group">
+                        @Html.LabelFor(m => m.OdabraniPredmetID)
+                        @Html.DropDownListFor(m => m.OdabraniPredmetID, Model.SelectListPredmeta, new { id = "predmeti", onChange = "OdabranPredmet()", @class = "form-control" })
+
+                    </fieldset>
+                </form>
+                <hr />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-6">
+                <p>
+                    When supplying colors to Chart options, you can use a number of formats. You can specify the color as a string in hexadecimal, RGB, or HSL notations.
+                    You can also pass a CanvasGradient object. You will need to create this before passing to the chart, but using it you can achieve some interesting effect
+                    The final option is to pass a CanvasPattern object. For example, if you wanted to fill a dataset with a pattern from an image you could do the following:
+                </p>
+                <hr />
+                <canvas id="predmetGraf" width="400" height="250"></canvas>
+            </div>
+            <div class="col-xs-6">
+                <canvas id="tipoviAktivnostiGraf" width="400" height="400"></canvas>
+            </div>
+        </div>
+    </div>
+    <div id="aktivnosti" class="tab-pane fade">
+        <div class="row">
+            <div class="col-xs-12">
+                <hr />
+                <h3><b>Statistika aktivnosti</b></h3>
+                <hr />
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript" language="javascript">
+    function OdabranPredmet() {
+        console.log("Odabran novi predmet...");
+        $.post('@Url.Action("OsvjeziPredmet", "Statistika")', { id: ('#predmeti').value }, OsvjeziPredmet, "json");
+    }
+
+    function OsvjeziPredmet(data) {
+        console.log("Osvjezujem graf...");
+        console.log("Podaci: " + data);
+        var ctx = document.getElementById("predmetGraf");
+        var myChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
+                datasets: [
+                    {
+                        fillColor: "#48A497",
+                        strokeColor: "#48A4D1",
+                        data: [456, 479, 294, 569, 702, 600]
+                    }
+                ]
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }]
+                }
+            }
+        });
+
+        var ctx = document.getElementById("tipoviAktivnostiGraf");
+        var myChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
+                datasets: [
+                    {
+                        fillColor: "#48A497",
+                        strokeColor: "#48A4D1",
+                        data: [456, 479, 294, 569, 702, 600]
+                    },
+		            {
+		                fillColor: "rgba(73,188,170,0.4)",
+		                strokeColor: "rgba(72,174,209,0.4)",
+		                data: [324, 504, 605, 310, 345, 20]
+		            },
+                    {
+                        fillColor: "rgba(73,188,170,0.4)",
+                        strokeColor: "rgba(72,174,209,0.4)",
+                        data: [364, 504, 287, 400, 345, 320]
+                    }
+
+                ]
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }]
+                }
+            }
+        });
+
+    }
+
+    $(document).ready(function () {
+        console.log("Loadirana stranica...");
+        OdabranPredmet();
+    });
+</script>
