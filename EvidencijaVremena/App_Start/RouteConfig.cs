@@ -16,7 +16,7 @@ namespace EvidencijaVremena
 			routes.MapRoute(
 				name: "Default",
 				url: "{controller}/{action}/{id}",
-				defaults: new { controller = "Pregled", action = "Index", id = UrlParameter.Optional }
+				defaults: new { controller = "Predmet", action = "Index", id = UrlParameter.Optional }
 			);
 		}
 	}

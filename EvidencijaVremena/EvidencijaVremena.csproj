@@ -85,6 +85,10 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.6.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -150,11 +154,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="Aktivnost.cs">
       <DependentUpon>EvidencijaVremenaModel.tt</DependentUpon>
     </Compile>
@@ -164,9 +163,8 @@
     <Compile Include="Controllers\AdministracijaController.cs" />
     <Compile Include="Controllers\AutorizacijaController.cs" />
     <Compile Include="Controllers\EvidencijaController.cs" />
+    <Compile Include="Controllers\StatistikaController.cs" />
     <Compile Include="Controllers\PredmetController.cs" />
-    <Compile Include="Controllers\PregledController.cs" />
-    <Compile Include="Controllers\PretplataController.cs" />
     <Compile Include="Evidencija.cs">
       <DependentUpon>EvidencijaVremenaModel.tt</DependentUpon>
     </Compile>
@@ -194,6 +192,7 @@
     <Compile Include="Models\EvidencijeModel.cs" />
     <Compile Include="Models\PredmetiModel.cs" />
     <Compile Include="Models\PretplateModel.cs" />
+    <Compile Include="Models\StatistikaModel.cs" />
     <Compile Include="Opterecenje.cs">
       <DependentUpon>EvidencijaVremenaModel.tt</DependentUpon>
     </Compile>
@@ -244,8 +243,12 @@
       <DependentUpon>EvidencijaVremenaModel.edmx</DependentUpon>
     </Content>
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
-    <Content Include="Scripts\jquery-1.10.2.js" />
-    <Content Include="Scripts\jquery-1.10.2.min.js" />
+    <None Include="Scripts\jquery-2.2.3.intellisense.js" />
+    <Content Include="Scripts\Chart.js" />
+    <Content Include="Scripts\Chart.min.js" />
+    <Content Include="Scripts\jquery-2.2.3.js" />
+    <Content Include="Scripts\jquery-2.2.3.min.js" />
+    <Content Include="Scripts\jquery-2.2.3.min.map" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
@@ -266,15 +269,14 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\Pregled\Index.cshtml" />
-    <Content Include="Views\Pretplata\Index.cshtml" />
+    <Content Include="Views\Statistika\Pregled.cshtml" />
+    <Content Include="Views\Predmet\Index.cshtml" />
     <Content Include="Views\Evidencija\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Partial\" />
     <Folder Include="Views\Administracija\" />
     <Folder Include="Views\Autorizacija\" />
-    <Folder Include="Views\Predmet\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
@@ -282,7 +284,6 @@
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <Content Include="packages.config" />
     <None Include="Project_Readme.html" />
-    <Content Include="Scripts\jquery-1.10.2.min.map" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

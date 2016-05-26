@@ -6,6 +6,8 @@
     <title>@ViewBag.Title</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/chart")
 </head>
 <body>
     <div class="navbar navbar-inverse navbar-fixed-top">
@@ -18,19 +20,16 @@
                 </button>            </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Pregled", "Index", "Pregled")</li>
-                    <li>@Html.ActionLink("Pretplate", "Index", "Pretplata")</li>
-                    <li>@Html.ActionLink("Evidencije", "Index", "Evidencija")</li>
+                    <li>@Html.ActionLink("Statistika", "Pregled", "Statistika")</li>
+                    <li>@Html.ActionLink("Pretplate", "Index", "Predmet")</li>
+                    <li>@Html.ActionLink("Evidencija", "Index", "Evidencija")</li>
                 </ul>
             </div>
         </div>
     </div>
     <div class="container body-content">
         @RenderBody()
-        <hr />
     </div>
-
-    @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)
 </body>
