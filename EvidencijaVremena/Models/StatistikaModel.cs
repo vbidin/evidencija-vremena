@@ -9,7 +9,7 @@ namespace EvidencijaVremena.Models
 {
 	public class StatistikaModel
 	{
-		[Display(Name = "Predmeti")]
+		[Display(Name = "Predmet")]
 		public int OdabraniPredmetID { get; set; }
 		public ICollection<OpisPredmeta> OpisiPredmeta { get; set; }
 		public IEnumerable<SelectListItem> SelectListPredmeta
