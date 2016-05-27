@@ -46,7 +46,7 @@
                                 </label>
                             </div>
                             <div class="panel-body">
-                                <canvas id="predmetGraf" height="400"></canvas>
+                                <canvas id="predmetGraf" height="800"></canvas>
                             </div>
                         </div>
                     </div>
@@ -67,7 +67,7 @@
                                 </label>
                             </div>
                             <div class="panel-body">
-                                <canvas id="tipAktivnostiGraf" width="800" height="400"></canvas>
+                                <canvas id="tipAktivnostiGraf" height="800"></canvas>
                             </div>
                         </div>
                     </div>
@@ -108,7 +108,7 @@
                                 </label>
                             </div>
                             <div class="panel-body">
-                                <canvas id="aktivnostiGraf" width="800" height="400"></canvas>
+                                <canvas id="aktivnostiGraf" height="800"></canvas>
                             </div>
                         </div>
                     </div>
@@ -125,17 +125,53 @@
 
 <script type="text/javascript" language="javascript">
     $("#predmeti").change(function () {
-        var id = $(this).children(":selected")[0].value;
-        $.post('@Url.Action("OsvjeziPredmet", "Statistika")', { predmetId: id }, OsvjeziPredmet, "json");
+        var prd = $("#predmeti").children(":selected")[0].value;
+        $.post('@Url.Action("OsvjeziAktivnosti", "Statistika")', { predmetId: prd }, OsvjeziAktivnosti, "json");
     });
 
-
-    $('#ects').on('click', function (event) {
-        console.log("test");
+    $("#aktivnosti").change(function () {
+        var prd = $("#predmeti").children(":selected")[0].value;
+        var akt = $("#aktivnosti").children(":selected")[0].value;
+        $.post('@Url.Action("OsvjeziPredmet", "Statistika")', { predmetId: prd, tipAktivnostiID: akt }, OsvjeziPredmet, "json");
     });
+
+    function OsvjeziAktivnosti(data) {
+        console.log("Osvjezujem drop down list tipova aktivnosti...")
+        var $el = $("#aktivnosti");
+        $el.empty();
+        var len = data.id.length;
+        for (var i = 0; i < len; i++) {
+            var opt = document.createElement('option');
+            opt.value = data.id[i];
+            opt.innerHTML = data.naziv[i];
+            var sel = $("#aktivnosti");
+            sel.append($('<option></option>').val(opt.value).html(opt.innerHTML));
+        }
+        $("#aktivnosti").change();
+    }
 
     function OsvjeziPredmet(data) {
         console.log("Osvjezujem graf...");
+
+        // zaokruzi decimalne brojeve
+        var x = 0;
+        var len = data.tipoviAktivnostiECTS.length
+        while (x < len) {
+            data.korisnikTipoviAktivnostiECTS[x] = data.korisnikTipoviAktivnostiECTS[x].toFixed(2);
+            data.prosjekTipoviAktivnostiECTS[x] = data.prosjekTipoviAktivnostiECTS[x].toFixed(2);
+            data.tipoviAktivnostiECTS[x] = data.tipoviAktivnostiECTS[x].toFixed(2);
+            x++;
+        }
+
+        var x = 0;
+        var len = data.aktivnostiECTS.length
+        while (x < len) {
+            data.korisnikAktivnostiECTS[x] = data.korisnikAktivnostiECTS[x].toFixed(2);
+            data.prosjekAktivnostiECTS[x] = data.prosjekAktivnostiECTS[x].toFixed(2);
+            data.aktivnostiECTS[x] = data.aktivnostiECTS[x].toFixed(2);
+            x++;
+        }
+
         var ctx = document.getElementById("predmetGraf");
         var predmetGraf = new Chart(ctx, {
             type: 'bar',
@@ -147,7 +183,7 @@
                         borderColor: "rgba(255,0,0,1)",
                         borderWidth: 1,
                         data: [data.korisnikECTS.toFixed(2)],
-                        label: "Ja",
+                        label: "Korisnik",
                     },
                     {
                         backgroundColor: "rgba(50,205,50,0.5)",
@@ -162,6 +198,86 @@
                         borderWidth: 1,
                         data: [data.predmetECTS.toFixed(2)],
                         label: "Predmet"
+                    }
+                ]
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }]
+                }
+            }
+        });
+
+        ctx = document.getElementById("tipAktivnostiGraf");
+        var tipoviAktivnostiGraf = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: data.tipoviAktivnostiNaziv,
+                datasets: [
+                    {
+                        backgroundColor: "rgba(255,99,71,0.5)",
+                        borderColor: "rgba(255,0,0,1)",
+                        borderWidth: 1,
+                        data: data.korisnikTipoviAktivnostiECTS,
+                        label: "Korisnik",
+                    },
+                    {
+                        backgroundColor: "rgba(50,205,50,0.5)",
+                        borderColor: "rgba(0,255,0,1)",
+                        borderWidth: 1,
+                        data: data.prosjekTipoviAktivnostiECTS,
+                        label: "Prosjek"
+                    },
+                    {
+                        backgroundColor: "rgba(30,144,255,0.5)",
+                        borderColor: "rgba(0,0,255,1)",
+                        borderWidth: 1,
+                        data: data.tipoviAktivnostiECTS,
+                        label: "Tip aktivnosti"
+                    }
+                ]
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }]
+                }
+            }
+        });
+
+        ctx = document.getElementById("aktivnostiGraf");
+        var aktivnostiGraf = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: data.aktivnostiNaziv,
+                datasets: [
+                    {
+                        backgroundColor: "rgba(255,99,71,0.5)",
+                        borderColor: "rgba(255,0,0,1)",
+                        borderWidth: 1,
+                        data: data.korisnikAktivnostiECTS,
+                        label: "Korisnik",
+                    },
+                    {
+                        backgroundColor: "rgba(50,205,50,0.5)",
+                        borderColor: "rgba(0,255,0,1)",
+                        borderWidth: 1,
+                        data: data.prosjekAktivnostiECTS,
+                        label: "Prosjek"
+                    },
+                    {
+                        backgroundColor: "rgba(30,144,255,0.5)",
+                        borderColor: "rgba(0,0,255,1)",
+                        borderWidth: 1,
+                        data: data.aktivnostiECTS,
+                        label: "Aktivnosti"
                     }
                 ]
             },

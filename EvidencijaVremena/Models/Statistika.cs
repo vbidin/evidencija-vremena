@@ -33,5 +33,6 @@ namespace EvidenciKorisnikVremena.Models
 		public string Naziv { get; set; }
 		public double Korisnik { get; set; }
 		public double Prosjek { get; set; }
+		public double Aktivnost { get; set; }
 	}
 }
