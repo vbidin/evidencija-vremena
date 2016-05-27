@@ -17,7 +17,7 @@ namespace EvidencijaVremena
         public int ID { get; set; }
         public int PredmetID { get; set; }
         public int TipAktivnostiID { get; set; }
-        public Nullable<int> Iznos { get; set; }
+        public Nullable<double> Iznos { get; set; }
     
         public virtual Predmet Predmet { get; set; }
         public virtual TipAktivnosti TipAktivnosti { get; set; }

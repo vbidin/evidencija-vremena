@@ -25,6 +25,7 @@
           <Property Name="DatumUnosa" Type="datetime" Nullable="false" />
           <Property Name="KorisnikID" Type="int" Nullable="false" />
           <Property Name="AktivnostID" Type="int" Nullable="false" />
+          <Property Name="Opis" Type="nvarchar(max)" />
         </EntityType>
         <EntityType Name="Korisnik">
           <Key>
@@ -43,7 +44,7 @@
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="PredmetID" Type="int" Nullable="false" />
           <Property Name="TipAktivnostiID" Type="int" Nullable="false" />
-          <Property Name="Iznos" Type="int" />
+          <Property Name="Iznos" Type="float" />
         </EntityType>
         <EntityType Name="Predmet">
           <Key>
@@ -234,6 +235,7 @@
           <Property Name="DatumUnosa" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="KorisnikID" Type="Int32" Nullable="false" />
           <Property Name="AktivnostID" Type="Int32" Nullable="false" />
+          <Property Name="Opis" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="Aktivnost" Relationship="Self.FK__Evidencij__Aktiv__286302EC" FromRole="Evidencija" ToRole="Aktivnost" />
           <NavigationProperty Name="Korisnik" Relationship="Self.FK__Evidencij__Koris__276EDEB3" FromRole="Evidencija" ToRole="Korisnik" />
         </EntityType>
@@ -256,7 +258,7 @@
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="PredmetID" Type="Int32" Nullable="false" />
           <Property Name="TipAktivnostiID" Type="Int32" Nullable="false" />
-          <Property Name="Iznos" Type="Int32" />
+          <Property Name="Iznos" Type="Double" />
           <NavigationProperty Name="Predmet" Relationship="Self.FK__Opterecen__Predm__173876EA" FromRole="Opterecenje" ToRole="Predmet" />
           <NavigationProperty Name="TipAktivnosti" Relationship="Self.FK__Opterecen__TipAk__182C9B23" FromRole="Opterecenje" ToRole="TipAktivnosti" />
         </EntityType>
@@ -454,6 +456,7 @@
                 <ScalarProperty Name="DatumUnosa" ColumnName="DatumUnosa" />
                 <ScalarProperty Name="KorisnikID" ColumnName="KorisnikID" />
                 <ScalarProperty Name="AktivnostID" ColumnName="AktivnostID" />
+                <ScalarProperty Name="Opis" ColumnName="Opis" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

@@ -19,6 +19,7 @@ namespace EvidencijaVremena
         public System.DateTime DatumUnosa { get; set; }
         public int KorisnikID { get; set; }
         public int AktivnostID { get; set; }
+        public string Opis { get; set; }
     
         public virtual Aktivnost Aktivnost { get; set; }
         public virtual Korisnik Korisnik { get; set; }

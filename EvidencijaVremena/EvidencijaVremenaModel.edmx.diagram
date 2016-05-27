@@ -4,9 +4,9 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="4fd370ac6e0f4d08ac465dddf21ea244" Name="Diagram1">
+      <Diagram DiagramId="d70635bff27e4c5a901d9c82995fc3f5" Name="Diagram1">
         <EntityTypeShape EntityType="EvidencijaVremenaModel.Aktivnost" Width="1.5" PointX="3" PointY="4.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="EvidencijaVremenaModel.Evidencija" Width="1.5" PointX="5.25" PointY="7.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="EvidencijaVremenaModel.Evidencija" Width="1.5" PointX="8.25" PointY="4.625" IsExpanded="true" />
         <EntityTypeShape EntityType="EvidencijaVremenaModel.Korisnik" Width="1.5" PointX="3.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="EvidencijaVremenaModel.Opterecenje" Width="1.5" PointX="6" PointY="4.875" IsExpanded="true" />
         <EntityTypeShape EntityType="EvidencijaVremenaModel.Predmet" Width="1.5" PointX="0.75" PointY="4.75" IsExpanded="true" />
