@@ -1,6 +1,7 @@
 ﻿using EvidencijaVremena.Models;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -22,36 +23,43 @@ namespace EvidencijaVremena.Controllers
 		public ActionResult Index()
 		{
 			// uzmi sve pretplaćene predmete korisnika
+			List<OpisPredmeta> opisiPredmeta = new List<OpisPredmeta>();
 			List<Pretplata> pretplate = db.Pretplata.Where(p => p.KorisnikID == Korisnik.ID).ToList();
-			List<Predmet> predmeti = new List<Predmet>();
-
 			foreach (Pretplata pretplata in pretplate)
 			{
 				Predmet predmet = pretplata.Predmet;
-				predmeti.Add(predmet);
+				OpisPredmeta opis = new OpisPredmeta();
+				opis.ID = predmet.ID;
+				opis.Naziv = predmet.Ime + " (" + predmet.Godina + ")";
+				opisiPredmeta.Add(opis);
 			}
 
-			EvidencijeModel model = new EvidencijeModel() { Predmeti = predmeti };
+			EvidencijeModel model = new EvidencijeModel();
+			model.OpisiPredmeta = opisiPredmeta;
+			model.OdabraniPredmetID = opisiPredmeta.ElementAt(0).ID;
 			return View(model);
 		}
 
 		[HttpPost]
-		public ActionResult Add(EvidencijeModel model)
+		public ActionResult OsvjeziAktivnosti(int predmetID)
 		{
-			int ID = Int32.Parse(Request["AktivnostID"]);
-			int trajanje = Int32.Parse(Request["Trajanje"]);
-			Evidencija evidencija = new Evidencija() { Trajanje = trajanje, DatumUnosa = DateTime.Now, KorisnikID = Korisnik.ID, AktivnostID = ID };
-			db.Evidencija.Add(evidencija);
-			db.SaveChanges();
-			return RedirectToAction("Index");
-		}
+			Debug.WriteLine("Predmet selektiran: " + predmetID);
+			List<TipAktivnosti> tipoviAktivnosti = db.Opterecenje.Where(o => o.PredmetID == predmetID).Select(o => o.TipAktivnosti).ToList();
+			int[] tipoviAktivnostiID = tipoviAktivnosti.Select(t => t.ID).ToArray();
+			string[] tipoviAktivnostiNaziv = tipoviAktivnosti.Select(t => t.Ime).ToArray();
 
-		public ActionResult Delete(int ID)
-		{
-			Evidencija evidencija = db.Evidencija.First(e => e.ID == ID);
-			db.Evidencija.Remove(evidencija);
-			db.SaveChanges();
-			return RedirectToAction("Index");
+			List<int[]> aktivnostiID = new List<int[]>();
+			List<string[]> aktivnostiNaziv = new List<string[]>();
+			foreach (int tipAktivnostiID in tipoviAktivnostiID)
+			{
+				aktivnostiID.Add(db.Aktivnost.Where(a => a.PredmetID == predmetID && a.TipAktivnostiID == tipAktivnostiID).Select(a => a.ID).ToArray());
+				aktivnostiNaziv.Add(db.Aktivnost.Where(a => a.PredmetID == predmetID && a.TipAktivnostiID == tipAktivnostiID).Select(a => a.Ime).ToArray());
+			}
+
+			int[][] aktivnostiArrayID = aktivnostiID.ToArray();
+			string[][] aktivnostiArrayNaziv = aktivnostiNaziv.ToArray();
+
+			return Json(new { tipoviAktivnostiID, tipoviAktivnostiNaziv, aktivnostiArrayID, aktivnostiArrayNaziv });
 		}
 	}
 }

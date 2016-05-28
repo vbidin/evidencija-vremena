@@ -1,36 +1,70 @@
 ﻿@model EvidencijaVremena.Models.EvidencijeModel
 
-@{
-    ViewBag.Title = "Evidencije";
-}
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="form-inline">
+                    <div class="form-group">
+                        @Html.DropDownListFor(m => m.OdabraniPredmetID, Model.SelectListPredmeta,
+                        new { id = "predmeti", @class = "form-control", style = "width:auto; display:inline-block;" })
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <div class="row">
+            <div class="col-xs-12">
+                <div id="tipoviAktivnosti" class="btn-group" role="group">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="panel-body">
+        <div class="row">
+            <div class="col-xs-12">
+                <p> ovdje ide neznam jos sta</p>
+            </div>
+        </div>
+    </div>
+</div>
 
-<h4>Evidencija predmeta</h4>
+<script type="text/javascript" language="javascript">
+    $("#predmeti").change(function () {
+        var prd = $("#predmeti").children(":selected")[0].value;
+        $.post('@Url.Action("OsvjeziAktivnosti", "Evidencija")', { predmetId: prd }, OsvjeziAktivnosti, "json");
+    });
 
-@foreach (var predmet in Model.Predmeti)
-{
-    <hr />
-    <p>@Html.DisplayFor(x => predmet.Ime)</p>
-    <hr />
-    foreach (var aktivnost in predmet.Aktivnost)
-    {
-        <p>
-            @Html.DisplayFor(x => aktivnost.Ime)
-            @using (Html.BeginForm("Add", "Evidencija"))
-            {
-                @Html.Hidden("AktivnostID", aktivnost.ID)
-                @Html.TextBox("Trajanje")
-                <input type="submit" value="Dodaj" />
-}
-        </p>
+    function OsvjeziAktivnosti(data) {
+        // izbrisi sve postojece buttone
+        document.getElementById("tipoviAktivnosti").innerHTML = '<div id="tipoviAktivnosti" class="btn-group" role="group"></div>';
 
-        foreach (var evidencija in aktivnost.Evidencija)
-        {
-            <p>
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                @Html.DisplayFor(x => evidencija.Trajanje) minuta -
-                @Html.DisplayFor(x => evidencija.DatumUnosa) -
-                @Html.ActionLink("Izbriši", "Delete", new { id = evidencija.ID })
-            </p>
+        // dodaj drop down za tipove aktivnosti
+        var i = 0;
+        var len = data.tipoviAktivnostiID.length
+        while (i < len) {
+            var $input = $('<div id="' + data.tipoviAktivnostiID[i] + '" class="btn-group"><button type="button" class="btn btn-default btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">' + data.tipoviAktivnostiNaziv[i] + '&nbsp;&nbsp;<span class="caret"></span></button></div>');
+            $input.appendTo($("#tipoviAktivnosti"));
+            $input = $('<ul id="' + data.tipoviAktivnostiID[i] + "buttongroup" + '" class="dropdown-menu"></ul>');
+            $input.appendTo($("#" + data.tipoviAktivnostiID[i]));
+
+            // dodaj sve aktivnosti pod taj dropdown
+            var j = 0;
+            var len = data.aktivnostiArrayID[i].length;
+            while (j < len) {
+                var $input = $('<li><a href="#">' + data.aktivnostiArrayNaziv[i][j] + '</a></li>')
+                $input.appendTo($("#" + data.tipoviAktivnostiID[i] + "buttongroup"));
+                j++;
+            }
+
+            i++;
         }
     }
-}
+
+    $(document).ready(function () {
+        $("#predmeti").change();
+    });
+</script>

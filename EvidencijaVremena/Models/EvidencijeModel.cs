@@ -1,15 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 
 namespace EvidencijaVremena.Models
 {
 	public class EvidencijeModel
 	{
-		public ICollection<Predmet> Predmeti { get; set; }
-
-		public int AktivnostID;
-		public String Trajanje;
+		[Display(Name = "Predmet")]
+		public int OdabraniPredmetID { get; set; }
+		public ICollection<OpisPredmeta> OpisiPredmeta { get; set; }
+		public IEnumerable<SelectListItem> SelectListPredmeta
+		{
+			get { return new SelectList(OpisiPredmeta, "ID", "Naziv"); }
+		}
 	}
 }

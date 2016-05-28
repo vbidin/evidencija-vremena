@@ -136,7 +136,6 @@
     });
 
     function OsvjeziAktivnosti(data) {
-        console.log("Osvjezujem drop down list tipova aktivnosti...")
         var $el = $("#aktivnosti");
         $el.empty();
         var len = data.id.length;
@@ -151,8 +150,6 @@
     }
 
     function OsvjeziPredmet(data) {
-        console.log("Osvjezujem graf...");
-
         // zaokruzi decimalne brojeve
         var x = 0;
         var len = data.tipoviAktivnostiECTS.length
