@@ -45,8 +45,8 @@
                                     <input type="radio" name="options" id="postotci" autocomplete="off">%
                                 </label>
                             </div>
-                            <div class="panel-body">
-                                <canvas id="predmetGraf" height="800"></canvas>
+                            <div id="predmetDiv" class="panel-body">
+                                <canvas id="predmetGraf" width="400" height="400"></canvas>
                             </div>
                         </div>
                     </div>
@@ -66,8 +66,8 @@
                                     <input type="radio" name="options" id="postotci" autocomplete="off">%
                                 </label>
                             </div>
-                            <div class="panel-body">
-                                <canvas id="tipAktivnostiGraf" height="800"></canvas>
+                            <div id="tipAktivnostiDiv" class="panel-body">
+                                <canvas id="tipAktivnostiGraf" width="800" height="400"></canvas>
                             </div>
                         </div>
                     </div>
@@ -107,8 +107,8 @@
                                     <input type="radio" name="options" id="postotci" autocomplete="off">%
                                 </label>
                             </div>
-                            <div class="panel-body">
-                                <canvas id="aktivnostiGraf" height="800"></canvas>
+                            <div id="aktivnostiDiv" class="panel-body">
+                                <canvas id="aktivnostiGraf" width="800" height="400"></canvas>
                             </div>
                         </div>
                     </div>
@@ -172,8 +172,12 @@
             x++;
         }
 
-        var ctx = document.getElementById("predmetGraf");
-        var predmetGraf = new Chart(ctx, {
+        document.getElementById("predmetDiv").innerHTML = '&nbsp;';
+        document.getElementById("predmetDiv").innerHTML = '<canvas id="predmetGraf"></canvas>';
+        var ctx1 = document.getElementById("predmetGraf");
+        ctx1.width = 400;
+        ctx1.height = 400;
+        var predmetGraf = new Chart(ctx1, {
             type: 'bar',
             data: {
                 labels: [""],
@@ -212,8 +216,12 @@
             }
         });
 
-        ctx = document.getElementById("tipAktivnostiGraf");
-        var tipoviAktivnostiGraf = new Chart(ctx, {
+        document.getElementById("tipAktivnostiDiv").innerHTML = '&nbsp;';
+        document.getElementById("tipAktivnostiDiv").innerHTML = '<canvas id="tipAktivnostiGraf"></canvas>';
+        var ctx2 = document.getElementById("tipAktivnostiGraf");
+        ctx2.width = 800;
+        ctx2.height = 400;
+        var tipoviAktivnostiGraf = new Chart(ctx2, {
             type: 'bar',
             data: {
                 labels: data.tipoviAktivnostiNaziv,
@@ -252,8 +260,12 @@
             }
         });
 
-        ctx = document.getElementById("aktivnostiGraf");
-        var aktivnostiGraf = new Chart(ctx, {
+        document.getElementById("aktivnostiDiv").innerHTML = '&nbsp;';
+        document.getElementById("aktivnostiDiv").innerHTML = '<canvas id="aktivnostiGraf"></canvas>';
+        var ctx3 = document.getElementById("aktivnostiGraf");
+        ctx3.width = 800;
+        ctx3.height = 400;
+        var aktivnostiGraf = new Chart(ctx3, {
             type: 'bar',
             data: {
                 labels: data.aktivnostiNaziv,
@@ -277,7 +289,7 @@
                         borderColor: "rgba(0,0,255,1)",
                         borderWidth: 1,
                         data: data.aktivnostiECTS,
-                        label: "Aktivnosti"
+                        label: "Aktivnost"
                     }
                 ]
             },
