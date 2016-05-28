@@ -59,6 +59,17 @@ namespace EvidencijaVremena.Controllers
 			int[][] aktivnostiArrayID = aktivnostiID.ToArray();
 			string[][] aktivnostiArrayNaziv = aktivnostiNaziv.ToArray();
 
+			/*
+			foreach (string[] a1 in aktivnostiArrayNaziv)
+			{
+				Debug.WriteLine("---------------")
+				foreach (string a in a1)
+				{
+					Debug.WriteLine(a);
+				}
+			}
+			*/
+
 			return Json(new { tipoviAktivnostiID, tipoviAktivnostiNaziv, aktivnostiArrayID, aktivnostiArrayNaziv });
 		}
 	}

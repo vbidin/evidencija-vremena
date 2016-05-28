@@ -29,6 +29,16 @@ namespace EvidencijaVremena
 
 			bundles.Add(new ScriptBundle("~/bundles/chart").Include(
 				"~/Scripts/Chart.js"));
+
+			bundles.Add(new ScriptBundle("~/bundles/calendar").Include(
+				"~/Scripts/fullcalendar.js",
+				"~/Scripts/lang/hr.js"));
+
+			bundles.Add(new ScriptBundle("~/bundles/moment").Include(
+				"~/Scripts/moment.js"));
+
+			bundles.Add(new StyleBundle("~/Content/calendar_css").Include(
+					  "~/Content/fullcalendar.css"));
 		}
 	}
 }

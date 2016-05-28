@@ -26,7 +26,7 @@
     <div class="panel-body">
         <div class="row">
             <div class="col-xs-12">
-                <p> ovdje ide neznam jos sta</p>
+                <div id="kalendar"></div>
             </div>
         </div>
     </div>
@@ -40,29 +40,48 @@
 
     function OsvjeziAktivnosti(data) {
         // izbrisi sve postojece buttone
-        document.getElementById("tipoviAktivnosti").innerHTML = '<div id="tipoviAktivnosti" class="btn-group" role="group"></div>';
+        $("#tipoviAktivnosti").html("");
 
         // dodaj drop down za tipove aktivnosti
         var i = 0;
         var len = data.tipoviAktivnostiID.length
         while (i < len) {
-            var $input = $('<div id="' + data.tipoviAktivnostiID[i] + '" class="btn-group"><button type="button" class="btn btn-default btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">' + data.tipoviAktivnostiNaziv[i] + '&nbsp;&nbsp;<span class="caret"></span></button></div>');
+            var $input = $('<div id="' + data.tipoviAktivnostiID[i] + "tipAktivnosti" + '" class="btn-group"><button type="button" class="btn btn-default btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">' + data.tipoviAktivnostiNaziv[i] + '&nbsp;&nbsp;<span class="caret"></span></button></div>');
             $input.appendTo($("#tipoviAktivnosti"));
             $input = $('<ul id="' + data.tipoviAktivnostiID[i] + "buttongroup" + '" class="dropdown-menu"></ul>');
-            $input.appendTo($("#" + data.tipoviAktivnostiID[i]));
+            $input.appendTo($("#" + data.tipoviAktivnostiID[i] + "tipAktivnosti"));
 
             // dodaj sve aktivnosti pod taj dropdown
             var j = 0;
-            var len = data.aktivnostiArrayID[i].length;
-            while (j < len) {
-                var $input = $('<li><a href="#">' + data.aktivnostiArrayNaziv[i][j] + '</a></li>')
-                $input.appendTo($("#" + data.tipoviAktivnostiID[i] + "buttongroup"));
+            var len2 = data.aktivnostiArrayID[i].length;
+            while (j < len2) {
+                var $input2 = $('<li id="' + data.aktivnostiArrayID[i][j] + '"><a href="#">' + data.aktivnostiArrayNaziv[i][j] + '</a></li>');
+                $input2.appendTo($("#" + data.tipoviAktivnostiID[i] + "buttongroup"));
                 j++;
             }
 
             i++;
         }
     }
+
+    $('#kalendar').fullCalendar({
+        eventClick: function (calEvent, jsEvent, view) {
+
+            alert('Event: ' + calEvent.title);
+            alert('Coordinates: ' + jsEvent.pageX + ',' + jsEvent.pageY);
+            alert('View: ' + view.name);
+
+            // change the border color just for fun
+            $(this).css('border-color', 'red');
+
+        },
+        defaultView: "agendaWeek",
+        lang: "hr",
+        aspectRatio: 2,
+        header: {
+            title: ""
+        }
+    });
 
     $(document).ready(function () {
         $("#predmeti").change();
