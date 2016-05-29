@@ -18,15 +18,15 @@
     <div class="panel-heading">
         <div class="row">
             <div class="col-xs-12">
-                <div id="tipoviAktivnosti" class="btn-group" role="group">
-                </div>
+                <div id="tipoviAktivnosti" class="btn-group" role="group"></div>
+                <div class="modal fade" id="aktModal" tabindex="-1" role="dialog" aria-labelledby="Aktivnost"></div>
             </div>
         </div>
-    </div>
-    <div class="panel-body">
-        <div class="row">
-            <div class="col-xs-12">
-                <div id="kalendar"></div>
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-xs-12">
+                    <div id="kalendar"></div>
+                </div>
             </div>
         </div>
     </div>
@@ -55,7 +55,7 @@
             var j = 0;
             var len2 = data.aktivnostiArrayID[i].length;
             while (j < len2) {
-                var $input2 = $('<li id="' + data.aktivnostiArrayID[i][j] + '"><a href="#">' + data.aktivnostiArrayNaziv[i][j] + '</a></li>');
+                var $input2 = $('<li class="akt" data-toggle="modal" data-target="#aktModal" onclick="aktivnostOdabrana(this)" id="' + data.aktivnostiArrayID[i][j] + '"><a href="#">' + data.aktivnostiArrayNaziv[i][j] + '</a></li>');
                 $input2.appendTo($("#" + data.tipoviAktivnostiID[i] + "buttongroup"));
                 j++;
             }
@@ -64,16 +64,17 @@
         }
     }
 
+    function SpremiEvidenciju(id) {
+        console.log(id);
+    }
+
     $('#kalendar').fullCalendar({
         eventClick: function (calEvent, jsEvent, view) {
 
             alert('Event: ' + calEvent.title);
             alert('Coordinates: ' + jsEvent.pageX + ',' + jsEvent.pageY);
             alert('View: ' + view.name);
-
-            // change the border color just for fun
             $(this).css('border-color', 'red');
-
         },
         defaultView: "agendaWeek",
         lang: "hr",
@@ -83,7 +84,33 @@
         }
     });
 
+    function aktivnostOdabrana(akt) {
+        var id = akt.getAttribute("id");
+        var $el = $("#aktModal");
+        $el.empty();
+        var data =
+            `
+            <div class ="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+                    </div>
+                    <div class="modal-body">
+                    </div>
+                    <div class ="modal-footer">
+                        Aktivnost id = ` + id + `
+                        <button type="button" onclick="SpremiEvidenciju(` + id + `)" class ="btn btn-primary" data-dismiss="modal">Save changes</button>
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+            `
+        $el.html(data);
+    };
+
     $(document).ready(function () {
         $("#predmeti").change();
     });
+
 </script>
