@@ -22,11 +22,11 @@
                 <div class="modal fade" id="aktModal" tabindex="-1" role="dialog" aria-labelledby="Aktivnost"></div>
             </div>
         </div>
-        <div class="panel-body">
-            <div class="row">
-                <div class="col-xs-12">
-                    <div id="kalendar"></div>
-                </div>
+    </div>
+    <div class="panel-body">
+        <div class="row">
+            <div class="col-xs-12">
+                <div id="kalendar"></div>
             </div>
         </div>
     </div>
@@ -70,7 +70,6 @@
 
     $('#kalendar').fullCalendar({
         eventClick: function (calEvent, jsEvent, view) {
-
             alert('Event: ' + calEvent.title);
             alert('Coordinates: ' + jsEvent.pageX + ',' + jsEvent.pageY);
             alert('View: ' + view.name);
@@ -90,24 +89,57 @@
         $el.empty();
         var data =
             `
-            <div class ="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                        <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+            <div id="modal" class="modal-dialog" role="document">
+                <div class ="modal-content">
+                    <div class ="modal-header">
+                        <button type="button" class ="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times; </span></button>
+                        <h4 class ="modal-title" id="myModalLabel">Evidencija</h4>
                     </div>
-                    <div class="modal-body">
-                    </div>
-                    <div class ="modal-footer">
-                        Aktivnost id = ` + id + `
-                        <button type="button" onclick="SpremiEvidenciju(` + id + `)" class ="btn btn-primary" data-dismiss="modal">Save changes</button>
-                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                    <div class ="modal-body">
+                        <form id="evidencija" class ="form-inline cmxform">
+                            <fieldset>
+                                <div class ="form-group">
+                                    <label>Trajanje</label>
+                                </div>
+                                <div class ="form-group">
+                                    <input id="trajanje" class ="form-control" required>
+                                </div>
+                                <div class ="form-group">
+                                    <select id="mjernaJedinica" class ="form-control" style="width:10em">
+                                        <option value="sati">Sati</option>
+                                        <option value="minute">Minute</option>
+                                    </select>
+                                </div>
+                                <div class ="form-group">
+                                    <button type="button" class ="btn btn-success" onclick="SpremiEvidenciju()" data-dismiss="modal">Spremi</button>
+                                </div>
+                                <div class ="form-group">
+                                    <input id="aktivnostID" type="hidden" value= "` + id + `" >
+                                </div>
+                            <fieldset>
+                        </form>
                     </div>
                 </div>
             </div>
+
             `
         $el.html(data);
     };
+
+    function SpremiEvidenciju() {
+        var id = document.getElementById("aktivnostID").value
+        var val = document.getElementById("trajanje").value
+        var mj = $("#mjernaJedinica").children(":selected")[0].value;
+        if (isNaN(val) || val <= 0) {
+            return false;
+        }
+        console.log(id, val, mj);
+        $.post('@Url.Action("SpremiEvidenciju", "Evidencija")', { aktivnostID: id, trajanje: val, mjernaJedinica: mj }, EvidencijaSpremljena, "json");
+    }
+
+    function EvidencijaSpremljena(data) {
+        console.log("Evidencija spremljena!");
+    }
 
     $(document).ready(function () {
         $("#predmeti").change();

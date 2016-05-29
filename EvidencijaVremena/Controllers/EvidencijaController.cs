@@ -72,5 +72,27 @@ namespace EvidencijaVremena.Controllers
 
 			return Json(new { tipoviAktivnostiID, tipoviAktivnostiNaziv, aktivnostiArrayID, aktivnostiArrayNaziv });
 		}
+
+		[HttpPost]
+		public ActionResult SpremiEvidenciju(int aktivnostID, double trajanje, string mjernaJedinica)
+		{
+			Evidencija e = new Evidencija();
+			e.AktivnostID = aktivnostID;
+			e.DatumUnosa = DateTime.Now;
+			e.KorisnikID = Korisnik.ID;
+			int t;
+			if (mjernaJedinica == "sati")
+				t = (int)(trajanje * 60);
+			else if (mjernaJedinica == "minute")
+				t = (int)trajanje;
+			else
+				throw new ArgumentException("Nepodržana mjerna jedinica.");
+			e.Trajanje = t;
+
+			Debug.WriteLine(e);
+			db.Evidencija.Add(e);
+			db.SaveChanges();
+			return Json("");
+		}
 	}
 }
