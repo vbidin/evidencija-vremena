@@ -6,11 +6,13 @@
     <title>@ViewBag.Title</title>
     @Styles.Render("~/Content/css")
     @Styles.Render("~/Content/calendar_css")
+    @Scripts.Render("~/Content/duallist_css")
     @Scripts.Render("~/bundles/modernizr")
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/moment")
     @Scripts.Render("~/bundles/chart")
     @Scripts.Render("~/bundles/calendar")
+    @Scripts.Render("~/bundles/duallist")
 </head>
 <body>
     <div class="navbar navbar-inverse navbar-fixed-top">
@@ -24,9 +26,9 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Statistika", "Index", "Statistika")</li>
-                    <li>@Html.ActionLink("Pretplate", "Index", "Predmet")</li>
+                    <li>@Html.ActionLink("Predmeti", "Index", "Predmet")</li>
                     <li>@Html.ActionLink("Evidencija", "Index", "Evidencija")</li>
+                    <li>@Html.ActionLink("Statistika", "Index", "Statistika")</li>
                 </ul>
             </div>
         </div>

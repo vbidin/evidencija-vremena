@@ -39,6 +39,12 @@ namespace EvidencijaVremena
 
 			bundles.Add(new StyleBundle("~/Content/calendar_css").Include(
 					  "~/Content/fullcalendar.css"));
+
+			bundles.Add(new ScriptBundle("~/bundles/duallist").Include(
+				"~/Scripts/jquery.bootstrap-duallistbox.js"));
+
+			bundles.Add(new StyleBundle("~/Content/duallist_css").Include(
+					  "~/Content/bootstrap-duallistbox.css"));
 		}
 	}
 }

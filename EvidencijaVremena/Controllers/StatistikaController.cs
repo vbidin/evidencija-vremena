@@ -151,8 +151,9 @@ namespace EvidencijaVremena.Controllers
 				}
 			}
 
+			// stavi sve podatke u arraye i posalji
 			{
-				// stavi sve podatke u arraye i posalji
+				string imePredmeta = db.Predmet.Where(p => p.ID == predmetID).Select(p => p.Ime).Single();
 				double korisnikECTS = stat.Predmet.Korisnik;
 				double prosjekECTS = stat.Predmet.Prosjek;
 				double predmetECTS = stat.Predmet.Predmet;
@@ -169,6 +170,7 @@ namespace EvidencijaVremena.Controllers
 
 				return Json(new
 				{
+					imePredmeta,
 					korisnikECTS,
 					prosjekECTS,
 					predmetECTS,

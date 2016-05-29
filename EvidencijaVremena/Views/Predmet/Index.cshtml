@@ -1,13 +1,24 @@
 ﻿@model EvidencijaVremena.Models.PredmetiModel
 
-@{
-    ViewBag.Title = "Pretplate";
-}
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <div class="row">
+            <div class="col-xs-12">
+                <h3><b>Predmeti</b></h3>
+            </div>
+        </div>
+    </div>
+    <div class="panel-body">
+        <div class="row">
+            <div class="col-xs-12">
+                <select multiple id="predmeti"></select>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 <h4>Pretplata predmeta</h4>
-
-<hr />
-
 <p>
     Ovdje su svi trenutačno pretplaćeni predmeti:
 </p>
@@ -22,23 +33,23 @@
 
     @foreach (var predmet in Model.Pretplaceni)
     {
-        <tr>
-            <td>
-                @Html.DisplayFor(p => predmet.ID)
-            </td>
-            <td>
-                @Html.DisplayFor(p => predmet.Ime)
-            </td>
-            <td>
-                @Html.DisplayFor(p => predmet.Godina)
-            </td>
-            <td>
-                @Html.DisplayFor(p => predmet.ECTS)
-            </td>
-            <td>
-                @Html.ActionLink("Izbriši", "Delete", new { id = predmet.ID })
-            </td>
-        </tr>
+    <tr>
+        <td>
+            @Html.DisplayFor(p => predmet.ID)
+        </td>
+        <td>
+            @Html.DisplayFor(p => predmet.Ime)
+        </td>
+        <td>
+            @Html.DisplayFor(p => predmet.Godina)
+        </td>
+        <td>
+            @Html.DisplayFor(p => predmet.ECTS)
+        </td>
+        <td>
+            @Html.ActionLink("Izbriši", "Delete", new { id = predmet.ID })
+        </td>
+    </tr>
     }
 </table>
 
@@ -58,22 +69,28 @@
 
     @foreach (var predmet in Model.Nepretplaceni)
     {
-        <tr>
-            <td>
-                @Html.DisplayFor(p => predmet.ID)
-            </td>
-            <td>
-                @Html.DisplayFor(p => predmet.Ime)
-            </td>
-            <td>
-                @Html.DisplayFor(p => predmet.Godina)
-            </td>
-            <td>
-                @Html.DisplayFor(p => predmet.ECTS)
-            </td>
-            <td>
-                @Html.ActionLink("Dodaj", "Add", new { id = predmet.ID })
-            </td>
-        </tr>
+    <tr>
+        <td>
+            @Html.DisplayFor(p => predmet.ID)
+        </td>
+        <td>
+            @Html.DisplayFor(p => predmet.Ime)
+        </td>
+        <td>
+            @Html.DisplayFor(p => predmet.Godina)
+        </td>
+        <td>
+            @Html.DisplayFor(p => predmet.ECTS)
+        </td>
+        <td>
+            @Html.ActionLink("Dodaj", "Add", new { id = predmet.ID })
+        </td>
+    </tr>
     }
 </table>
+
+<script type="text/javascript" language="javascript">
+    $(document).ready(function () {
+        $("#predmeti").bootstrapDualListbox();
+    });
+</script>
