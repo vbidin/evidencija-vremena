@@ -69,8 +69,16 @@ namespace EvidencijaVremena.Controllers
 				}
 			}
 			*/
-
+			Test test = new Test();
+			test.ID = 5;
+			test.Naziv = "TEST";
 			return Json(new { tipoviAktivnostiID, tipoviAktivnostiNaziv, aktivnostiArrayID, aktivnostiArrayNaziv });
+		}
+
+		public class Test
+		{
+			public int ID { get; set; }
+			public string Naziv { get; set; }
 		}
 
 		[HttpPost]
