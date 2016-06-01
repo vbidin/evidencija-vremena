@@ -1,0 +1,40 @@
+TODO:
+dodaj registraciju
+dodaj pretplate predmeta
+dodaj unos predmeta
+dodaj unos aktivnosti
+dodaj promjenu profila
+
++---+
+|rad|
++---+
+sadržaj
+1. uvod
+- govori šta ćeš sve pisati, šta je u svakom poglavlju, itd.
+2. opis problema
+- opis svih zahtjeva (možda ona podjela kao u opp?)
+- postojeća rješenja (probaj nać!)
+- redom prolazi kroz sve probleme i zahtjeva i objašnjavaj kako će bit rješeni
+3. baza
+- alati i tehnologije: management studio, sql server, whatever?
+- opis baze, slike, atributi, ključevi, veze, sve vezano uz bazu
+- spomeni moguću refleksivnu vezu (predmet-kategorija n razina)
+- prirodni ključevi za studenta i predmet (JMBAG, šifra)
+- spomeni salt (lol)
+4. web aplikacija
+- alati i tehnologije: ASP.NET, jquery, ajax, chart.js, fullcalendar.js, duallsitbox.js...
+- opiši općenito svaki dio web aplikacije
+- također detaljno opiši svaki dio uz puno slika i ključne dijelove koda
+5. poboljšanja/razvoj
+- na koji način se aplikacija može poboljšati, i dalje nastaviti sa razvojem
+6. zaključak
+- i have no idea man
+
+*. upute za instalaciju
+*. sažetak
+*. literatura
+
+
+
+
+
