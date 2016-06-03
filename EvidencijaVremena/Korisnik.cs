@@ -23,7 +23,7 @@ namespace EvidencijaVremena
     
         public int ID { get; set; }
         public string KorisnickoIme { get; set; }
-        public byte[] Lozinka { get; set; }
+        public string Lozinka { get; set; }
         public string Email { get; set; }
         public int Uloga { get; set; }
     

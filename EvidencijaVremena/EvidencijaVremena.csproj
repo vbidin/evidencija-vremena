@@ -192,6 +192,8 @@
     <Compile Include="Models\EvidencijeModel.cs" />
     <Compile Include="Models\PredmetiModel.cs" />
     <Compile Include="Models\PretplateModel.cs" />
+    <Compile Include="Models\PrijavaModel.cs" />
+    <Compile Include="Models\RegistracijaModel.cs" />
     <Compile Include="Models\Statistika.cs" />
     <Compile Include="Models\StatistikaModel.cs" />
     <Compile Include="Opterecenje.cs">
@@ -365,11 +367,12 @@
     <Content Include="Views\Statistika\Index.cshtml" />
     <Content Include="Views\Predmet\Index.cshtml" />
     <Content Include="Views\Evidencija\Index.cshtml" />
+    <Content Include="Views\Autorizacija\Prijava.cshtml" />
+    <Content Include="Views\Autorizacija\Registracija.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Partial\" />
     <Folder Include="Views\Administracija\" />
-    <Folder Include="Views\Autorizacija\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
