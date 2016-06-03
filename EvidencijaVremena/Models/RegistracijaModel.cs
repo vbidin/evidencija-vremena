@@ -8,12 +8,13 @@ namespace EvidencijaVremena.Models
 {
 	public class RegistracijaModel
 	{
+		[Display(Name = "Korisničko ime")]
 		[Required(ErrorMessage = "Nedostaje korisničko ime")]
 		public string KorisnickoIme { get; set; }
 
 		[Required(ErrorMessage = "Nedostaje e-mail adresa")]
 		[EmailAddress(ErrorMessage = "Neispravna Email adresa")]
-		[Display(Name = "Email")]
+		[Display(Name = "Email adresa")]
 		public string Email { get; set; }
 
 		[Required(ErrorMessage = "Nedostaje lozinka")]
@@ -24,8 +25,8 @@ namespace EvidencijaVremena.Models
 
 		[Required(ErrorMessage = "Nedostaje ponovljena lozinka")]
 		[DataType(DataType.Password)]
-		[Display(Name = "Confirm password")]
-		[Compare("Password", ErrorMessage = "Nova lozinka se ne podudara sa potvrđenom lozinkom")]
+		[Display(Name = "Ponovi lozinku")]
+		[Compare("Lozinka", ErrorMessage = "Nova lozinka se ne podudara sa potvrđenom lozinkom")]
 		public string PonovljenaLozinka { get; set; }
 	}
 }
