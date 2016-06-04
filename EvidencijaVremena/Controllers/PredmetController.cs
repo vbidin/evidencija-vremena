@@ -2,28 +2,23 @@
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Diagnostics;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
 namespace EvidencijaVremena.Controllers
 {
+	[Authorize]
 	public class PredmetController : Controller
 	{
-		private EvidencijaVremenaEntities db;
+		private EvidencijaVremenaEntities db = new EvidencijaVremenaEntities();
 		private Korisnik Korisnik { get; set; }	
-
-		public PredmetController()
-		{
-			db = new EvidencijaVremenaEntities();
-			// odaberi prvog korisnika (imena "test"), pošto trenutačno ne postoji login sistem
-			// kasnije tu stavi korisnika koji je trenutačno ulogiran
-			Korisnik = db.Korisnik.First();
-		}
 
 		// GET: Pretplata
 		public ActionResult Index()
 		{
+			Korisnik = db.Korisnik.Where(k => k.KorisnickoIme == User.Identity.Name).First();
 
 			// uzmi sve pretplate za korisnika
 			Dictionary<int, Pretplata> pretplate = db.Pretplata
@@ -50,6 +45,8 @@ namespace EvidencijaVremena.Controllers
 
 		public ActionResult Add(int ID)
 		{
+			Korisnik = db.Korisnik.Where(k => k.KorisnickoIme == User.Identity.Name).First();
+
 			Pretplata pretplata = new Pretplata() { KorisnikID = Korisnik.ID, PredmetID = ID };
 			db.Pretplata.Add(pretplata);
 			db.SaveChanges();
@@ -58,6 +55,8 @@ namespace EvidencijaVremena.Controllers
 
 		public ActionResult Delete(int ID)
 		{
+			Korisnik = db.Korisnik.Where(k => k.KorisnickoIme == User.Identity.Name).First();
+
 			Pretplata pretplata = db.Pretplata.First(p => p.KorisnikID == Korisnik.ID && p.PredmetID == ID);
 			db.Pretplata.Remove(pretplata);
 			db.SaveChanges();

@@ -9,36 +9,40 @@ using System.Web.Mvc;
 
 namespace EvidencijaVremena.Controllers
 {
+	[Authorize]
 	public class StatistikaController : Controller
 	{
 		private static int ECTS = 28;
 
-		private EvidencijaVremenaEntities db;
+		private EvidencijaVremenaEntities db = new EvidencijaVremenaEntities();
 		private Korisnik Korisnik { get; set; }
-		public StatistikaController()
-		{
-			db = new EvidencijaVremenaEntities();
-			// odaberi prvog korisnika (imena "test"), pošto trenutačno ne postoji login sistem
-			// kasnije tu stavi korisnika koji je trenutačno ulogiran
-			Korisnik = db.Korisnik.First();
-		}
 
 		public ActionResult Index(StatistikaModel model)
 		{
+			Korisnik = db.Korisnik.Where(k => k.KorisnickoIme == User.Identity.Name).First();
+
 			ICollection<Predmet> predmeti = db.Pretplata.Where(p => p.KorisnikID == Korisnik.ID).Select(p => p.Predmet).ToList();
 			ICollection<OpisPredmeta> opisiPredmeta = new List<OpisPredmeta>();
 			foreach (Predmet predmet in predmeti)
 				opisiPredmeta.Add(new OpisPredmeta() { ID = predmet.ID, Naziv = predmet.Ime + " (" + predmet.Godina + ")" });
 			model.OpisiPredmeta = opisiPredmeta;
 
-			int predmetID = predmeti.ElementAt(0).ID;
+			int predmetID = 0;
+			if (predmeti.Count() != 0)
+			{
+				predmetID = predmeti.ElementAt(0).ID;
+			}
 			ICollection<TipAktivnosti> tipoviAktivnosti = db.Opterecenje.Where(o => o.PredmetID == predmetID).Select(o => o.TipAktivnosti).ToList();
 			ICollection<OpisTipaAktivnosti> opisiTipaAktivnosti = new List<OpisTipaAktivnosti>();
 			foreach (TipAktivnosti tipAktivnosti in tipoviAktivnosti)
 				opisiTipaAktivnosti.Add(new OpisTipaAktivnosti() { ID = tipAktivnosti.ID, Naziv = tipAktivnosti.Ime });
 			model.OpisiTipovaAktivnosti = opisiTipaAktivnosti;
 
-			int tipAktivnostiID = tipoviAktivnosti.ElementAt(0).ID;
+			int tipAktivnostiID = 0;
+			if (tipoviAktivnosti.Count() != 0)
+			{
+				tipAktivnostiID = tipoviAktivnosti.ElementAt(0).ID;
+			}
 			ICollection<Aktivnost> aktivnosti = db.Aktivnost.Where(a => a.PredmetID == predmetID && a.TipAktivnostiID == tipAktivnostiID).ToList();
 			ICollection<OpisAktivnosti> opisiAktivnosti = new List<OpisAktivnosti>();
 			foreach (Aktivnost aktivnost in aktivnosti)
@@ -51,6 +55,8 @@ namespace EvidencijaVremena.Controllers
 		[HttpPost]
 		public ActionResult OsvjeziPredmet(int predmetID, int tipAktivnostiID)
 		{
+			Korisnik = db.Korisnik.Where(k => k.KorisnickoIme == User.Identity.Name).First();
+
 			Statistika stat = new Statistika();
 			// izracunaj statistiku predmeta
 			{
@@ -81,7 +87,7 @@ namespace EvidencijaVremena.Controllers
 			{
 				stat.TipoviAktivnosti = new List<TipAktivnostiStatistika>();
 				ICollection<TipAktivnosti> tipoviAktivnosti = db.Opterecenje.Where(o => o.PredmetID == predmetID).Select(o => o.TipAktivnosti).ToList();
-				foreach(TipAktivnosti tipAktivnost in tipoviAktivnosti)
+				foreach (TipAktivnosti tipAktivnost in tipoviAktivnosti)
 				{
 					ICollection<Evidencija> evidencije;
 
@@ -119,7 +125,7 @@ namespace EvidencijaVremena.Controllers
 			{
 				stat.Aktivnosti = new List<AktivnostStatistika>();
 				ICollection<Aktivnost> aktivnosti = db.Aktivnost.Where(a => a.PredmetID == predmetID && a.TipAktivnostiID == tipAktivnostiID).ToList();
-				foreach(Aktivnost aktivnost in aktivnosti)
+				foreach (Aktivnost aktivnost in aktivnosti)
 				{
 					ICollection<Evidencija> evidencije;
 
@@ -133,7 +139,7 @@ namespace EvidencijaVremena.Controllers
 					double prosjekECTS = ukupniECTS / brojPretplatnika;
 
 					double aktivnostECTS;
-					double ? temp = db.Aktivnost.Where(a => a.ID == aktivnost.ID).Single().Trajanje;
+					double? temp = db.Aktivnost.Where(a => a.ID == aktivnost.ID).Single().Trajanje;
 					if (temp == null)
 						aktivnostECTS = 0;
 					else
@@ -189,6 +195,8 @@ namespace EvidencijaVremena.Controllers
 		[HttpPost]
 		public ActionResult OsvjeziAktivnosti(int predmetID)
 		{
+			Korisnik = db.Korisnik.Where(k => k.KorisnickoIme == User.Identity.Name).First();
+
 			ICollection<TipAktivnosti> tipoviAktivnosti = db.Opterecenje.Where(o => o.PredmetID == predmetID).Select(o => o.TipAktivnosti).ToList();
 			ICollection<OpisTipaAktivnosti> opisiTipaAktivnosti = new List<OpisTipaAktivnosti>();
 			foreach (TipAktivnosti tipAktivnosti in tipoviAktivnosti)

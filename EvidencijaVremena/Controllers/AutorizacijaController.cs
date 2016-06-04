@@ -38,7 +38,7 @@ namespace EvidencijaVremena.Controllers
 						{
 							Debug.WriteLine("uspjesna prijava");
 							FormsAuthentication.SetAuthCookie(model.KorisnickoIme, false);
-							return RedirectToAction("Index", "Autorizacija");
+							return RedirectToAction("Index", "Predmet");
 						}
 						else
 						{
@@ -61,7 +61,7 @@ namespace EvidencijaVremena.Controllers
 		public ActionResult Odjava()
 		{
 			FormsAuthentication.SignOut();
-			return RedirectToAction("Index", "Autorizacija");
+			return RedirectToAction("Prijava", "Autorizacija");
 		}
 
 		[HttpGet]

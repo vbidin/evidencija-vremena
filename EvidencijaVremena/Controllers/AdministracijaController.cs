@@ -6,6 +6,7 @@ using System.Web.Mvc;
 
 namespace EvidencijaVremena.Controllers
 {
+	[Authorize]
     public class AdministracijaController : Controller
     {
         // GET: Administracija

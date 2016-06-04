@@ -14,6 +14,7 @@
                 @Html.LabelFor(model => model.KorisnickoIme)
                 @Html.EditorFor(model => model.KorisnickoIme, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.KorisnickoIme, "", new { @class = "text-danger" })
+                @Html.ValidationMessage("kor_ime_uniq")
             </div>
             <div class="form-group">
                 @Html.LabelFor(model => model.Email)
@@ -29,6 +30,7 @@
                 @Html.LabelFor(model => model.PonovljenaLozinka)
                 @Html.PasswordFor(model => model.PonovljenaLozinka, new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.PonovljenaLozinka, "", new { @class = "text-danger" })
+                @Html.ValidationMessage("error_ista")
             </div>
             <input type="submit" class="btn btn-default" value="Registracija" />
         </form>

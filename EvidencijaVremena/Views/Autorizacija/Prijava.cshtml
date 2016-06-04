@@ -13,12 +13,14 @@
             <div class="form-group">
                 @Html.LabelFor(model => model.KorisnickoIme, new { @class = "control-label" })
                 @Html.EditorFor(model => model.KorisnickoIme, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.KorisnickoIme, "", new { @class = "form-control-label" })
+                @Html.ValidationMessageFor(model => model.KorisnickoIme, "", new { @class = "text-danger" })
+                @Html.ValidationMessage("error_kor_ime")
             </div>
             <div class="form-group">
                 @Html.LabelFor(model => model.Lozinka, new { @class = "control-label" })
                 @Html.PasswordFor(model => model.Lozinka, new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.Lozinka)
+                @Html.ValidationMessageFor(model => model.Lozinka, "", new { @class = "text-danger" })
+                @Html.ValidationMessage("error_loz")
             </div>
             <div class="form-group form-inline">
                 @Html.LabelFor(model => model.ZapamtiMe, new { @class = "control-label" })

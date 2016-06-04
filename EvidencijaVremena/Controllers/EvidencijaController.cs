@@ -8,20 +8,16 @@ using System.Web.Mvc;
 
 namespace EvidencijaVremena.Controllers
 {
+	[Authorize]
 	public class EvidencijaController : Controller
 	{
-		private EvidencijaVremenaEntities db;
+		private EvidencijaVremenaEntities db = new EvidencijaVremenaEntities();
 		private Korisnik Korisnik { get; set; }
 
-		public EvidencijaController()
-		{
-			db = new EvidencijaVremenaEntities();
-			// odaberi prvog korisnika (imena "test"), pošto trenutacno ne postoji login sistem
-			// kasnije tu stavi korisnika koji je trenutacno ulogiran
-			Korisnik = db.Korisnik.First();
-		}
 		public ActionResult Index()
 		{
+			Korisnik = db.Korisnik.Where(k => k.KorisnickoIme == User.Identity.Name).First();
+
 			// uzmi sve pretplaćene predmete korisnika
 			List<OpisPredmeta> opisiPredmeta = new List<OpisPredmeta>();
 			List<Pretplata> pretplate = db.Pretplata.Where(p => p.KorisnikID == Korisnik.ID).ToList();
@@ -36,13 +32,16 @@ namespace EvidencijaVremena.Controllers
 
 			EvidencijeModel model = new EvidencijeModel();
 			model.OpisiPredmeta = opisiPredmeta;
-			model.OdabraniPredmetID = opisiPredmeta.ElementAt(0).ID;
+			if (opisiPredmeta.Count() != 0)
+				model.OdabraniPredmetID = opisiPredmeta.ElementAt(0).ID;
 			return View(model);
 		}
 
 		[HttpPost]
 		public ActionResult OsvjeziAktivnosti(int predmetID)
 		{
+			Korisnik = db.Korisnik.Where(k => k.KorisnickoIme == User.Identity.Name).First();
+
 			Debug.WriteLine("Predmet selektiran: " + predmetID);
 			List<TipAktivnosti> tipoviAktivnosti = db.Opterecenje.Where(o => o.PredmetID == predmetID).Select(o => o.TipAktivnosti).ToList();
 			int[] tipoviAktivnostiID = tipoviAktivnosti.Select(t => t.ID).ToArray();
@@ -84,6 +83,8 @@ namespace EvidencijaVremena.Controllers
 		[HttpPost]
 		public ActionResult SpremiEvidenciju(int aktivnostID, double trajanje, string mjernaJedinica)
 		{
+			Korisnik = db.Korisnik.Where(k => k.KorisnickoIme == User.Identity.Name).First();
+
 			Evidencija e = new Evidencija();
 			e.AktivnostID = aktivnostID;
 			e.DatumUnosa = DateTime.Now;
