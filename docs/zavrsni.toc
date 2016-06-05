@@ -1,0 +1,18 @@
+\select@language {croatian}
+\contentsline {chapter}{\numberline {1}Uvod}{1}
+\contentsline {chapter}{\numberline {2}Baza podataka}{2}
+\contentsline {section}{\numberline {2.1}ER model}{2}
+\contentsline {section}{\numberline {2.2}Relacijski model}{5}
+\contentsline {section}{\numberline {2.3}Izrada baze podataka}{5}
+\contentsline {subsection}{\numberline {2.3.1}Zahtjevi}{5}
+\contentsline {subsection}{\numberline {2.3.2}Izrada ER modela}{7}
+\contentsline {subsection}{\numberline {2.3.3}Pretvorba u relacijski model}{11}
+\contentsline {subsection}{\numberline {2.3.4}Opis kona\IeC {\v c}nog modela}{11}
+\contentsline {chapter}{\numberline {3}Web aplikacija}{14}
+\contentsline {section}{\numberline {3.1}Prijava}{14}
+\contentsline {section}{\numberline {3.2}Pretplata}{15}
+\contentsline {section}{\numberline {3.3}Evidencija}{15}
+\contentsline {section}{\numberline {3.4}Statistika}{17}
+\contentsline {section}{\numberline {3.5}Unos podataka}{19}
+\contentsline {section}{\numberline {3.6}Razvoj i pobolj\IeC {\v s}anja}{19}
+\contentsline {chapter}{\numberline {4}Zaklju\IeC {\v c}ak}{20}

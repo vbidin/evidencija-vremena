@@ -29,8 +29,8 @@ Moguće je također u postojeći entitet dodati novi atribut, naziva 'ID', koji 
 
 --- SLIKA ENTITETA SA SUROGATNIM KLJUČEM ---
 
-Veza je odnos između 2 ili više entiteta. 
-Na primjer ako želimo definirati u bazi podataka da određena osoba ima određeni grad kao svoje mjesto rođenja, možemo za svaku osobu evidentirati njeno mjesto rođenja. Ako samo unutar entiteta 'Osoba' dodamo atribut koji se zove 'Mjesto rođenja', za svaku osobu bi vrijednost tog atributa bio naprimjer naziv grada. Međutim, ako više osoba dijele isti grad kao njihovo mjesto rođenja, naprimjer 'Pero' i 'Ivan' su oboje rođeni u istom gradu, u bazi podataka za svakog od njih kao vrijednost za 'Mjesto rođenja' bit će vrijednost "Zagreb". 
+Veza je odnos između skupa entiteta.
+Na primjer ako želimo definirati u bazi podataka da određena osoba ima određeni grad kao svoje mjesto rođenja, možemo za svaku osobu evidentirati njeno mjesto rođenja. Ako samo unutar entiteta 'Osoba' dodamo atribut koji se zove 'Mjesto rođenja', za svaku osobu bi vrijednost tog atributa bio naprimjer naziv grada. Međutim, ako više osoba dijele isti grad kao njihovo mjesto rođenja, naprimjer 'Pero' i 'Ivan' su oboje rođeni u 'Zagrebu', u bazi podataka za svakog od njih kao vrijednost za 'Mjesto rođenja' bit će vrijednost "Zagreb". 
 Osim mjesta rođenja moguća je potreba za evidentiranjem drugih stvari, kao što je prebivalište. U tom slučaju morali bi za svakog zaposlenika definirati dodatno i prebivalište. Ako na taj način evidentiramo podatke u bazi podataka doći će do redundancije. Više zaposlenika može imati kao vrijednost svojih atributa iste vrijednosti, naprimjer 10 osoba može kao mjesto rođenja imati definiran isti grad. Poželjno je na neki način razdvojiti sve takve duplikate na način da osobe mogu umjesto dupliciranja 'djeliti' mjesto rođenja. 
 Tu do izražaja dolazi veza. Poželjno je razdvojiti podatke vezane uz grad iz entiteta osoba u zasebni entitet 'Grad'. Na taj način možemo osigurati da su gradovi skup, te da ne dolazi do ponavljanja istog grada, odnosno da ne dolazi do redundancije. Tada u bazi možemo modelirati vezu između entiteta Osoba i entiteta Grad koja se zove 'Mjesto rođenja', odnosno 'Mjesto prebivališta'. Na tu vezu gledamo na isti način kao i na entitet. Ona će također imati svoje atribute te primarni ključ. U ovom slučaju veza bi mogla izgledati ovako (u ER dijagramu veza se obično prikazuje sa rombom):
 
@@ -40,13 +40,24 @@ Primarni ključ veze je u ovom slučaju kompozitni ključ, koji se sastoji od pr
 
 --- TABLICA/SLIKA KARDINALNOSTI ---
 
-Iz slike se vidi da jedan entitet (odnosno veza) može sadržavati atribut (ili skup atributa) koji su primarni ključ nekog drugog entiteta. Skup takvih atributa zove se STRANI KLJUČ. Veze i strani ključevi omogućuju nam da povežemo entitete baze podataka u logički smislenu cjelinu.
+Iz slike se također vidi da jedan entitet (odnosno veza) može sadržavati atribut (ili skup atributa) koji su primarni ključ nekog drugog entiteta. Skup takvih atributa zove se STRANI KLJUČ. Veze i strani ključevi omogućuju nam da povežemo entitete baze podataka u logički smislenu cjelinu.
 
---- TABLICA TIPOVA PODATAKA BAZE ---
+Veze ne trebaju povezivati samo 2 entiteta, moguća je i veza između 2 ili više entiteta:
+
+--- SLIKA SA VEZOM OD 3 ENTITETA ---
+
+kao i refleksivna veza koji jednom entitetu pridjeljuje 2 uloge:
+
+--- SLIKA SA REFLEKSIVNOM VEZOM
 
 ##################
 #RELACIJSKI MODEL#
 ##################
+
+Osim ER postoji i relacijski model.
+Za razliku od ER modela, objekti relacijskog modela se zove RELACIJE, i ekvivalentni su entitetima ER modela.
+
+--- TABLICA TIPOVA PODATAKA BAZE ---
 
 ######################
 #Izrada baze podataka#
@@ -176,7 +187,15 @@ U slučaju da korisnik nema već postojeći račun na koji se može prijaviti, p
 
 Kao što je vidljivo iz slike, potrebno je unesti osnovne korisničke podatke: korisničko ime, email adresu, te lozinku. U slučaju da navedeno korisničko ime već postoji u bazi, registraciju neće biti moguća, pošto korisnička imenu moraju biti unikatna. Lozinku je potrebnu unesti dva puta, kako bi se smanjila mogućnost registracije sa pogrešno unesenom lozinkom.
 
-2. PREDMETI
+2. PRETPLATA
+
+Nakon što je korisnik prijavljen, on može evidentirati te pregledavati svoje utrošeno vrijeme. Međutim, kako se sve evidencije zapravo vežu uz određeni predmet, evidentiranje i pregled se izvršavaju u odnosu na jedan od mnogih dostupnih predmeta. Zato korisnik uvijek prije evidencije odnosno pregleda mora odabrati jedan od tih predmeta (naprimjer pomoću padajuće liste). Kako broj predmeta može biti poprilično velik, korisnik bi prije svake evidencije i pregleda morao tražiti od svih mogućih predmeta onaj za koji želi evidentirati odnosno pregledavati statistiku. Zato je korisniku omogućena 'pretplata' na predmet:
+
+--- SLIKA ZA PRETPLATE ---
+
+U ovom dijelu trenutno prijavljeni korisnik može definirati na koje predmete želi biti pretplaćen. U lijevoj listi nalaze se svi dostupni predmeti, a u desnoj listi se nalaze svi pretplaćeni predmeti. Korisnik može selekcijom na bilo koje od predmeta ili bilo koje grupe predmeta dodavati odnosno brisati odgovarajuće pretplate. Pošto broj predmeta može biti velik na vrhu svakih od listi nalazi se polje za filtriranje. U to polje može se unesti niz znakova (dio ili cijeli naziv predmeta) nakon čega se lista odmah ažurira, te prikazuje samo one predmete koje sadrže navedeni niz znakova.
+
+Nakon svih izmjena, pritiskom na tipku 'Ažuriraj' provode se sve promjene te se ažurira popis pretplata odabrane od strane korisnika. Nakon toga u ostalim dijelovima web aplikacije korisnik na raspolaganju za odabir ima samo predmete na koje se unutar ovog izbornika pretplatio.
 
 3. EVIDENCIJA
 
@@ -234,8 +253,9 @@ Kao i na prijašnjoj kartici, na vrhu se nalazi padajuća lista. Međutim, sada 
 
 Osim samog iznosa utrošenog vremena za korisnika i za prosjek, za svaku aktivnost u bazi podataka može biti evidentirano trajanje te aktivnosti. U slučaju naprimjer predavanja to trajanje doslovce predstavlja predefinirani iznos trajanja predavanja određenog termina kao što je određeno po predmetu. Međutim, za aktivnosti koji nemaju već strogo definirana trajanja moguće je prilikom unosa aktivnosti definirati 'očekivano' trajanje, koje korisnicima daje do znanja koliko je vremena otprilike potrebno, ili koliki je očekivani utrošak vremena za tu aktivnost. U svakom slučaju, ako ta vrijednost nije poznata, ili čak nije ni važna, nije ju potrebnu ni unesti, pa će ta vrijednost tada ovdje biti neprikazana.
 
+5. UNOS PODATAKA
 
-5. RAZVOJ I POBOLJŠANJE
+6. RAZVOJ I POBOLJŠANJE
 
 ##########################
 #SQL KOD ZA BAZU PODATAKA#
