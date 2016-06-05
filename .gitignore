@@ -1,1 +1,7 @@
 *.pdf
+packages
+*.log
+bin
+obj
+*.csproj.user
+.vs
