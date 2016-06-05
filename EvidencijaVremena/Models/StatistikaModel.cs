@@ -17,7 +17,7 @@ namespace EvidencijaVremena.Models
 			get { return new SelectList(OpisiPredmeta, "ID", "Naziv"); }
 		}
 
-		[Display(Name = "Tip aktivnosti")]
+		[Display(Name = "Tipovi aktivnosti")]
 		public int OdabraniTipAktivnostiID { get; set; }
 		public ICollection<OpisTipaAktivnosti> OpisiTipovaAktivnosti { get; set; }
 		public IEnumerable<SelectListItem> SelectListTipAktivnosti
@@ -25,7 +25,7 @@ namespace EvidencijaVremena.Models
 			get { return new SelectList(OpisiTipovaAktivnosti, "ID", "Naziv"); }
 		}
 
-		[Display(Name = "Aktivnost")]
+		[Display(Name = "Aktivnosti")]
 		public int OdabranaAktivnostID { get; set; }
 		public ICollection<OpisAktivnosti> OpisiAktivnosti { get; set; }
 		public IEnumerable<SelectListItem> SelectListAktivnosti

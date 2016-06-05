@@ -4,93 +4,56 @@
     <div class="panel-heading">
         <div class="row">
             <div class="col-xs-12">
-                <h3><b>Predmeti</b></h3>
+                @Html.LabelFor(m => Model.Pretplaceni)
             </div>
         </div>
     </div>
     <div class="panel-body">
         <div class="row">
-            <div class="col-xs-12">
-                <select multiple id="predmeti"></select>
+            <div class="col-xs-2"></div>
+            <div class="col-xs-8">
+                <select multiple id="pretplate">
+                    @foreach (Predmet p in Model.Nepretplaceni)
+                    {
+                        <option value="@p.ID">@(p.Ime + " (" + p.Godina + ")")</option>}
+                    @foreach (Predmet p in Model.Pretplaceni)
+                    {
+                        <option value="@p.ID" selected>@(p.Ime + " (" + p.Godina + ")")</option>}
+                </select>
+                <hr />
+                <button id="azurirajPretplate" data-loading-text="Ažuriranje..." class="btn btn-primary">Ažuriraj</button>
             </div>
         </div>
     </div>
 </div>
 
-
-<h4>Pretplata predmeta</h4>
-<p>
-    Ovdje su svi trenutačno pretplaćeni predmeti:
-</p>
-<table>
-    <tr>
-        <th>ID    </th>
-        <th>Ime   </th>
-        <th>Godina</th>
-        <th>ECTS  </th>
-        <th></th>
-    </tr>
-
-    @foreach (var predmet in Model.Pretplaceni)
-    {
-    <tr>
-        <td>
-            @Html.DisplayFor(p => predmet.ID)
-        </td>
-        <td>
-            @Html.DisplayFor(p => predmet.Ime)
-        </td>
-        <td>
-            @Html.DisplayFor(p => predmet.Godina)
-        </td>
-        <td>
-            @Html.DisplayFor(p => predmet.ECTS)
-        </td>
-        <td>
-            @Html.ActionLink("Izbriši", "Delete", new { id = predmet.ID })
-        </td>
-    </tr>
-    }
-</table>
-
-<hr />
-
-<p>
-    Ovdje su svi predmeti na koje se možete pretplatiti:
-</p>
-<table>
-    <tr>
-        <th>ID    </th>
-        <th>Ime   </th>
-        <th>Godina</th>
-        <th>ECTS  </th>
-        <th></th>
-    </tr>
-
-    @foreach (var predmet in Model.Nepretplaceni)
-    {
-    <tr>
-        <td>
-            @Html.DisplayFor(p => predmet.ID)
-        </td>
-        <td>
-            @Html.DisplayFor(p => predmet.Ime)
-        </td>
-        <td>
-            @Html.DisplayFor(p => predmet.Godina)
-        </td>
-        <td>
-            @Html.DisplayFor(p => predmet.ECTS)
-        </td>
-        <td>
-            @Html.ActionLink("Dodaj", "Add", new { id = predmet.ID })
-        </td>
-    </tr>
-    }
-</table>
-
 <script type="text/javascript" language="javascript">
+
+    $('#azurirajPretplate').on('click', function () {
+        var $btn = $(this).button('loading');
+        var pretplaceni = [];
+        $("#pretplate option").each(function () {
+            if ($(this).is(':selected')) {
+                pretplaceni.push($(this).val());
+            }
+        });
+        $.post('@Url.Action("AzurirajPretplate", "Predmet")', { pretplaceni: pretplaceni }, PretplateAzurirane, "json");
+        setTimeout(function () { $btn.button('reset'); }, 100);    
+    });
+
+    function PretplateAzurirane() {
+        $("azurirajPretplate").button("reset");
+    }
+
     $(document).ready(function () {
-        $("#predmeti").bootstrapDualListbox();
+        $("#pretplate").bootstrapDualListbox({
+            filterTextClear: "Pokaži sve",
+            selectedListLabel: "Pretplate",
+            nonSelectedListLabel: "Predmeti",
+            infoTextEmpty: "Prazno",
+            infoText: false,
+            filterPlaceHolder: "",
+            selectorMinimalHeight: 250
+        });
     });
 </script>

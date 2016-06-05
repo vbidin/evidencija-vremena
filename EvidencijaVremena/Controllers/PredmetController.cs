@@ -15,7 +15,7 @@ namespace EvidencijaVremena.Controllers
 		private EvidencijaVremenaEntities db = new EvidencijaVremenaEntities();
 		private Korisnik Korisnik { get; set; }	
 
-		// GET: Pretplata
+		[HttpGet]
 		public ActionResult Index()
 		{
 			Korisnik = db.Korisnik.Where(k => k.KorisnickoIme == User.Identity.Name).First();
@@ -43,24 +43,26 @@ namespace EvidencijaVremena.Controllers
 			return View(model);
 		}
 
-		public ActionResult Add(int ID)
+		[HttpPost]
+		public ActionResult AzurirajPretplate(List<int> pretplaceni)
 		{
 			Korisnik = db.Korisnik.Where(k => k.KorisnickoIme == User.Identity.Name).First();
 
-			Pretplata pretplata = new Pretplata() { KorisnikID = Korisnik.ID, PredmetID = ID };
-			db.Pretplata.Add(pretplata);
+			List<Pretplata> pretplate = db.Pretplata.Where(p => p.KorisnikID == Korisnik.ID).ToList();
+			foreach (Pretplata p in pretplate)
+				db.Pretplata.Remove(p);
+			if (pretplaceni != null)
+			{
+				foreach (int id in pretplaceni)
+				{
+					Pretplata p = new Pretplata();
+					p.KorisnikID = Korisnik.ID;
+					p.PredmetID = id;
+					db.Pretplata.Add(p);
+				}
+			}
 			db.SaveChanges();
-			return RedirectToAction("Index");
-		}
-
-		public ActionResult Delete(int ID)
-		{
-			Korisnik = db.Korisnik.Where(k => k.KorisnickoIme == User.Identity.Name).First();
-
-			Pretplata pretplata = db.Pretplata.First(p => p.KorisnikID == Korisnik.ID && p.PredmetID == ID);
-			db.Pretplata.Remove(pretplata);
-			db.SaveChanges();
-			return RedirectToAction("Index");
+			return Json("");
 		}
 	}
 }
