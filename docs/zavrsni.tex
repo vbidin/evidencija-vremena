@@ -1,6 +1,7 @@
 \documentclass[times, utf8, zavrsni]{fer}
 \usepackage{booktabs}
 \usepackage{listings}
+\usepackage{float}
 
 \begin{document}
 
@@ -25,13 +26,6 @@
 
 \chapter{Uvod}
 Uvod rada. Nakon uvoda dolaze poglavlja u kojima se obrađuje tema.
-
-\begin{figure}[htb]
-\centering
-\includegraphics[width=2cm]{img/test.png}
-\caption{Test}
-\label{fig:test}
-\end{figure}
 
 \chapter{Baza podataka}
 
@@ -120,53 +114,128 @@ Izrada ER modela korak po korak:
 
 Da bi omogućili korisnicima da se prijavljuju sa svojim korisničkim podacima, potrebno je u bazu dodati entitet koja predstavlja korisnika i njegove korisničke podatke. U slučaju ove web aplikacije, nije potrebno puno komplicirati stvari, da bi se definirao korisnik potrebno je imati određeno korisničko ime po kojem se taj korisnik raspoznaje od drugih korisnika, potrebna je određena lozinka sa kojom se korisnik može prijaviti na sustav i koja onemogućuje drugim korisnicima (koji nisu on) da se prijave u njegovo ime, te također e-mail adresa, koja bi omogućila korisniku resetiranje lozinke (u slučaju da je zaboravi). Pošto za ovu web aplikaciju postoji razlika između običnih korisnika i korisnika sa većim privilegijama (moderatori, odnosno administratori), potrebno je također na neki način u bazi definirati koju razinu prava korisnik ima. To se obično radi sa cijelim brojem koji označava privilegije korisnika, u ovom slučaju:
 
---- TABLICA PRIVILEGIJA KORISNIKA ---
+\begin{table}[H]
+\caption{Razine prava korisnika}
+\label{tbl:razine_prava}
+\centering
+\begin{tabular}{llr} \hline
+Vrijednost & Uloga\\ \hline
+0 & Korisnik \\
+1 & Moderator \\
+2 & Administrator \\ \hline
+\end{tabular}
+\end{table}
 
 Lozinka korisnika je običan niz znakova, međutim spremiti je kao takvu u bazu je loša ideja! Na taj način bilo tko sa pristupom do baze ima pristup svim lozinkama korisnika te ih može zlouporabiti. Bolji način je enkriptirati lozinku te je takvu spremiti u bazu. Svaki puta kada se korisnik prijavljuje na sustav on unosi svoju lozinku koja se zatim ponovno kriptira, te se kriptirana verzija unešene lozinke uspoređuje sa onom koja se pohranila u bazu tijekom registracije tog korisnika. Na taj način i dalje je omogućena prijava korisnika, ali je sama lozinka sada sigurna. Moglo bi se otići korak dalje i dodati takozvani 'salt', da bi se daljnje povećala sigurnost lozinke, ali je to za ovakav sustav poprilično nepotrebno. Entitet 'Korisnik' bi izgledao otprilike ovako:
 
---- entitet KORISNIK (PRIRODNI KLJUČ) ---
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{img/korisnik.pdf}
+\caption{Korisnik}
+\label{fig:korisnik}
+\end{figure}
 
 Sljedeće što je potrebno napraviti je omogućiti prijavljenom korisniku da evidentira utrošeno vrijeme. Kako je ovo web aplikacija za evidenciju utrošenog vremena tijekom studija, potrebno je na neki način u bazi definirati sve aktivnosti koje je moguće evidentirati. Zato se definira entitet 'Aktivnost' koja predstavlja bilo koju aktivnost za koju se može evidentirati utrošeno vrijeme.
 Svaka aktivnost ima određeno ime, naprimjer: '3. laboratorijska vježba iz predmeta Mrežno Programiranje'. Aktivnost također može imati datum početka i trajanje, te je potrebno definirati atribut 'Datum početka'. U slučaju laboratorijske vježbe očito je da ona ima datum početka te neko trajanje. Međutim, neke 'apstraktnije' aktivnosti ne trebaju nužno imati datum početka i trajanje, aktivnosti kao što su 'Učenje za međuispit iz predmeta Baze podataka', ili 'Izrada seminara iz predmeta Vještine komuniciranja'. U tom slučaju aktivnost neće imati datum početka, a to možemo u bazi predočiti sa vrijednošću NULL.
 
 Trajanje aktivnosti može se interpretirati na više načina. U slučaju neke fiksne aktivnosti kao što je predavanje, naprimjer '5. predavanje iz predmeta Umjetna inteligencija', koje ima definiran i datum početka i trajanje, odabir trajanja je jednoznačan, trajanje će biti trajanje samog predavanje (npr. 3 sata). U slučaju aktivnosti koje nemaju definiran početak, nema smisla ni evidentirati trajanje pa je logično da trajanje također bude NULL. Međutim za aktivnosti koje nemaju fiksno trajanje, može postojati neko 'pretpostavljeno' ili 'očekivano' vrijeme trajanja. Naprimjer, voditelji nekog predmeta su definirali da će se kao dio nekog predmeta obrađivati seminar, odnosno svaki student treba izraditi seminar. U ovom slučaju je očito da je izrada seminara neko nepredviđeno vrijeme koje puno varira, ali upravo zato je zanimljivo evidentirati koliko je vremena utrošeno na seminar, te uspoređivati to vrijeme sa naprimjer prosjekom ili nekim vremenom koje je definirano od strane voditelja, ili predmeta, ili bilo koga. Zato se u slučaju nepostojećeg datuma početka (ili vrijednosti NULL), trajanje definira ili kao NULL, u slučaju kada ne postoji trajanje, ili kao neka vrijednost u slučaju kada postoji neki očekivani vremenski period trajanja te aktivnosti.
 
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{img/aktivnost.pdf}
+\caption{Aktivnost}
+\label{fig:aktivnost}
+\end{figure}
+
 Vidljivo je da svaka aktivnost koja se može evidentirati je zapravo vezana na neki predmet. Zato je dobra ideja odvojiti ime predmeta iz naziva aktivnosti, te ga staviti u zasebni entitet u kojem su definirani predmeti. Zatim se definira veza između entiteta 'Aktivnost' i entiteta 'Predmet' koja definira koja aktivnost pripada sklopu kojeg predmeta. Na taj način omogućuje se korisnicima lakši odabir aktivnosti koju žele evidentirati: prvo se može odabrati predmet, a zatim aktivnost tog predmeta, umjesto da su korisnici zatrpani sa tisućama mogućih aktivnosti, većinu od kojih ih uopće ne zanimaju.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{img/predmet.pdf}
+\caption{Predmet}
+\label{fig:predmet}
+\end{figure}
 
 Entitet predmet, osim samog naziva predmeta, treba sadržavati i godinu održavanja predmeta, pošto je očito da se isto predmeti mogu odravati više godina, a tijekom godinu mogu promijeniti svoje aktivnosti! Naprimjer jedne godine predmet 'Komunikacijske mreže' obuhvaća domaće zadaće, a sljedeće godine izbace domaće zadaće pa nadodaju projekt, i slično. Na taj način se isti predmet predavan u različitoj godini tretira kao potpuno različiti predmet. Osim toga svaki predmet ima definiran iznos ECTS bodova, koja zapravo definiraju koliko vremena bi student trebao potrošiti na ovaj predmet. Važnost ECTS bodova je očito ključna, ona omogućuje usporedbu stvarnog utrošenog vremena sa očekivanim utrošenim vremenom.
 
 Kako definirati primarne ključeve ovih entiteta? U slučaju predmeta obično postoji određena šifra koja jednoznačno definira predmet, a osim te šifre mogli bismo kao ključ koristiti kompozitni ključ 'Ime' predmeta i 'Godina', pošto ne postoji predmet koji se održava više puta iste godine. Međutim, u slučaju aktivnosti uistinu ne postoji prirodni ključ. Zbog tog razloga dobra ideja je kao primarni ključ aktivnosti postaviti surogatni ključ imena naprimjer 'ID'. Kako je lakše tijekom izrade web aplikacije koristiti primarne i strane ključeve koji nisu kompozitni, u entitetu predmet može se nadodati atribut šifra predmeta koji ga jednoznačno definira.
 
-Entiteti 'Aktivnost' i 'Predmet' i njihova veza bi mogle izgledati ovako:
+Entiteti 'Aktivnost' i 'Predmet' i njihova veza bi mogli izgledati ovako:
 
---- entitet PREDMET I AKTIVNOST I VEZA IZMEĐU NJIH ---
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{img/predmet-aktivnost.pdf}
+\caption{Predmet i Aktivnost}
+\label{fig:predmet-aktivnost}
+\end{figure}
 
-Iz trenutačnog stanja modela, vidljivo je da se određene aktivnosti mogu dalje grupirati u cjeline. Trenutačno su grupirane po predmetima, što omogućuje pregled utrošenog vremena po predmetu, kao i po pojedinačnoj aktivnosti, međutim, određene aktivnosti predmeta očito su međusobno povezane. Aktivnost '1. laboratorijska vježba' i '2. laboratorijska vježba', obje iz predmeta 'Baze podataka', bi mogle oboje biti dio cjeline koja se zove 'laboratorijske vježbe'. Na ovaj način, korisnicima bi bilo još lakše evidentirati aktivnost: prvo bi se odabrao predmet, zatim grupa aktivnosti, zatim sama aktivnost. Osim toga, tijekom pregleda utrošenog vremena moglo bi se uspoređivati koliko je vremena utrošeno po grupama aktivnosti, što može predstavljati jako zanimljivu informaciju. Zato se definira nova entitet imena 'TipAktivnosti', koja definira sve moguće tipove aktivnost: predavanja, laboratorijske vježbe, domaće zadaće, seminari, ispiti, itd.
-Zatim se svaka aktivnost preko veze povezuje sa odgovarajućim tipom aktivnosti. entitet 'TipAktivnosti' sama po sebi nije osobito zanimljiva: to je samo naziv tipa aktivnosti. Ova entitet sadrži relativno malen broj n-torki, broja sigurno manjeg od 100, pa nije loša ideja dodati primarni ključ 'ID', radi konzistentnosti.
+Iz trenutačnog stanja modela, vidljivo je da se određene aktivnosti mogu dalje grupirati u cjeline. Trenutačno su grupirane po predmetima, što omogućuje pregled utrošenog vremena po predmetu, kao i po pojedinačnoj aktivnosti, međutim, određene aktivnosti predmeta očito su međusobno povezane. Aktivnost '1. laboratorijska vježba' i '2. laboratorijska vježba', obje iz predmeta 'Baze podataka', bi mogle oboje biti dio cjeline koja se zove 'laboratorijske vježbe'. Na ovaj način, korisnicima bi bilo još lakše evidentirati aktivnost: prvo bi se odabrao predmet, zatim grupa aktivnosti, zatim sama aktivnost. Osim toga, tijekom pregleda utrošenog vremena moglo bi se uspoređivati koliko je vremena utrošeno po grupama aktivnosti, što može predstavljati jako zanimljivu informaciju. Zato se definira novi entitet imena 'TipAktivnosti', koja definira moguće tipove aktivnost: predavanja, laboratorijske vježbe, domaće zadaće, seminari, ispiti, itd.
 
-Baza podataka do sada izgleda ovako:
+\begin{figure}[H]
+\centering
+\includegraphics[keepaspectratio]{img/tip-aktivnosti.pdf}
+\caption{TipAktivnosti}
+\label{fig:tip-aktivnosti}
+\end{figure}
 
---- entitet PREDMET, AKTIVNOST, i TIPAKTIVNOSTI, I NJHOVE VEZE (UMJETNI KLJUČEVI) ---
+Zatim se svaka aktivnost preko veze povezuje sa odgovarajućim tipom aktivnosti. entitet 'TipAktivnosti' sama po sebi nije osobito zanimljiva: to je samo naziv tipa aktivnosti. Ovaj entitet sadrži relativno malen broj n-torki, broja sigurno manjeg od 100, pa nije loša ideja dodati primarni ključ 'ID', radi konzistentnosti.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{img/predmet-aktivnost-tip.pdf}
+\caption{Predmet, Aktivnost i TipAktivnosti}
+\label{fig:predmet-aktivnost-tip}
+\end{figure}
 
 Sada kad je definirana struktura aktivnosti, treba omogućiti korisnicima da evidentiraju svoje utrošeno vrijeme, u bazi podataka se te evidencije moraju negdje spremati. Radi toga stvara se nova entitet 'Evidencija' koja predstavlja jednu evidenciju jednog korisnika za jednu aktivnosti. Da bi se to omogućilo očito je da evidencija kao atribute mora sadržavati strane ključeve korisnika i aktivnosti. Osim toga i samo utrošeno vrijeme mora biti pohranjeno, pa se definira atribut 'Trajanje' koji predstavlja utrošeno vrijeme za tu aktivnost. Dalje od interesa mogao bi biti datum unosa evidencije, te eventualno opis same evidencije, ukoliko je potreban. Za ovu entitete najbolji kandidat za prirodni primarni ključ jest skup atributa: 'KorisničkoIme', 'AktivnostID', te također 'DatumUnosa' pošto je moguće da jedan korisnik za istu aktivnost više put evidentira utrošeno vrijeme, naprimjer za predmet 'Završni rad' bi se tijekom cijelog semestra jedna aktivnost evidentirala više puta.
 
---- entitet EVIDENCIJA (PRIRODNI KLJUČ) ---
-
-Prirodni ključ je kompozitan, i sastoji se od 3 atributa, ali moguće je dodati novi atribut 'ID' kao surogatni ključ, koji opet bitno olakšava rad web aplikacije. Baza bi u cijelosti izgledala ovako:
-
---- entitet AKTIVNOST; TIPAKTIVNOSTI, PREDMET, EVIDENCIJA, I KORISNIK, I NJIHOVE VEZE (UMJETNI KLJUČEVI) ---
+\begin{figure}[H]
+\centering
+\includegraphics{img/evidencija.pdf}
+\caption{Evidencija}
+\label{fig:evidencija}
+\end{figure}
 
 Moguće je dalje poboljšati konceptualni model baze: trenutačno, da bi korisnik mogao evidentirati utrošeno vrijeme, mora prvo odabrati predmet, kojih može biti veoma mnogo. Čak i sa nekim načinom pretraživanja predmeta, korisnik mora tijekom svake evidencije birati 'svoj' predmet od svih mogućih predmeta (kojih može biti tisuće!). Bilo bi lijepo kada bi mogao imati neki predefinirani skup predmeta na koje je 'pretplaćen', te da mu se tijekom evidencija samo pokazuju ti predmeti. Zato se uvodi nova entitet 'Pretplata' koja omogućuje da je u bazi pohranjena informacija o tome koji korisnik trenutačno evidentira koji predmet. Na taj način korisnik može odabrati svoje predmete samo jednom prilikom naprimjer registracije ili početka novog semestra, a zatim tijekom semestra evidentira te pretplaćene predmete. Također je moguće izbrisati pretplatu iz baze, čime se korisnikova pretplata briše (naprimjer ako više ne želi evidentirati taj predmet, ili je semestar završen).
 
---- SVE OVO GORE + Pretplata
+\begin{figure}[H]
+\centering
+\includegraphics{img/pretplata.pdf}
+\caption{Pretplata}
+\label{fig:pretplata}
+\end{figure}
 
-Trenutačno baza omogućava korisnicima intuitivan način evidencije utrošenog vremena, kao i sve podatke potrbene za pregled utrošeng vremena po predmetu, tipovima aktivnosti, kao i samim aktivnostima. Međutim, za svaki predmet se dodatno definiraju 'opterećenja'. To je iznos sati za određene skupove aktivnosti toga predmeta. Naprimjer za predmet 'Baze podataka' definirana su opterećenja:
+Trenutačno baza omogućava korisnicima intuitivan način evidencije utrošenog vremena, kao i sve podatke potrbene za pregled utrošeng vremena po predmetu, tipovima aktivnosti, kao i samim aktivnostima. Međutim, za svaki predmet se dodatno definiraju 'opterećenja'. To je iznos sati za određene skupove aktivnosti toga predmeta. Naprimjer za predmet 'Mrežno programiranje' mogla bi biti definirana sljedeća opterećenja:
 
---- TABLICA OPTEREĆENJA ZA BAZE PODATAKA ---
+\begin{table}[H]
+\caption{Opterećenja}
+\label{tbl:opterecenja}
+\centering
+\begin{tabular}{llr} \hline
+Naziv & ECTS\\ \hline
+Predavanja & 1 \\
+Domaće zadaće & 1 \\
+Laboratorijske vježbe & 1.5 \\ \hline
+\end{tabular}
+\end{table}
 
-Ovo je jedna dodatna informacija koju je korisno pohraniti uz svaki predmet. Zato se na postojeći model može dodati nova entitet 'Opterećenje' koja definira koji predmet obuhvaća koje tipove aktivnosti, i koliko sati (odnosno ECTS bodova) svaki tip aktivnosti oduzima. Sada se prilikom pregleda statistike može uspoređivati utrošeno vrijeme po tipu aktivnosti, sa definiranim vremenom tipa aktivnosti (u slučaju da postoji definicija). Čak iako službeno za neki predmet ne postoji semestralno opterećenje za naprimjer tip aktivnosti 'laboratorisjke vježbe', prilikom dodavanja tog predmeta u bazu može se ručno podesiti koliko se vremena očekuje da će biti utrošeno na taj tip aktivnosti toga predmeta.
+\begin{figure}[H]
+\centering
+\includegraphics{img/opterecenje.pdf}
+\caption{Opterecenje}
+\label{fig:opterecenje}
+\end{figure}
+
+Ovo je jedna dodatna informacija koju je korisno pohraniti uz svaki predmet. Zato se na postojeći model može dodati novi entitet 'Opterećenje' koja definira koji predmet obuhvaća koje tipove aktivnosti, i koliko sati (odnosno ECTS bodova) svaki tip aktivnosti oduzima. Sada se prilikom pregleda statistike može uspoređivati utrošeno vrijeme po tipu aktivnosti, sa definiranim vremenom tipa aktivnosti (u slučaju da postoji definicija). Čak iako službeno za neki predmet ne postoji semestralno opterećenje za naprimjer tip aktivnosti 'laboratorisjke vježbe', prilikom dodavanja tog predmeta u bazu može se ručno podesiti koliko se vremena očekuje da će biti utrošeno na taj tip aktivnosti toga predmeta.
 
 Konačni ER konceptualni model:
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{img/er-model.pdf}
+\caption{Konačni ER model}
+\label{fig:er-model}
+\end{figure}
 
 \subsection{Pretvorba u relacijski model}
 ER konceptualni model koristan je za grafički prikaz baze podataka i opis veza između entiteta. Međutim, stvarne baze podataka koje koriste web aplikacije (poput ove) su opisane relacijskom shemom. Potrebno je ER model baze pretvoriti u relacijski. To se radi po sljedećim generalnim pravilima:
