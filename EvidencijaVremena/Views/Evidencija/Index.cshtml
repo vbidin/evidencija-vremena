@@ -46,7 +46,7 @@
         var i = 0;
         var len = data.tipoviAktivnostiID.length
         while (i < len) {
-            var $input = $('<div id="' + data.tipoviAktivnostiID[i] + "tipAktivnosti" + '" class="btn-group"><button type="button" class="btn btn-default btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">' + data.tipoviAktivnostiNaziv[i] + '&nbsp;&nbsp;<span class="caret"></span></button></div>');
+            var $input = $('<div id="' + data.tipoviAktivnostiID[i] + "tipAktivnosti" + '" class="btn-group"><button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">' + data.tipoviAktivnostiNaziv[i] + '&nbsp;&nbsp;<span class="caret"></span></button></div>');
             $input.appendTo($("#tipoviAktivnosti"));
             $input = $('<ul id="' + data.tipoviAktivnostiID[i] + "buttongroup" + '" class="dropdown-menu"></ul>');
             $input.appendTo($("#" + data.tipoviAktivnostiID[i] + "tipAktivnosti"));

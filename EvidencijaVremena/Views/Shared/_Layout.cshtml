@@ -16,7 +16,7 @@
     @Styles.Render("~/Content/duallist_css")
 </head>
 <body>
-    <div class="navbar navbar-inverse navbar-fixed-top">
+    <div class="navbar navbar-default navbar-fixed-top">
         <div class="container">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -27,19 +27,21 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Predmeti", "Index", "Predmet")</li>
-                    <li>@Html.ActionLink("Evidencija", "Index", "Evidencija")</li>
-                    <li>@Html.ActionLink("Statistika", "Index", "Statistika")</li>
+                    @if (Request.IsAuthenticated)
+                    {
+                        <li>@Html.ActionLink("Predmeti", "Index", "Predmet", null, new { @class = "btn btn-default" })</li>
+                        <li>@Html.ActionLink("Evidencija", "Index", "Evidencija", null, new { @class = "btn btn-default" })</li>
+                        <li>@Html.ActionLink("Statistika", "Index", "Statistika", null, new { @class = "btn btn-default" })</li>}
                 </ul>
                 <ul class="nav navbar-right navbar-nav">
                     @if (Request.IsAuthenticated)
                     {
-                        <li class="navbar-right">@Html.ActionLink("Odjava", "Odjava", "Autorizacija")</li>
-                        <li class="navbar-right">@Html.ActionLink(User.Identity.Name, "Index", "Profil")</li>}
+                        <li class="navbar-right">@Html.ActionLink("Odjava", "Odjava", "Autorizacija", null, new { @class = "btn btn-default" })</li>
+                        <li class="navbar-right">@Html.ActionLink(User.Identity.Name, "Index", "Profil", null, new { @class = "btn btn-default" })</li>}
                     else
                     {
-                        <li class="navbar-right">@Html.ActionLink("Registracija", "Registracija", "Autorizacija")</li>
-                        <li class="navbar-right">@Html.ActionLink("Prijava", "Prijava", "Autorizacija")</li>}
+                        <li class="navbar-right">@Html.ActionLink("Registracija", "Registracija", "Autorizacija", null, new { @class = "btn btn-default" })</li>
+                        <li class="navbar-right">@Html.ActionLink("Prijava", "Prijava", "Autorizacija", null, new { @class = "btn btn-default" })</li>}
                 </ul>
 
             </div>

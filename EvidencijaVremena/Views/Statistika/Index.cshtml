@@ -3,7 +3,7 @@
 <div class="row">
     <div class="col-xs-12">
         <div class="panel panel-default">
-            <div class="panel-body">
+            <div class="panel-heading">
                 <ul class="nav nav-pills">
                     <li class="active"><a data-toggle="pill" href="#predmetiTab">Predmeti</a></li>
                     <li><a data-toggle="pill" href="#aktivnostiTab">Aktivnosti</a></li>
@@ -167,7 +167,7 @@
         document.getElementById("predmetDiv").innerHTML = '&nbsp;';
         document.getElementById("predmetDiv").innerHTML = '<canvas id="predmetGraf"></canvas>';
         var ctx1 = document.getElementById("predmetGraf");
-        ctx1.width = 400;
+        ctx1.width = 365;
         ctx1.height = 400;
         var predmetGraf = new Chart(ctx1, {
             type: 'bar',
@@ -255,7 +255,7 @@
         document.getElementById("aktivnostiDiv").innerHTML = '&nbsp;';
         document.getElementById("aktivnostiDiv").innerHTML = '<canvas id="aktivnostiGraf"></canvas>';
         var ctx3 = document.getElementById("aktivnostiGraf");
-        ctx3.width = 800;
+        ctx3.width = 1000;
         ctx3.height = 400;
         var aktivnostiGraf = new Chart(ctx3, {
             type: 'bar',

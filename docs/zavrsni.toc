@@ -6,13 +6,13 @@
 \contentsline {section}{\numberline {2.3}Izrada baze podataka}{5}
 \contentsline {subsection}{\numberline {2.3.1}Zahtjevi}{5}
 \contentsline {subsection}{\numberline {2.3.2}Izrada ER modela}{7}
-\contentsline {subsection}{\numberline {2.3.3}Pretvorba u relacijski model}{16}
-\contentsline {subsection}{\numberline {2.3.4}Opis kona\IeC {\v c}nog modela}{17}
-\contentsline {chapter}{\numberline {3}Web aplikacija}{19}
-\contentsline {section}{\numberline {3.1}Prijava}{19}
-\contentsline {section}{\numberline {3.2}Pretplata}{20}
-\contentsline {section}{\numberline {3.3}Evidencija}{20}
-\contentsline {section}{\numberline {3.4}Statistika}{22}
-\contentsline {section}{\numberline {3.5}Unos podataka}{24}
-\contentsline {section}{\numberline {3.6}Razvoj i pobolj\IeC {\v s}anja}{24}
-\contentsline {chapter}{\numberline {4}Zaklju\IeC {\v c}ak}{25}
+\contentsline {subsection}{\numberline {2.3.3}Pretvorba u relacijski model}{18}
+\contentsline {subsection}{\numberline {2.3.4}Opis kona\IeC {\v c}nog modela}{19}
+\contentsline {chapter}{\numberline {3}Web aplikacija}{21}
+\contentsline {section}{\numberline {3.1}Prijava}{21}
+\contentsline {section}{\numberline {3.2}Pretplata}{22}
+\contentsline {section}{\numberline {3.3}Evidencija}{22}
+\contentsline {section}{\numberline {3.4}Statistika}{24}
+\contentsline {section}{\numberline {3.5}Unos podataka}{26}
+\contentsline {section}{\numberline {3.6}Razvoj i pobolj\IeC {\v s}anja}{26}
+\contentsline {chapter}{\numberline {4}Zaklju\IeC {\v c}ak}{27}
