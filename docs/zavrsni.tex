@@ -81,49 +81,55 @@ kao i refleksivna veza koji jednom entitetu pridjeljuje 2 uloge:
 
 \section{Relacijski model}
 
+TODO
+
 \section{Izrada baze podataka}
 \subsection{Zahtjevi}
+
 Općenito, problem je sljedeći:
-Potrebno je napraviti web aplikaciju koji omogućuje korisnicima, odnosno studentima, da evidentiraju vrijeme koje su utrošili tijekom studija na aktivnosti kao što su direktna nastava, učenje, te ostale nastavne obaveze studenata. Sustav također mora omogućiti korisnicima da pregledavaju utrošeno vrijeme te da uspoređuju stvarno utrošeno vrijeme sa vremenom koje je ECTS bodovima propisano za uspješno svladavanje nastavnih obaveza.
+Potrebno je napraviti web aplikaciju koji omogućuje korisnicima, odnosno studentima, da evidentiraju vrijeme koje su utrošili tijekom studija na aktivnosti kao što su direktna nastava, učenje, te ostale nastavne obaveze studenata. Sustav također mora omogućiti korisnicima da pregledavaju utrošeno vrijeme te da uspoređuju stvarno utrošeno vrijeme sa vremenom koje je ECTS bodovima propisano za uspješno svladavanje nastavnih obaveza.\\
+
+Zadatak stvaranja baze podataka web aplikacije podrazumijeva dizajn sheme baze podataka. Potrebe korisnika igraju središnju ulogu u konstruiranju sheme. Početna faza dizajna baze podataka je opisati u potpunosti potrebe potencijalnih korisnika. Ishod ove faze u složenijim aplikacijama može biti specifikacija zahtjeva korisnika. Nakon što su definirani svi zahtjevi, iz njih se izvodi konceptualni model baze podataka.\\
 
 Potrebno je definirati koje sve zahtjeve sustav mora zadovoljavati:
-1. Da bi svaki korisnik mogao zasebno evidentirati te pregledavati svoje utrošeno vrijeme, sustav mora moći razlikovati između različitih korisnika. To se postiže tako da svaki korisnik ima na raspolaganju svoj vlastiti korisnički račun, te se sve evidencije koje on provodi implicitno vežu na njegov korisnički račun. Odnosno, potrebno je implementirati tipični sustav za prijavu, koji omogućuje korisnicima da se prijave na svoj korisnički račun uporabom korisničkog imena i lozinke, odnosno da naprave novi račun sa svim potrebnim podacima u slučaju ako već nemaju postojeći korisnički račun. Također je korisnicima potrebno omogućiti neke osnovne funkcionalnosti za mijenjanje postojećih korisničih podataka kao što su lozinka, e-mail, i slično.
+\begin{enumerate}
+\item Da bi svaki korisnik mogao zasebno evidentirati te pregledavati svoje utrošeno vrijeme, sustav mora moći razlikovati između različitih korisnika. To se postiže tako da svaki korisnik ima na raspolaganju svoj vlastiti korisnički račun, te se sve evidencije koje on provodi implicitno vežu na njegov korisnički račun. Odnosno, potrebno je implementirati tipični sustav za prijavljivanje, koji omogućuje korisnicima da se prijave na svoj korisnički račun uporabom korisničkog imena i lozinke, odnosno da naprave novi račun sa svim potrebnim podacima u slučaju ako već nemaju postojeći korisnički račun. Također je korisnicima potrebno omogućiti neke osnovne funkcionalnosti za mijenjanje postojećih korisničih podataka kao što su lozinka, e-mail, i slično.
 
-2. Nakon što je korisnik prijavljen na sustav, mora moći evidentirati svoje utrošeno vrijeme. Evidencija vremena međutim mora biti na neki način vezana uz određenu aktivnost ili nastavnu obavezu. Nema smisla da korisnik samo evidentira utrošeno vrijeme, jer to može značiti da je vrijeme utrošeno na apsolutno bilo koji dio studija, a takve evidencije ne pružaju ikakvu informaciju vrijednu sakupljanja niti pregleda. Dakle, korisnik mora moći na neki (jednostavni) način u sustavu pronaći specifičnu aktivnost za koju želi evidentirati utrošenu vrijeme.
+\item Nakon što je korisnik prijavljen na sustav, mora moći evidentirati svoje utrošeno vrijeme. Evidencija vremena međutim mora biti na neki način vezana uz određenu aktivnost ili nastavnu obavezu. Nema smisla da korisnik samo evidentira utrošeno vrijeme, jer to može značiti da je vrijeme utrošeno na apsolutno bilo koji dio studija, a takve evidencije ne pružaju ikakvu informaciju vrijednu sakupljanja niti pregleda. Dakle, korisnik mora moći na neki (intuitivni) način u sustavu pronaći specifičnu aktivnost za koju želi evidentirati utrošenu vrijeme.
 
-3. Također, korisniku je potrebno omogućiti pregled svog trenutačnog utrošenog vremena, i to na taj način da se može uspoređivati stvarno utrošeno vijeme korisnika sa vremenom koje je propisano ECTS bodovima, semestralnim opterećenjima, ili na bilo koji drugi način. Da bi to bilo moguće, potrebno je aktivnosti koje korisnik može evidentirati podijeliti na neki način u grupe i propisati im određene očekivane iznose utrošenog vremena koje bi one trebale iznositi. Korisnik bi trebao moći vidjeti ne samo koliko je vremena on utrošio na neku aktivnost, a koliko je 'trebao' utrošiti, nego i koliko je vremena utrošio na sve 'pod-aktivnosti' te aktivnosti (pošto neke aktivnosti implicitno obuhvaćaju druge aktivnosti!).
+\item Također, korisniku je potrebno omogućiti pregled svog trenutačnog utrošenog vremena, i to na taj način tako da se može uspoređivati stvarno utrošeno vijeme korisnika sa vremenom koje je propisano ECTS bodovima, semestralnim opterećenjima, ili na bilo koji drugi način. Da bi to bilo moguće, potrebno je aktivnosti koje korisnik može evidentirati podijeliti na neki način u grupe i propisati im određene očekivane iznose utrošenog vremena koje bi one trebale iznositi. Korisnik bi trebao moći vidjeti ne samo koliko je vremena on utrošio na neku aktivnost, a koliko je 'trebao' utrošiti, nego i koliko je vremena utrošio na sve 'pod-aktivnosti' te aktivnosti (pošto neke aktivnosti implicitno obuhvaćaju druge aktivnosti).
+\end{enumerate}
 
-Web aplikacija podrazumijeva korištenje baze podataka. U ovom specifičnom slučaju, očito je da je baza podataka ključan dio cijelog sustava: sve evidencije moraju se negdje nalaziti, iznosi utrošenog vremena moraju negdje biti pohranjeni. Potrebno je modelirati bazu tako da omogućava podjelu i grupaciju aktivnosti i pod-aktivnosti na način koji omogućava korisnicima intuitivno korištenje web aplikacije.
+Web aplikacija podrazumijeva korištenje baze podataka. U ovom specifičnom slučaju, očito je da je baza podataka ključan dio cijelog sustava: sve evidencije moraju se negdje nalaziti, iznosi utrošenog vremena moraju negdje biti pohranjeni. Potrebno je modelirati bazu tako da omogućava podjelu i grupaciju aktivnosti i pod-aktivnosti na način koji omogućava korisnicima jednostavno korištenje web aplikacije.\\
 
-Zadatak stvaranja baze podataka web aplikacije podrazumijeva dizajn sheme baze podataka. Potrebe korisnika igraju središnju ulogu u konstruiranju sheme. Početna faza dizajna baze podataka je opisati u potpunosti potrebe potencijalnih korisnika baze podataka. Ishod ove faze u složenijim aplikacijama može biti specifikacija zahtjeva korisnika. Nakon što su definirani svi zahtjevi, iz njih izvodi se konceptualni model baze podataka. 
+Shema razvijena u ovoj konceptualnoj-fazi projektiranja predočuje detaljan pregled sustava. Model entitet-veza (engl. entity-relationship) obično se koristi za zastupanje konceptualnog dizajna. U takvom modelu konceptualna shema određuje objekte odnosno entitete koji su zastupljeni u bazi podataka, atribute entiteta, odnose među entitetima, te ograničenja na entitetima i vezama. Tipično, u konceptualnoj-fazi projektiranja stvara se dijagram ER modela koji pruža grafički prikaz sheme. Fokus konceptualnog ER modela je prikaz objekata i veza između njih, a ne specifičnih detalja u vezi načina pohrane pojedinih tipova podataka.\\
 
-Shema razvijena u ovoj konceptualnoj-fazi projektiranja predočuje detaljan pregled sustava. Model entitet-veza (engl. entity-relationship) obično se koristi za zastupanje konceptualnog dizajna. U takvom modelu konceptualna shema određuje objekte odnosno entitete koji su zastupljeni u bazi podataka, atribute njihovih entiteta, odnose među entitetima, te ograničenja na entitetima i vezama. Tipično, u konceptualnoj-fazi projektiranja stvara se dijagram ER modela koji pruža grafički prikaz sheme.
-Fokus konceptualnog ER modela je prikaz objekata i veza između njih, a ne specifičnih detalja u vezi načina pohrane pojedinih tipova podataka.
+Veći dio procesa dizajna baze podataka je odluka na koji način predstaviti razne vrste stvari, kao što su ljudi, mjesta, proizvodi, i slično. Pojam entitet se odnosi na bilo koju takvu jasno definiranu stavku. Naprimjer, u bazi podataka sveučilišta, primjeri entiteta uključuju djelatnika, studente, organizacijske jedinice, nastavne planove, predmete, itd. Različiti entiteti su međusobno povezani na različite načine, od kojih svi moraju na neki način biti predstavljeni u bazi podataka. Naprimjer, ako želimo u bazu spremiti podatak o tome koji od djelatnika predaje na kojem predmetu, trebamo definirati vezu između entiteta djelatnik i predmet.
 
-Veći dio procesa dizajna baze podataka je odluka na koji način predstaviti razne vrste stvari, kao što su ljudi, mjesta, proizvodi, i slično. Pojam entitet se odnosi na bilo koju takvu jasno definiranu stavku. Naprimjer, u bazi podataka sveučilišta, primjeri entiteta uključuju djelatnika, studente, organizacijske jedinice, nastavne planove, predmete, itd. Različiti entiteti su međusobno povezani na različite načine, od kojih svi moraju na neki način biti predstavljeni u bazi podataka. Naprimjer, ako želimo u bazu spremiti podatak o tome koji od djelatnika predaje na kojem predmetu, trebamo definirati vezi između entiteta djelatnik i predmet.
 U izradi sheme baze podataka, moramo osigurati da se izbjegnu dva glavna problema:
 1. Redundancija: Loš dizajn baze podazaka može ponavljati iste informacije.
 NEKI PRIMJER REDUNDANCIJE
-2. Nepotpunost: loš dizajn baze može uzrokovati određene dijelove problema nemogućim modelirati.
+2. Nepotpunost: loš dizajn baze može uzrokovati određene dijelove problema nemogućim za modelirati.
 NEKI PRIMJER NEPOTPUNOSTI
-
-Dizajn baze podataka uglavnom uključuje dizajn sheme baze podataka. ER Model podataka je naširoko korišten model podataka za dizajn baze podataka. On pruža zgodan grafički prikaz podataka, odnos entiteta, veza, i njihovih ograničenja. ER model sastoji se od tipova entiteta (koji klasificiraju stvari od interesa) i navodi odnose koji mogu postojati između instanci tih tipova entiteta.
 
 \subsection{Izrada ER modela}
 
-Ovo poglavlje obuhvaća potpunu izradu ER modela baze podataka koji zadovoljava sve zahtjeve i potrebe prethodno navedene web aplikacije. \\
+Ovo poglavlje obuhvaća potpunu izradu ER modela baze podataka koji zadovoljava sve zahtjeve i potrebe prethodno navedene web aplikacije.\\
 
-Kako bi korisnici bili u mogućnosti prijavljivati se na sustav sa svojim korisničkim podacima, potrebno je u bazu dodati entitet koja predstavlja korisnika i sve podatke vezane neposredno uz njega. U slučaju ove web aplikacije, nije potrebno puno komplicirati stvari, da bi se definirao korisnik potrebno je imati određeno korisničko ime po kojem se taj korisnik raspoznaje od drugih korisnika, potrebna je određena lozinka sa kojom se korisnik može prijaviti na sustav i koja onemogućuje drugim korisnicima (koji nisu on) da se prijave u njegovo ime, te također e-mail adresa, koja bi omogućila korisniku resetiranje lozinke (u slučaju da je zaboravi). Pošto za ovu web aplikaciju postoji razlika između običnih korisnika i korisnika sa većim privilegijama (kao što su moderatori, odnosno administratori), potrebno je također na neki način u bazi podataka definirati koju razinu prava korisnik ima. To se može omogućiti dodavanjem atributa tipa cijelog broja koji označava privilegije korisnika, naprimjer:
+Kako bi korisnici bili u mogućnosti prijavljivati se na sustav sa svojim korisničkim podacima, potrebno je u bazu dodati entitet koja predstavlja korisnika i sve podatke vezane neposredno uz njega. U slučaju ove web aplikacije, nije potrebno puno komplicirati stvari, da bi se definirao korisnik potrebno je imati određeno korisničko ime po kojem se taj korisnik raspoznaje od drugih korisnika, potrebna je određena lozinka sa kojom se korisnik može prijaviti na sustav i koja onemogućuje drugim korisnicima (koji nisu on) da se prijave u njegovo ime, te također e-mail adresa, koja bi omogućila korisniku resetiranje lozinke (u slučaju da je zaboravi). Pošto za ovu web aplikaciju postoji razlika između običnih korisnika i korisnika sa većim privilegijama (kao što su moderatori, odnosno administratori), potrebno je također na neki način u bazi podataka definirati koju razinu prava korisnik ima. To se može omogućiti dodavanjem atributa tipa cijelog broja koji označava privilegije korisnika, naprimjer:\\
 
 \begin{table}[H]
 \caption{Razine prava korisnika}
 \label{tbl:razine_prava}
 \centering
-\begin{tabular}{llr} \hline
-Vrijednost & Uloga\\ \hline
+\begin{tabular}{llr}
+\hline
+Vrijednost & Uloga\\
+\hline
 0 & Klijent \\
 1 & Moderator \\
-2 & Administrator \\ \hline
+2 & Administrator \\ 
+\hline
 \end{tabular}
 \end{table}
 
@@ -162,7 +168,7 @@ Entitet predmet, osim samog naziva predmeta, treba sadržavati i godinu održava
 
 Kako definirati primarne ključeve ovih entiteta? U slučaju predmeta obično postoji određena šifra koja jednoznačno definira predmet, a osim te šifre mogli bismo kao ključ koristiti kompozitni ključ 'Ime' predmeta i 'Godina', pošto ne postoji predmet koji se održava više puta iste godine (uz pretpostavku da su imena predmeta unikatna, kao što bi to moglo bitu u sklopu jednog zasebnog fakulteta). Međutim, u slučaju aktivnosti uistinu ne postoji prirodni ključ. Zbog tog razloga dobra ideja je dodati novi atribut imena primjerice 'ID' koje će služiti kao surogatni ključ entiteta 'Aktivnost'.\\
 
-Veza entiteta 'Predmet' i 'Aktivnost' je jednostavna: to je veza koja nema svoje vlastite atribute nego samo sadrži primarne ključeve entiteta koje povezuje. Pošto je kardinalnost veze 1-N (1 predmet obuhvaća N aktivnosti), primarni ključ veze moraju biti oba primarna ključa entiteta kako bi n-torke veze uvijek bile unikatne.\\
+Veza entiteta 'Predmet' i 'Aktivnost' je jednostavna: to je veza koja nema svoje vlastite atribute nego samo sadrži primarne ključeve entiteta koje povezuje. Pošto je kardinalnost veze 1-N (1 predmet obuhvaća N aktivnosti), primarni ključ veze je primarni ključ entiteta na N strani veze: primarni ključ entiteta Aktivnost (ID).
 
 \begin{figure}[H]
 \centering
@@ -173,8 +179,6 @@ Veza entiteta 'Predmet' i 'Aktivnost' je jednostavna: to je veza koja nema svoje
 
 Iz trenutačnog stanja ER modela, vidljivo je da se određene aktivnosti mogu dalje grupirati u cjeline. Trenutačno su grupirane po predmetima, što omogućuje pregled utrošenog vremena po predmetu, kao i po pojedinačnoj aktivnosti, međutim, određene aktivnosti predmeta međusobno su povezane ne samo po predmetima, nego i po tipovima aktivnosti. Aktivnost '1. laboratorijska vježba' i '2. laboratorijska vježba', obje iz predmeta 'Baze podataka', bi mogle oboje biti dio cjeline koja se zove 'laboratorijske vježbe'. Na ovaj način, korisnicima bi bilo još lakše evidentirati aktivnost: prvo bi se odabrao predmet, zatim grupa aktivnosti, zatim sama aktivnost. Osim toga, tijekom pregleda utrošenog vremena moglo bi se uspoređivati koliko je vremena utrošeno po grupama aktivnosti, što može predstavljati jako zanimljivu informaciju. Zato se definira novi entitet imena 'TipAktivnosti', koja definira moguće tipove aktivnost: predavanja, laboratorijske vježbe, domaće zadaće, seminari, ispiti, itd.\\
 
-Zatim se svaka aktivnost preko veze povezuje sa odgovarajućim tipom aktivnosti. Entitet 'TipAktivnosti' sam po sebi nije osobito zanimljiv: to je samo naziv tipa aktivnosti. Ovaj entitet sadrži relativno malen broj n-torki, broja sigurno manjeg od 100, pa nije loša ideja dodati primarni ključ 'ID', radi konzistentnosti.\\
-
 \begin{figure}[H]
 \centering
 \includegraphics[keepaspectratio]{img/tip-aktivnosti.pdf}
@@ -182,7 +186,7 @@ Zatim se svaka aktivnost preko veze povezuje sa odgovarajućim tipom aktivnosti.
 \label{fig:tip-aktivnosti}
 \end{figure}
 
-
+Zatim se svaka aktivnost preko veze povezuje sa odgovarajućim tipom aktivnosti. Entitet 'TipAktivnosti' sam po sebi nije osobito zanimljiv: to je samo naziv tipa aktivnosti. Ovaj entitet sadrži relativno malen broj n-torki, broja sigurno manjeg od 100, pa nije loša ideja dodati primarni ključ 'ID', radi konzistentnosti.\\
 
 \begin{figure}[H]
 \centering
@@ -228,7 +232,7 @@ Ovo je jedna dodatna informacija koju je korisno pohraniti uz svaki predmet. Zat
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{img/opterecenje.pdf}
+\includegraphics{img/opterecenje.pdf}
 \caption{Opterecenje}
 \label{fig:opterecenje}
 \end{figure}
@@ -243,99 +247,192 @@ Konačni ER konceptualni model:
 \end{figure}
 
 \subsection{Pretvorba u relacijski model}
-ER konceptualni model koristan je za grafički prikaz baze podataka i opis veza između entiteta. Međutim, stvarne baze podataka koje koriste web aplikacije (poput ove) su opisane relacijskom shemom. Potrebno je ER model baze pretvoriti u relacijski. To se radi po sljedećim pravilima:
+ER konceptualni model koristan je za grafički prikaz baze podataka i opis veza između entiteta. Međutim, stvarne baze podataka koje koriste web aplikacije (poput ove) su opisane relacijskom shemom. Potrebno je ER model pretvoriti u relacijski. To se radi po sljedećim pravilima:
 
-1. Entiteti se direktno preslikavaju u relacije.
-2. Veze između entiteta postaju nove relacije.
-3. U slučaju da veze i entiteti dijele primarni ključ, stapaju se zajedno.
+\begin{enumerate}
+\item Entiteti i veze se direktno preslikavaju u relacije.\\
+\item Relacije sa jednakim primarnim ključevima se stapaju zajedno.
+\end{enumerate}
 
-\subsection{Opis konačnog modela}
+Preslikavanje entiteta i veza u relacije je trivijalno: relacije su po atributima jednake entitetu odnosno vezi, naprimjer: entitet korisnik preslikao bi se na sljedeći način:
+
+--- SLIKA PRESLIKAVANJA ENTITETA U RELACIJU ---
+
+Veze se preslikavaju na identičan način.
+Nakon što su svi entiteti i veze preslikani, potrebnu je spojiti one relacije koje imaju jednake primarne ključeve. Općenito vrijedi da se veze kardinalnosti 1-N pri preslikavanju stapaju sa entitetom na N strani veze. U ovom slučaju veze 'AktivnostiPredmeta' i 'TipoviAktivnosti' stapaju se sa relacijom 'Aktivnost', čime ona poprima njihove atribute, u ovom slučaju su to atributi 'TipAktivnostiID' i 'PredmetID'.
+
+--- SLIKA STAPANJA AKtivnosti i onih 2 druge 1-n veze ---
+
+Još postoje novo nastale relacije 'Opterecenje', 'Pretplata' i 'Evidencija'. Kako su to bile N-N veze, njihovi primarni ključevi bit će primarni ključevi oba entiteta koje su povezivali, te će u relacijskom modelu njihovi primarni ključevi biti unikatni, što znači da one postaju nove samostalne relacije.
+
+--- SLIKA PRESLIKAVANJA N-N... Evidencije ---
+
+Sada je vidljivo da neke relacije sadrže strane ključeve (primarni ključevi drugih relacija), koje grafički možemo prikazati na sljedeći način:
+
+--- SLIKA POVEZIVANJA SA STRANIM KLJUČEVIMA ---
+
+Nakon pretvorbe iz ER modela također je potrebno odrediti tipove podataka atributa svake relacije, pošto se oni direktno koriste od strane web aplikacije.
+
+Relacije nakon pretvorbe su sljedeće:
+\begin{enumerate}
+\item Korisnik
+\item Predmet
+\item Aktivnost
+\item TipAktivnosti
+\item Evidencija
+\item Pretplata
+\item Opterecenje
+\end{enumerate}
+
 \lstset{language=SQL, tabsize=4}
 \lstinputlisting{sql/baza.sql}
 
 \chapter{Web aplikacija}
 
 \section{Prijava}
-Da bi korisnik uopće mogao koristiti bilo koji dio aplikacije, treba se prvo prijaviti u sustav putem korisničkog računa, kao što to obično jest u većini slučajeva kada god su u pitanju web aplikacije. Kada se korisnik ne bi prijavljivao, anonimni korisnici imali bi pristup web aplikaciji čime bi je mogli zakrcati smećem i lažnim podacima. Čak i da aplikacija može računati na potpuno suradnju korisnika, korisno je implementirati barem najosnovniji dio sustava za prijavu, kako bi se sve evidencije mogle povezati sa svojim odgovarajućim korisnicima. Na ovaj način korisnik može tijekom pregleda statistike vidjeti zasebno svoju statistiku (izračunatu temeljem njegovih evidencija), a zasebno sve ostale.
+Da bi korisnik uopće mogao koristiti bilo koji dio aplikacije, treba se prvo prijaviti u sustav putem korisničkog računa, kao što to obično jest u većini slučajeva kada god su u pitanju web aplikacije. Kada se korisnik ne bi prijavljivao, anonimni korisnici imali bi pristup web aplikaciji čime bi je mogli zakrcati smećem i lažnim podacima. Čak i da aplikacija može računati na potpunu suradnju korisnika, korisno je implementirati barem najosnovniji dio sustava za prijavu, kako bi se sve evidencije mogle povezati sa svojim odgovarajućim korisnicima. Na ovaj način korisnik može tijekom pregleda statistike vidjeti zasebno svoju statistiku (izračunatu temeljem njegovih evidencija), a zasebno sve ostalo.\\
 
-Sučelje za prijavu na sustav izgleda ovako:
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{img/prijava.png}
+\caption{Prijava}
+\label{fig:prijava}
+\end{figure}
 
---- SLIKA ZA LOGIN ---
+Stranica za prijavu sastoji se od polja za unos korisničkog imena i polja za unos lozinke, gdje korisnik upisuje svoje korisničke podatke. Nakon unosa podataka korisnik odabire tipku 'Prijava' čime se šalje zahtjev za autentifikaciju. Server tada uzima korisničko ime od klijenta te provjerava da li navedeni korisnik usitinu postoji u bazi podataka. Ako korisničko ime ne postoji, klijentu se ispisuje odgovarajuća greška. Ako postoji, to znači da u bazi postoji u relaciji 'Korisnik' n-torka koja sadrži sve korisnikove podatke, uključujući i njegovu kriptiranu lozinku. Lozinka koju je korisnik unio prilikom prijave sada se enkriptira te se uspoređuje sa lozinkom pohranjenom u bazi. Ako su jednake, autorizacija uspijeva te korisnik biva prijavljen, u suprotnom se korisniku vraća greška.
+Prilikom prijave moguće je označiti dodatnu opciju 'Zapamti me?'. Bez te opcije, nakon prijave, korisnik će nakon jedog vremenskog perioda neaktivnosti biti automatski odjavljen. Sa tom opcijom, serveru se daje do znanja da zapamti korisnika i da ga ne odjavi nakon navedenog vremenskog perioda, nega da ga zapamti dokle god se u 'kolačićima' klijentovih zahtjeva nalazi identifikator sjednice (engl. session id).\\
 
-Sastoji se od polja za unos korisničkog imena i polja za unos lozinke, gdje korisnik upisuje svoje korisničke podatke. Nakon unosa podataka korisnik odabire tipku 'Prijava' čime se šalje zahtjev za autentifikaciju. Server tada uzima korisničko ime od klijenta te provjerava da li navedeni korisnik usitinu postoji u bazi podataka. Ako korisničko ime ne postoji, klijentu se ispisuje greška. Ako postoji, to znači da u bazu postoji u relaciji 'Korisnik' n-torka koja sadrži sve korisnikove podatke, uključujući i njegovu enkriptiranu lozinku, Lozinka koju je korisnik dao prilikom prijava sada se enkriptira te se uspoređuje sa lozinkom pohranjenom u bazi. Ako se jednake, autorizacija uspijeva te korisnik biva prijavljen, u suprotnom se ispisuje greška. 
-Prilikom prijave moguće je označiti dodatnu opciju 'Zapamti me?'. Bez te opcije, nakon prijave, korisnik će nakon jedog vremenskog perioda neaktivnosti biti automatski odjavljen. Sa top opcijom, serveru se daje do znanja da zapamti korisnika i da ga ne odjavi nakon navedenog vremenskog perioda, nega da ga zapamti.
+U slučaju da korisnik nema već postojeći račun na koji se može prijaviti, postoji i mogućnost registracije novog korisničkog računa:\\
 
-U slučaju da korisnik nema već postojeći račun na koji se može prijaviti, postoji i mogućnost registracije novog korisničkog računa:
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{img/registracija.png}
+\caption{Registracija}
+\label{fig:registracija}
+\end{figure}
 
---- SLIKA ZA REGISTRACIJU ---
-
-Kao što je vidljivo iz slike, potrebno je unesti osnovne korisničke podatke: korisničko ime, email adresu, te lozinku. U slučaju da navedeno korisničko ime već postoji u bazi, registraciju neće biti moguća, pošto korisnička imenu moraju biti unikatna. Lozinku je potrebnu unesti dva puta, kako bi se smanjila mogućnost registracije sa pogrešno unesenom lozinkom.
+Kao što je vidljivo iz slike, potrebno je unesti osnovne podatke: korisničko ime, email adresu, te lozinku. U slučaju da navedeno korisničko ime već postoji u bazi, registracija neće biti moguća, pošto korisnička imenu moraju biti unikatna. Lozinku je potrebnu unesti dva puta, kako bi se smanjila mogućnost registracije sa pogrešno unesenom lozinkom.
 
 \section{Pretplata}
-Nakon što je korisnik prijavljen, on može evidentirati te pregledavati svoje utrošeno vrijeme. Međutim, kako se sve evidencije zapravo vežu uz određeni predmet, evidentiranje i pregled se izvršavaju u odnosu na jedan od mnogih dostupnih predmeta. Zato korisnik uvijek prije evidencije odnosno pregleda mora odabrati jedan od tih predmeta (naprimjer pomoću padajuće liste). Kako broj predmeta može biti poprilično velik, korisnik bi prije svake evidencije i pregleda morao tražiti od svih mogućih predmeta onaj za koji želi evidentirati odnosno pregledavati statistiku. Zato je korisniku omogućena 'pretplata' na predmet:
+Nakon što je korisnik prijavljen, on može evidentirati te pregledavati svoje utrošeno vrijeme. Međutim, kako se sve evidencije zapravo vežu uz određeni predmet, evidentiranje i pregled se izvršavaju u odnosu na jedan od mnogih dostupnih predmeta. Zato korisnik uvijek prije evidencije odnosno pregleda mora odabrati jedan od tih predmeta. Kako broj predmeta može biti poprilično velik, korisnik bi prije svake evidencije i pregleda morao tražiti od svih mogućih predmeta onaj za koji želi evidentirati odnosno pregledavati statistiku. Zato je korisniku omogućena pretplata na predmet:\\
 
---- SLIKA ZA PRETPLATE ---
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{img/pretplata-web.png}
+\caption{Pretplata}
+\label{fig:pretplata-web}
+\end{figure}
 
-U ovom dijelu trenutno prijavljeni korisnik može definirati na koje predmete želi biti pretplaćen. U lijevoj listi nalaze se svi dostupni predmeti, a u desnoj listi se nalaze svi pretplaćeni predmeti. Korisnik može selekcijom na bilo koje od predmeta ili bilo koje grupe predmeta dodavati odnosno brisati odgovarajuće pretplate. Pošto broj predmeta može biti velik na vrhu svakih od listi nalazi se polje za filtriranje. U to polje može se unesti niz znakova (dio ili cijeli naziv predmeta) nakon čega se lista odmah ažurira, te prikazuje samo one predmete koje sadrže navedeni niz znakova.
+U ovom dijelu trenutno prijavljeni korisnik može definirati na koje predmete želi biti pretplaćen. U lijevoj listi nalaze se svi dostupni predmeti, a u desnoj listi se nalaze svi pretplaćeni predmeti. Korisnik može selekcijom na bilo koje od predmeta ili bilo koje grupe predmeta dodavati odnosno brisati odgovarajuće pretplate. Pošto broj predmeta može biti velik na vrhu svakih od listi nalazi se polje za filtriranje. U to polje može se unesti niz znakova (dio ili cijeli naziv predmeta) nakon čega se lista odmah ažurira, te prikazuje samo one predmete koje sadrže navedeni niz znakova:\\
 
-Nakon svih izmjena, pritiskom na tipku 'Ažuriraj' provode se sve promjene te se ažurira popis pretplata odabrane od strane korisnika. Nakon toga u ostalim dijelovima web aplikacije korisnik na raspolaganju za odabir ima samo predmete na koje se unutar ovog izbornika pretplatio.
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{img/filtriranje.png}
+\caption{Filtriranje predmeta po godini}
+\label{fig:filtriranje}
+\end{figure}
+
+Nakon svih izmjena, pritiskom na tipku 'Ažuriraj' provode se sve promjene te se ažurira popis pretplata odabrane od strane korisnika. Nakon toga u ostalim dijelovima web aplikacije korisnik na raspolaganju za odabir ima samo predmete na koje se unutar ove stranice pretplatio.
 
 \section{Evidencija}
-Ovaj dio web aplikacije omogućava prijavljenim korisnicima da evidentiraju svoje utrošeno vrijeme za predmete na koje su pretplaćeni. Odabirom izbornika, sučelje izgleda ovako:
+Ovaj dio web aplikacije omogućava prijavljenim korisnicima da evidentiraju svoje utrošeno vrijeme za predmete na koje su pretplaćeni:\\
 
---- SLIKA EVIDENCIJA (IZBORNIK I KALENDAR) ---
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{img/evidencija-web.png}
+\caption{Evidentiranje predmeta}
+\label{fig:evidencija-web}
+\end{figure}
 
 Evidencija se sastoji od 3 dijela:
 
-1. Na vrhu je padajuća lista koja sadrži sve pretplaćene predmete trenutno prijavljenog korisnika. Ovdje korisnik odabire predmet za koji želi evidentirati utrošeno vrijeme.
+\begin{enumerate}
+\item Na vrhu je padajuća lista koja sadrži sve pretplaćene predmete trenutno prijavljenog korisnika. Ovdje korisnik odabire predmet za koji želi evidentirati utrošeno vrijeme.
 
-2. Izbornik aktivnosti. Nakon što korisnik odabere jedan od njegovih pretplaćenih predmeta putem padajuće liste, ovaj izbornik dinamički se ažurira sa svim novim aktivnostima toga predmeta. Aktivnosti su podijeljene prema tipu aktivnosti, odabirom jednog od tipova aktivnosti otvara se nova padajuća lista koa sadrži sve aktivnosti toga tipa. Naprimjer ako za predmet 'Mrežno programiranje' odaberemo tip aktivnosti 'Laboratorijske vježbe', stranica bi mogla izgledati ovako:
+\item Izbornik aktivnosti. Nakon što korisnik odabere jedan od njegovih pretplaćenih predmeta putem padajuće liste, ovaj izbornik dinamički se ažurira sa svim novim aktivnostima toga predmeta. Aktivnosti su podijeljene prema tipu aktivnosti: odabirom jednog od tipova aktivnosti otvara se nova padajuća lista koja sadrži sve aktivnosti toga tipa. Naprimjer ako za predmet 'Mrežno programiranje' odaberemo tip aktivnosti 'Predavanja', stranica bi mogla izgledati ovako:\\
 
---- SLIKA SA ODABRANIM TIPOM AKTIVNOSTI ---
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{img/selekcija.png}
+\caption{Odabir tipa aktivnosti}
+\label{fig:selekcija}
+\end{figure}
 
-Nakon što je odabran tip aktivnosti, korisnik ima pregled svih aktivnosti toga tipa, te tada odabire jednu od tih aktivnosti, onu za koju želi evidentirati utrošeno vrijeme. Nakon odabira aktivnosti otvara se novi modalni prozor koji izgleda ovako:
+Nakon što je odabran tip aktivnosti, korisnik ima pregled svih aktivnosti toga tipa, te tada odabire jednu od tih aktivnosti, onu za koju želi evidentirati utrošeno vrijeme. Nakon odabira aktivnosti otvara se novi modalni prozor:\\
 
---- SLIKA MODALNOG PROZORA ZA EVIDENCIJU ---
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{img/modal.png}
+\caption{Unos utrošenog vremena}
+\label{fig:modal}
+\end{figure}
 
-Modalni prozor sastoji se od polja u koje se unosi iznos utrošenog vremena, i padajuće liste u kojoj se odabire mjerna jedinica utrošenog vremena (minute ili sati). Nakon što korisnik unese podatke, odabere se opcija spremi čime se vrši validaciju. U slučaju pogreške unosa podataka, naprimjer ako se umjesto iznosa vremena unese riječ ili slično, korisniku se ispisuje odgovarajući tekst pogreške. Ako je validacija prošla, unos se trajno pohranjuje u bazu, nakon čega se kao i sve ostale pohranjene evidencije koristi prilikom računanja statistike koja je dostupna na izborniku pod imenom 'Statistika'.
-U slučaju pogreške od strane korisnika, modalni prozor može se ugasiti pritiskom na 'x' gumb u gornjem desnom kutu prozora čime se evidentiranje za tu specifičnu aktivnost otkazuje.
-Bez obzira na rezultat evidentiranja, korisnik opet može proizvoljno odabirati i evidentirati aktivnosti koliko god je potrebno.
+Modalni prozor sastoji se od polja u koje se unosi iznos utrošenog vremena, i padajuće liste u kojoj se odabire mjerna jedinica utrošenog vremena (minute ili sati). Nakon što korisnik unese podatke, odabere se opcija spremi čime se vrši validacija. U slučaju pogreške unosa podataka, naprimjer ako se umjesto iznosa vremena unese riječ ili slično, korisniku se ispisuje odgovarajući tekst pogreške. Ako je validacija prošla, unos se trajno pohranjuje u bazu, nakon čega se kao i sve ostale pohranjene evidencije koristi prilikom računanja statistike koja je dostupna na stranici imena 'Statistika'. U slučaju pogreške od strane korisnika, modalni prozor može se ugasiti pritiskom na 'x' gumb u gornjem desnom kutu prozora čime se evidentiranje za tu specifičnu aktivnost otkazuje. Bez obzira na rezultat evidencije, korisnik opet može proizvoljno odabirati i evidentirati aktivnosti koliko god je potrebno.\\
 
-3. Kalendar
+\item Kalendar
 
-Osim prethodno navedenog načina evidentiranja (odabirom aktivnosti putem izbornika), korisniku se dodatno omogućuje i evidentiranje putem kalendara. Sve aktivnosti odabranoga predmeta koje imaju u bazi definiran datum početka i/ili trajanje, mogu se vidjeti na kalendaru, ukoliko su to aktivnosti trenutnog predmeta, koji se odabire putem padajuće liste. Tada korisnik može pregledavati sve aktivnosti putem kalendara, te ih aktivirati pritiskom na njih. Nakon takvog odabira, opet se otvara isti modalni prozor kao i prilikom klasičnog evidentiranja koji korisniku omogućuje evidentiranje. Važno je za napomenuti da neke aktivnosti nemaju definiran datum početka. U tom slučaju te aktivnosti se očito nemogu aktivirati putem kalendara, već se moraju odabrati putem izbornika.
+TODO: dodaj sliku kalendara sa aktivnostima:
+
+Osim prethodno navedenog načina evidentiranja (odabirom aktivnosti putem izbornika), korisniku se dodatno omogućuje i evidentiranje putem kalendara. Sve aktivnosti odabranoga predmeta koje imaju u bazi definiran datum početka i/ili trajanje, mogu se vidjeti na kalendaru, ukoliko su to aktivnosti trenutnog predmeta. Korisnik može pregledavati sve aktivnosti putem kalendara, te ih aktivirati pritiskom na njih. Nakon takvog odabira, opet se otvara isti modalni prozor kao i prilikom klasičnog evidentiranja koji korisniku omogućuje evidentiranje. Važno je za napomenuti da neke aktivnosti nemaju definiran datum početka. U tom slučaju te aktivnosti se očito nemogu aktivirati putem kalendara, već se moraju odabrati putem izbornika.\\
+
+\end{enumerate}
 
 \section{Statistika}
-Ovaj dio web aplikacije omogućava prijavljenim korisnicima da pregledaju svoje trenutačno utrošeno vrijeme, te da ga uspoređuju sa drugim korisnicima kao i sa definiranim očekivanim utrošenim vremenom.
+Ovaj dio web aplikacije omogućava prijavljenim korisnicima da pregledaju svoje trenutačno utrošeno vrijeme, te da ga uspoređuju sa drugim korisnicima kao i sa definiranim očekivanim utrošenim vremenom. Kao i kod drugih dijelova aplikacije, korisnik mora biti prijavljen na sustav. Nakon odabira stranice evidencija korisnik ima na raspolaganju dvije kartice, prva od kojih omogućuje sljedeći pregled:
 
-Kao i kod drugih dijelova aplikacije, korisnik mora biti prijavljen na sustav. Nakon odabira izbornika evidencija korisnik ima na raspolaganju dvije kartice, prva od kojih izgleda ovako:
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{img/statistika-web.png}
+\caption{Statistika - kartica Predmeti}
+\label{fig:statistika-web}
+\end{figure}
 
---- SLIKA STATISTIKE (PREDMET) ---
+Korisnik ovdje može odabrati jedan od predmeta na koje je trenutačno pretplaćen. U slučaju da predmet koji korisnik želi pregledavati nije na ovom popisu, potrebno je u izborniku 'Predmeti' pretplatiti se na taj predmet, nakon čega će on postati vidljiv u padajućoj listi.\\
 
-Korisnik ovdje može odabrati jedan od predmeta na koje je trenutačno pretplaćen. U slučaju da predmet koji korisnik želi pregledavati nije na ovom popisu, potrebno je u izborniku 'Predmeti' pretplatiti se na taj predmet, nakon čega će on postati vidljiv u padajućoj listi.
+Nakon odabira korisnika, odmah se ažurira statistika predmeta, tipova aktivnosti, te i samih aktivnosti. Korisnik ima na raspologanja 3 grafa. Prvi graf 'Predmet' omogućuje korisniku pregled utrošenog vremena na razini cijelog predmeta, odnosno obuhvaća ukupan iznos utrošenog vremena. Sve evidencije koje je korisnik ikada evidentirao za trenutačno navedeni predmet bit će pokazane u obliku stupičastog grafa u trenutno odabranim mjernim jedinicama. Osim samih korisnikovih podataka, također su i na raspolaganju drugi podaci: jedan od njih je prosjek utrošenog vremena svih evidencija za taj predmet. Pod time se zapravo misli na prosjek utrošenog vremena svih korisnika koji su ikada evidentirali ovaj predmet.\\
 
-Nakon odabira korisnika, odmah se ažurira statistika predmeta, tipova aktivnosti, te i samih aktivnosti. Korisnika ima na raspologanja 3 grafa. Prvi graf 'Predmet' omogućuje korisniku pregled utrošenog vremena na razini cijelog predmeta, odnosno obuhvaća ukupan iznos utrošenog vremena. Sve evidencije koje je korisnik ikada evidentirao za trenutačno navedeni predmet bit će pokazane u obliku stupčastog(?) grafa u trenutno odabranim mjernim jedinicama. Osim samih korisnikovih podataka, također su i na raspolaganju drugi podaci: jedan od njih je prosjek utrošenog vremena svih evidencija za taj predmet. Pod time se zapravo misli na prosjek utrošenog vremena svih korisnika koji su ikada evidentirali ovaj predmet. 
-Osim tog podatka, također postoji i iznos ECTS bodova koji je definiran za svaki predmet prilikom njegovog unosa. Uz pomoć broja ECTS bodova može se izračunati očekivani utrošak vremena za taj predmet, pošto se uzima da jedan ECTS bod iznosi ~28 sati. Korisnik može vidjeti koliko je vremena utrošio on, koliki je prosjek utrošenog vremena, te koliko je vremena 'trebalo' (otprilike) biti utrošeno. To je korisna informacija koja može pokazati koliko je dobro definiran predmet: da li uzima manje vremena nego što bi trebao, više nego što bi trebao, te u kojim iznosu prekoračuje očekivano vrijeme.
+Osim tog podatka, također postoji i iznos ECTS bodova koji je definiran za svaki predmet prilikom njegovog unosa. Sa ECTS bodovima može se izračunati očekivani utrošak vremena za taj predmet, pošto se uzima da jedan ECTS bod iznosi ~28 sati. Korisnik može vidjeti koliko je vremena utrošio on, koliki je prosjek utrošenog vremena, te koliko je vremena 'trebalo' (otprilike) biti utrošeno. To je korisna informacija koja može pokazati koliko je dobro definiran predmet: da li uzima manje vremena nego što bi trebao, više nego što bi trebao, te u kojim iznosu prekoračuje očekivano vrijeme.\\
 
---- SLIKA GRAFA ZA PREDMET ---
+\begin{figure}[H]
+\centering
+\includegraphics{img/statistika-predmet.png}
+\caption{Statistika - Predmet}
+\label{fig:statistika-predmet}
+\end{figure}
 
 Osim pregleda ukupno utrošenog vremena, korisnik također može pregledavati utrošeno vrijeme po tipovima aktivnosti koji su definirani za trenutačno odabrani predmet. Naprimjer, ako korisnik odabere predmet 'Mrežno programiranje', mogli bismo vidjeti sljedeću sliku:
 
---- SLIKA GRAFA ZA TIPOVE AKTIVNOSTI ---
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{img/statistika-tip-aktivnosti.png}
+\caption{Statistika - Tipovi aktivnosti}
+\label{fig:statistika-tip-aktivnosti}
+\end{figure}
 
-Stupčasti graf sadrži iste 3 komponente kao i graf predmeta: iznos utrošenog vremena korisnika, prosječno utrošeno vrijeme, te očekivano utrošeno vrijeme (ukoliko postoji). Iznosi ovih komponenti definirani su za svaki tip aktivnosti trenutno odabranog predmeta. U slučaju tipa aktivnosti kao što su 'predavanja', u sklopu predmeta može biti definirano semestralno opterećenje sa određenim iznosom (naprimjer, za predmet Diskontna matematika je službeno određeno da predavanja iznose 60 školskih sati), koje određuje koliko vremena bi trebalo biti utrošeno za taj tip aktivnosti. To vrijeme se tada može direktno prikazati u grafu, čime se može vidjeti odstupanje od očekivane vrijednosti. Osim slučaja gdje je trajanje nekog tipa aktivnosti službeno definiran, očekivani utrošak vremena može se definirati 'ručno', za bilo koji tip aktivnosti, čime se može sustavu dati do znanja koliko bi vremena trebalo biti utrošeno za taj tip aktivnosti. Isto tako, moguće je da očekivano vrijeme ne postoji ili nije definirano, u kojem slučaju ono neće biti ni prikazano.
-Ova statistika također prikazuje zanimljive podatke. Pregled utrošenog vremena po predmetu daje nam opći pogled na predmet, dok sa ovom statistikom ulazimo jedan sloj dublje: sada je dostupan pregled utrošenog vremena po tipu aktivnosti. Sa ovim pogledom možemo vidjeti na koji način je raspodijeljeno utrošeno vrijeme: da li premalo ljudi ide na predavanja, da li laboratorijske vježbe oduzimaju previše vremena, da li se domaće zadaće previše lagane i slično.
+Stupčasti graf sadrži iste 3 komponente kao i graf predmeta: iznos utrošenog vremena korisnika, prosječno utrošeno vrijeme, te očekivano utrošeno vrijeme (ukoliko postoji). Iznosi ovih komponenti definirani su za svaki tip aktivnosti trenutno odabranog predmeta. U slučaju tipa aktivnosti kao što su 'predavanja', u sklopu predmeta može biti definirano semestralno opterećenje sa određenim iznosom, koje određuje koliko vremena bi trebalo biti utrošeno za taj tip aktivnosti. To vrijeme se tada može direktno prikazati u grafu, čime se može vidjeti odstupanje od očekivane vrijednosti. Osim slučaja gdje je trajanje nekog tipa aktivnosti službeno definiran, očekivani utrošak vremena može se definirati 'ručno', za bilo koji tip aktivnosti, čime se može sustavu dati do znanja koliko bi vremena trebalo biti utrošeno za taj tip aktivnosti. Isto tako, moguće je da očekivano vrijeme ne postoji ili nije definirano, u kojem slučaju ono neće biti ni prikazano.\\
 
-Još postoji i treći graf: iznos utrošenog vremena po aktivnostima. Kada se odabere drugi izbornik, sučelje izgleda otprilike kap na slici:
+Ova statistika također prikazuje zanimljive podatke. Pregled utrošenog vremena po predmetu daje nam opći pogled na predmet, dok sa ovom statistikom ulazimo jedan sloj dublje: sada je dostupan pregled utrošenog vremena po tipu aktivnosti. Sa ovim pogledom možemo vidjeti na koji način je raspodijeljeno utrošeno vrijeme: da li premalo ljudi ide na predavanja, da li laboratorijske vježbe oduzimaju previše vremena, da li su domaće zadaće previše lagane i slično.
 
---- SLIKA GRAFA ZA AKTIVNOSTI ---
+Još postoji i treći graf: iznos utrošenog vremena po aktivnostima. Kada se odabere drugi izbornik, sučelje izgleda otprilike kao na slici:
 
-Kao i na prijašnjoj kartici, na vrhu se nalazi padajuća lista. Međutim, sada padajuća lista sadrži sve tipove aktivnosti, i to sve tipove aktivnosti trenutačno odabranog predmeta na kartici 'Predmet'. Nakon odabira novog predmeta na prehodnoj kartici, ova padajuća lista odmah se osvježava, sa novim vrijednostima koje odgovaraju odabranom predmetu. Sada korisnik može izabrati jedan od ponuđenih tipova aktivnosti. Prilikom izbora novog tipa aktivnosti, dohvaćaju se sve aktivnosti koje su tog tipa, i koje pripadaju prethodno odabranome predmetu, zajedno sa svim njihovim evidencijama, te se grafički predočuje iznos utrošenog vremena po specifičnoj aktivnosti. Sa ovim grafom najdetaljnije se predočuje utrošeno vrijeme: može se vidjeti točno koliko je vremena utrošeno na pojedinačno aktivnost što isto može biti korisna informacija. Naprimjer, ako se pregledavaju sve laboratorijske vježbe određenoga predmeta, može se vidjeti koliko je vremena utrošena na jednu laboratorijsku vježbu, što je već samo po sebi dovoljan razlog za pregled ovog grafa. Međutim također se može vidjeti koliko je vremena utrošeno na specifičnu laboratorijsku vježbu (odnosno bilo koju aktivnost) u odnosu na druge aktivnosti. Time se može naprimjer uočiti da je određena laboratorijska vježba oduzela premalo vremena s obzirom na druge laboratorijske vježbe, ili da je priprema za laboratorijsku vježbu oduzela previše vremena s obzirom na samu laboratorijsku vježbu ili na druge pripreme ili šta već.
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{img/statistika-aktivnosti.png}
+\caption{Statistika - Aktivnosti}
+\label{fig:statistika-aktivnosti}
+\end{figure}
 
-Osim samog iznosa utrošenog vremena za korisnika i za prosjek, za svaku aktivnost u bazi podataka može biti evidentirano trajanje te aktivnosti. U slučaju naprimjer predavanja to trajanje doslovce predstavlja predefinirani iznos trajanja predavanja određenog termina kao što je određeno po predmetu. Međutim, za aktivnosti koji nemaju već strogo definirana trajanja moguće je prilikom unosa aktivnosti definirati 'očekivano' trajanje, koje korisnicima daje do znanja koliko je vremena otprilike potrebno, ili koliki je očekivani utrošak vremena za tu aktivnost. U svakom slučaju, ako ta vrijednost nije poznata, ili čak nije ni važna, nije ju potrebnu ni unesti, pa će ta vrijednost tada ovdje biti neprikazana.
+Kao i na prijašnjoj kartici, na vrhu se nalazi padajuća lista. Međutim, sada padajuća lista sadrži sve tipove aktivnosti, i to sve tipove aktivnosti trenutačno odabranog predmeta na kartici 'Predmet'. Nakon odabira novog predmeta na prethodnoj kartici, ova padajuća lista odmah se osvježava, sa novim vrijednostima koje odgovaraju odabranom predmetu. Korisnik može izabrati jedan od ponuđenih tipova aktivnosti. Prilikom izbora novog tipa aktivnosti, dohvaćaju se sve aktivnosti koje su tog tipa, i koje pripadaju prethodno odabranome predmetu, zajedno sa svim njihovim evidencijama, te se grafički predočuje iznos utrošenog vremena po specifičnoj aktivnosti. Sa ovim grafom najdetaljnije se predočuje utrošeno vrijeme: može se vidjeti točno koliko je vremena utrošeno na pojedinačnu aktivnost što isto može biti korisna informacija. Naprimjer, ako se pregledavaju sve laboratorijske vježbe određenoga predmeta, može se vidjeti koliko je vremena utrošena na jednu laboratorijsku vježbu, što je već samo po sebi dovoljan razlog za pregled ovog grafa. Međutim također se može vidjeti koliko je vremena utrošeno na specifičnu laboratorijsku vježbu (odnosno bilo koju aktivnost) u odnosu na druge aktivnosti. Time se može naprimjer uočiti da je određena laboratorijska vježba oduzela premalo vremena s obzirom na druge laboratorijske vježbe, ili da je priprema za laboratorijsku vježbu preteška s obzirom na samu laboratorijsku vježbu ili na druge pripreme.\\
+
+Osim samog iznosa utrošenog vremena za korisnika i za prosjek, za svaku aktivnost u bazi podataka može biti evidentirano trajanje te aktivnosti. U slučaju primjerice predavanja to trajanje doslovce predstavlja predefinirani iznos trajanja predavanja određenog termina kao što je određeno po predmetu. Međutim, za aktivnosti koji nemaju već strogo definirana trajanja moguće je prilikom unosa aktivnosti definirati 'očekivano' trajanje, koje korisnicima daje do znanja koliko je vremena otprilike trebalo biti potrebno, ili koliki je očekivani utrošak vremena za tu aktivnost. U svakom slučaju, ako ta vrijednost nije poznata, ili čak nije ni važna, nije ju potrebnu ni unesti, pa će ta vrijednost tada ovdje biti neprikazana.\\
 
 \section{Unos podataka}
+
+TODO
+
 \section{Razvoj i poboljšanja}
+
+TODO
 
 \chapter{Zaključak}
 Zaključak.
