@@ -53,7 +53,7 @@ namespace EvidencijaVremena.Controllers
 		}
 
 		[HttpPost]
-		public ActionResult OsvjeziPredmet(int predmetID, int tipAktivnostiID)
+		public ActionResult OsvjeziPredmet(int predmetID, int tipAktivnostiID, string mjernaJedinica)
 		{
 			Korisnik = db.Korisnik.Where(k => k.KorisnickoIme == User.Identity.Name).First();
 
@@ -63,19 +63,21 @@ namespace EvidencijaVremena.Controllers
 				ICollection<Evidencija> evidencije;
 
 				evidencije = db.Evidencija.Where(e => e.KorisnikID == Korisnik.ID && e.Aktivnost.PredmetID == predmetID).ToList();
-				double korisnikECTS = evidencije.Select(e => e.Trajanje).Sum() / (24.0 * ECTS);
+				double korisnikECTS = evidencije.Select(e => e.Trajanje).Sum() / (60.0 * ECTS);
 
 				evidencije = db.Evidencija.Where(e => e.Aktivnost.PredmetID == predmetID).ToList();
-				double ukupniECTS = evidencije.Select(e => e.Trajanje).Sum() / (24.0 * ECTS);
+				double ukupniECTS = evidencije.Select(e => e.Trajanje).Sum() / (60.0 * ECTS);
 				int brojPretplatnika = db.Pretplata.Where(p => p.PredmetID == predmetID).Count();
 				double prosjekECTS = ukupniECTS / brojPretplatnika;
 
 				double predmetECTS = (double)db.Predmet.First(p => p.ID == predmetID).ECTS;
 
+				/*
 				Debug.WriteLine("korisnik: " + korisnikECTS);
 				Debug.WriteLine("prosjek: " + prosjekECTS);
 				Debug.WriteLine("predmet: " + predmetECTS);
 				Debug.WriteLine("--------------------");
+				*/
 
 				stat.Predmet = new PredmetStatistika();
 				stat.Predmet.Korisnik = korisnikECTS;
@@ -94,11 +96,11 @@ namespace EvidencijaVremena.Controllers
 					evidencije = db.Evidencija.Where(e => e.KorisnikID == Korisnik.ID
 													   && e.Aktivnost.PredmetID == predmetID
 													   && e.Aktivnost.TipAktivnostiID == tipAktivnost.ID).ToList();
-					double korisnikECTS = evidencije.Select(e => e.Trajanje).Sum() / (24.0 * ECTS);
+					double korisnikECTS = evidencije.Select(e => e.Trajanje).Sum() / (60.0 * ECTS);
 
 					evidencije = db.Evidencija.Where(e => e.Aktivnost.PredmetID == predmetID
 													   && e.Aktivnost.TipAktivnostiID == tipAktivnost.ID).ToList();
-					double ukupniECTS = evidencije.Select(e => e.Trajanje).Sum() / (24.0 * ECTS);
+					double ukupniECTS = evidencije.Select(e => e.Trajanje).Sum() / (60.0 * ECTS);
 					int brojPretplatnika = db.Pretplata.Where(p => p.PredmetID == predmetID).Count();
 					double prosjekECTS = ukupniECTS / brojPretplatnika;
 
@@ -109,11 +111,13 @@ namespace EvidencijaVremena.Controllers
 					else
 						tipAktivnostiECTS = (double)temp;
 
+					/*
 					Debug.WriteLine("TipAktivnosti: " + tipAktivnost.Ime);
 					Debug.WriteLine("korisnik: " + korisnikECTS);
 					Debug.WriteLine("prosjek: " + prosjekECTS);
 					Debug.WriteLine("tipAktivnosti: " + tipAktivnostiECTS);
 					Debug.WriteLine("--------------------");
+					*/
 
 					TipAktivnostiStatistika aktStat = new TipAktivnostiStatistika()
 					{ Naziv = tipAktivnost.Ime, Korisnik = korisnikECTS, Prosjek = prosjekECTS, TipAktivnosti = tipAktivnostiECTS };
@@ -131,10 +135,10 @@ namespace EvidencijaVremena.Controllers
 
 					evidencije = db.Evidencija.Where(e => e.KorisnikID == Korisnik.ID
 													   && e.AktivnostID == aktivnost.ID).ToList();
-					double korisnikECTS = evidencije.Select(e => e.Trajanje).Sum() / (24.0 * ECTS);
+					double korisnikECTS = evidencije.Select(e => e.Trajanje).Sum() / (60.0 * ECTS);
 
 					evidencije = db.Evidencija.Where(e => e.AktivnostID == aktivnost.ID).ToList();
-					double ukupniECTS = evidencije.Select(e => e.Trajanje).Sum() / (24.0 * ECTS);
+					double ukupniECTS = evidencije.Select(e => e.Trajanje).Sum() / (60.0 * ECTS);
 					int brojPretplatnika = db.Pretplata.Where(p => p.PredmetID == predmetID).Count();
 					double prosjekECTS = ukupniECTS / brojPretplatnika;
 
@@ -143,13 +147,15 @@ namespace EvidencijaVremena.Controllers
 					if (temp == null)
 						aktivnostECTS = 0;
 					else
-						aktivnostECTS = (double)temp / (24.0 * ECTS);
+						aktivnostECTS = (double)temp / (60.0 * ECTS);
 
+					/*
 					Debug.WriteLine("aktivnost: " + aktivnost.Ime);
 					Debug.WriteLine("korisnik: " + korisnikECTS);
 					Debug.WriteLine("prosjek: " + prosjekECTS);
 					Debug.WriteLine("aktivnost:" + aktivnostECTS);
 					Debug.WriteLine("--------------------");
+					*/
 
 					AktivnostStatistika aktStat = new AktivnostStatistika()
 					{ Naziv = aktivnost.Ime, Korisnik = korisnikECTS, Prosjek = prosjekECTS, Aktivnost = aktivnostECTS };
@@ -159,20 +165,55 @@ namespace EvidencijaVremena.Controllers
 
 			// stavi sve podatke u arraye i posalji
 			{
-				string imePredmeta = db.Predmet.Where(p => p.ID == predmetID).Select(p => p.Ime).Single();
-				double korisnikECTS = stat.Predmet.Korisnik;
-				double prosjekECTS = stat.Predmet.Prosjek;
-				double predmetECTS = stat.Predmet.Predmet;
+				string imePredmeta = null;
+				double korisnikECTS = -1;
+				double prosjekECTS = -1;
+				double predmetECTS = -1;
 
-				String[] tipoviAktivnostiNaziv = stat.TipoviAktivnosti.Select(t => t.Naziv).ToArray();
-				double[] korisnikTipoviAktivnostiECTS = stat.TipoviAktivnosti.Select(t => t.Korisnik).ToArray();
-				double[] prosjekTipoviAktivnostiECTS = stat.TipoviAktivnosti.Select(t => t.Prosjek).ToArray();
-				double[] tipoviAktivnostiECTS = stat.TipoviAktivnosti.Select(t => t.TipAktivnosti).ToArray();
+				String[] tipoviAktivnostiNaziv = null;
+				double[] korisnikTipoviAktivnostiECTS = null;
+				double[] prosjekTipoviAktivnostiECTS = null;
+				double[] tipoviAktivnostiECTS = null;
 
-				String[] aktivnostiNaziv = stat.Aktivnosti.Select(t => t.Naziv).ToArray();
-				double[] korisnikAktivnostiECTS = stat.Aktivnosti.Select(a => a.Korisnik).ToArray();
-				double[] prosjekAktivnostiECTS = stat.Aktivnosti.Select(a => a.Prosjek).ToArray();
-				double[] aktivnostiECTS = stat.Aktivnosti.Select(a => a.Aktivnost).ToArray();
+				String[] aktivnostiNaziv = null;
+				double[] korisnikAktivnostiECTS = null;
+				double[] prosjekAktivnostiECTS = null;
+				double[] aktivnostiECTS = null;
+
+				if (mjernaJedinica == "ects")
+				{
+					imePredmeta = db.Predmet.Where(p => p.ID == predmetID).Select(p => p.Ime).Single();
+					korisnikECTS = stat.Predmet.Korisnik;
+					prosjekECTS = stat.Predmet.Prosjek;
+					predmetECTS = stat.Predmet.Predmet;
+
+					tipoviAktivnostiNaziv = stat.TipoviAktivnosti.Select(t => t.Naziv).ToArray();
+					korisnikTipoviAktivnostiECTS = stat.TipoviAktivnosti.Select(t => t.Korisnik).ToArray();
+					prosjekTipoviAktivnostiECTS = stat.TipoviAktivnosti.Select(t => t.Prosjek).ToArray();
+					tipoviAktivnostiECTS = stat.TipoviAktivnosti.Select(t => t.TipAktivnosti).ToArray();
+
+					aktivnostiNaziv = stat.Aktivnosti.Select(t => t.Naziv).ToArray();
+					korisnikAktivnostiECTS = stat.Aktivnosti.Select(a => a.Korisnik).ToArray();
+					prosjekAktivnostiECTS = stat.Aktivnosti.Select(a => a.Prosjek).ToArray();
+					aktivnostiECTS = stat.Aktivnosti.Select(a => a.Aktivnost).ToArray();
+				}
+				else if (mjernaJedinica == "sati")
+				{
+					imePredmeta = db.Predmet.Where(p => p.ID == predmetID).Select(p => p.Ime).Single();
+					korisnikECTS = stat.Predmet.Korisnik * ECTS;
+					prosjekECTS = stat.Predmet.Prosjek * ECTS;
+					predmetECTS = stat.Predmet.Predmet * ECTS;
+
+					tipoviAktivnostiNaziv = stat.TipoviAktivnosti.Select(t => t.Naziv).ToArray();
+					korisnikTipoviAktivnostiECTS = stat.TipoviAktivnosti.Select(t => t.Korisnik * ECTS).ToArray();
+					prosjekTipoviAktivnostiECTS = stat.TipoviAktivnosti.Select(t => t.Prosjek * ECTS).ToArray();
+					tipoviAktivnostiECTS = stat.TipoviAktivnosti.Select(t => t.TipAktivnosti * ECTS).ToArray();
+
+					aktivnostiNaziv = stat.Aktivnosti.Select(t => t.Naziv).ToArray();
+					korisnikAktivnostiECTS = stat.Aktivnosti.Select(a => a.Korisnik * ECTS).ToArray();
+					prosjekAktivnostiECTS = stat.Aktivnosti.Select(a => a.Prosjek * ECTS).ToArray();
+					aktivnostiECTS = stat.Aktivnosti.Select(a => a.Aktivnost * ECTS).ToArray();
+				}
 
 				return Json(new
 				{

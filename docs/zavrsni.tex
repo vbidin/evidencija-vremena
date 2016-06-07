@@ -254,35 +254,51 @@ ER konceptualni model koristan je za grafički prikaz baze podataka i opis veza 
 \item Relacije sa jednakim primarnim ključevima se stapaju zajedno.
 \end{enumerate}
 
-Preslikavanje entiteta i veza u relacije je trivijalno: relacije su po atributima jednake entitetu odnosno vezi, naprimjer: entitet korisnik preslikao bi se na sljedeći način:
+Preslikavanje entiteta i veza u relacije je trivijalno: relacije su po atributima jednake entitetu odnosno vezi, naprimjer: entitet predmet preslikao bi se na sljedeći način:\\
 
---- SLIKA PRESLIKAVANJA ENTITETA U RELACIJU ---
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{img/relacija-predmet.pdf}
+\caption{Pretvorba entiteta u relaciju}
+\label{fig:relacija-predmet}
+\end{figure}
 
 Veze se preslikavaju na identičan način.
-Nakon što su svi entiteti i veze preslikani, potrebnu je spojiti one relacije koje imaju jednake primarne ključeve. Općenito vrijedi da se veze kardinalnosti 1-N pri preslikavanju stapaju sa entitetom na N strani veze. U ovom slučaju veze 'AktivnostiPredmeta' i 'TipoviAktivnosti' stapaju se sa relacijom 'Aktivnost', čime ona poprima njihove atribute, u ovom slučaju su to atributi 'TipAktivnostiID' i 'PredmetID'.
+Nakon što su svi entiteti i veze preslikani, potrebnu je spojiti one relacije koje imaju jednake primarne ključeve. Općenito vrijedi da se veze kardinalnosti 1-N pri preslikavanju stapaju sa entitetom na N strani veze. U ovom slučaju veze 'AktivnostiPredmeta' i 'TipoviAktivnosti' stapaju se sa relacijom 'Aktivnost', čime ona poprima njihove atribute. U ovom slučaju su to atributi 'TipAktivnostiID' i 'PredmetID', koju ujedno postaju strani ključevi.\\
 
---- SLIKA STAPANJA AKtivnosti i onih 2 druge 1-n veze ---
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{img/relacija-aktivnost.pdf}
+\caption{Stapanje entiteta i veza u relaciju}
+\label{fig:relacija-aktivnost}
+\end{figure}
 
 Još postoje novo nastale relacije 'Opterecenje', 'Pretplata' i 'Evidencija'. Kako su to bile N-N veze, njihovi primarni ključevi bit će primarni ključevi oba entiteta koje su povezivali, te će u relacijskom modelu njihovi primarni ključevi biti unikatni, što znači da one postaju nove samostalne relacije.
 
---- SLIKA PRESLIKAVANJA N-N... Evidencije ---
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{img/relacija-evidencija.pdf}
+\caption{Pretvorba veze u relaciju}
+\label{fig:relacija-evidencija}
+\end{figure}
 
-Sada je vidljivo da neke relacije sadrže strane ključeve (primarni ključevi drugih relacija), koje grafički možemo prikazati na sljedeći način:
+Sada je vidljivo da neke relacije sadrže strane ključeve (primarne ključevi drugih relacija), koje grafički možemo prikazati na sljedeći način:
 
---- SLIKA POVEZIVANJA SA STRANIM KLJUČEVIMA ---
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{img/strani-kljucevi.pdf}
+\caption{Notacija stranih ključeva}
+\label{fig:strani-kljucevi}
+\end{figure}
 
-Nakon pretvorbe iz ER modela također je potrebno odrediti tipove podataka atributa svake relacije, pošto se oni direktno koriste od strane web aplikacije.
+Konačni relacijski model:
 
-Relacije nakon pretvorbe su sljedeće:
-\begin{enumerate}
-\item Korisnik
-\item Predmet
-\item Aktivnost
-\item TipAktivnosti
-\item Evidencija
-\item Pretplata
-\item Opterecenje
-\end{enumerate}
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{img/relacijski-model.pdf}
+\caption{Relacijski model}
+\label{fig:relacijski-model}
+\end{figure}
 
 \lstset{language=SQL, tabsize=4}
 \lstinputlisting{sql/baza.sql}

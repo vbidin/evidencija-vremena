@@ -5,13 +5,13 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="7f700ef4133e4e7f87d704778baf4e35" Name="Diagram1">
-        <EntityTypeShape EntityType="EvidencijaVremenaModel.Aktivnost" Width="1.5" PointX="3" PointY="4.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="EvidencijaVremenaModel.Evidencija" Width="1.5" PointX="8.25" PointY="4.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="EvidencijaVremenaModel.Korisnik" Width="1.5" PointX="3.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="EvidencijaVremenaModel.Opterecenje" Width="1.5" PointX="6" PointY="4.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="EvidencijaVremenaModel.Predmet" Width="1.5" PointX="0.75" PointY="4.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="EvidencijaVremenaModel.Pretplata" Width="1.5" PointX="6" PointY="2" IsExpanded="true" />
-        <EntityTypeShape EntityType="EvidencijaVremenaModel.TipAktivnosti" Width="1.5" PointX="0.75" PointY="2" IsExpanded="true" />
+        <EntityTypeShape EntityType="EvidencijaVremenaModel.Aktivnost" Width="1.5" PointX="7.5" PointY="3.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="EvidencijaVremenaModel.Evidencija" Width="1.5" PointX="7.5" PointY="7.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="EvidencijaVremenaModel.Korisnik" Width="1.5" PointX="9.375" PointY="7.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="EvidencijaVremenaModel.Opterecenje" Width="1.5" PointX="5.5" PointY="1.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="EvidencijaVremenaModel.Predmet" Width="1.5" PointX="9.375" PointY="1.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="EvidencijaVremenaModel.Pretplata" Width="1.5" PointX="9.375" PointY="4.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="EvidencijaVremenaModel.TipAktivnosti" Width="1.5" PointX="5.5" PointY="4.375" IsExpanded="true" />
         <AssociationConnector Association="EvidencijaVremenaModel.FK__Aktivnost__Predm__1BFD2C07" ManuallyRouted="false" />
         <AssociationConnector Association="EvidencijaVremenaModel.FK__Aktivnost__TipAk__1CF15040" ManuallyRouted="false" />
         <AssociationConnector Association="EvidencijaVremenaModel.FK__Evidencij__Aktiv__286302EC" ManuallyRouted="false" />

@@ -7,11 +7,11 @@
 \contentsline {subsection}{\numberline {2.3.1}Zahtjevi}{5}
 \contentsline {subsection}{\numberline {2.3.2}Izrada ER modela}{7}
 \contentsline {subsection}{\numberline {2.3.3}Pretvorba u relacijski model}{18}
-\contentsline {chapter}{\numberline {3}Web aplikacija}{22}
-\contentsline {section}{\numberline {3.1}Prijava}{22}
-\contentsline {section}{\numberline {3.2}Pretplata}{24}
-\contentsline {section}{\numberline {3.3}Evidencija}{25}
-\contentsline {section}{\numberline {3.4}Statistika}{28}
-\contentsline {section}{\numberline {3.5}Unos podataka}{33}
-\contentsline {section}{\numberline {3.6}Razvoj i pobolj\IeC {\v s}anja}{33}
-\contentsline {chapter}{\numberline {4}Zaklju\IeC {\v c}ak}{34}
+\contentsline {chapter}{\numberline {3}Web aplikacija}{25}
+\contentsline {section}{\numberline {3.1}Prijava}{25}
+\contentsline {section}{\numberline {3.2}Pretplata}{27}
+\contentsline {section}{\numberline {3.3}Evidencija}{28}
+\contentsline {section}{\numberline {3.4}Statistika}{31}
+\contentsline {section}{\numberline {3.5}Unos podataka}{36}
+\contentsline {section}{\numberline {3.6}Razvoj i pobolj\IeC {\v s}anja}{36}
+\contentsline {chapter}{\numberline {4}Zaklju\IeC {\v c}ak}{37}

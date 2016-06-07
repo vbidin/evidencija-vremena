@@ -3,10 +3,22 @@
 <div class="row">
     <div class="col-xs-12">
         <div class="panel panel-default">
-            <div class="panel-heading">
-                <ul class="nav nav-pills">
+            <div class="panel-heading nav navbar-default">
+                <ul class="nav navbar-left nav-pills">
                     <li class="active"><a data-toggle="pill" href="#predmetiTab">Predmeti</a></li>
                     <li><a data-toggle="pill" href="#aktivnostiTab">Aktivnosti</a></li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <div class="btn-group" data-toggle="buttons">
+                            <label class="btn btn-primary active">
+                                <input type="radio" name="options" id="ects" autocomplete="off" checked>ECTS
+                            </label>
+                            <label class="btn btn-primary">
+                                <input type="radio" name="options" id="sati" autocomplete="off">Sati
+                            </label>
+                        </div>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -20,6 +32,7 @@
                     <div class="col-xs-12">
                         <div class="form-inline">
                             <div class="form-group">
+                                <label>Predmet &nbsp;</label>
                                 @Html.DropDownListFor(m => m.OdabraniPredmetID, Model.SelectListPredmeta,
                                 new { id = "predmeti", @class = "form-control", style = "width:auto; display:inline-block;" })
                             </div>
@@ -34,17 +47,6 @@
                             <div class="panel-heading">
                                 @Html.LabelFor(m => m.OdabraniPredmetID)
                             </div>
-                            <div class="btn-group" data-toggle="buttons">
-                                <label class="btn btn-primary btn-sm active">
-                                    <input type="radio" name="options" id="ects" autocomplete="off" checked>ECTS
-                                </label>
-                                <label class="btn btn-primary btn-sm">
-                                    <input type="radio" name="options" id="sati" autocomplete="off">Sati
-                                </label>
-                                <label class="btn btn-primary btn-sm">
-                                    <input type="radio" name="options" id="postotci" autocomplete="off">%
-                                </label>
-                            </div>
                             <div id="predmetDiv" class="panel-body">
                                 <canvas id="predmetGraf" width="400" height="400"></canvas>
                             </div>
@@ -54,17 +56,6 @@
                         <div class="panel panel-default">
                             <div class="panel-heading">
                                 @Html.LabelFor(m => m.OdabraniTipAktivnostiID)
-                            </div>
-                            <div class="btn-group" data-toggle="buttons">
-                                <label class="btn btn-primary btn-sm active">
-                                    <input type="radio" name="options" id="ects" autocomplete="off" checked>ECTS
-                                </label>
-                                <label class="btn btn-primary btn-sm">
-                                    <input type="radio" name="options" id="sati" autocomplete="off">Sati
-                                </label>
-                                <label class="btn btn-primary btn-sm">
-                                    <input type="radio" name="options" id="postotci" autocomplete="off">%
-                                </label>
                             </div>
                             <div id="tipAktivnostiDiv" class="panel-body">
                                 <canvas id="tipAktivnostiGraf" width="800" height="400"></canvas>
@@ -82,6 +73,7 @@
                     <div class="col-xs-12">
                         <div class="form-inline">
                             <div class="form-group">
+                                <label>Tip aktivnosti &nbsp;</label>
                                 @Html.DropDownListFor(m => m.OdabraniTipAktivnostiID, Model.SelectListTipAktivnosti,
                                 new { id = "aktivnosti", @class = "form-control", style = "width:auto; display:inline-block;" })
                             </div>
@@ -96,17 +88,6 @@
                             <div class="panel-heading">
                                 @Html.LabelFor(m => m.OdabranaAktivnostID)
                             </div>
-                            <div class="btn-group" data-toggle="buttons">
-                                <label class="btn btn-primary btn-sm active">
-                                    <input type="radio" name="options" id="ects" autocomplete="off" checked>ECTS
-                                </label>
-                                <label class="btn btn-primary btn-sm">
-                                    <input type="radio" name="options" id="sati" autocomplete="off">Sati
-                                </label>
-                                <label class="btn btn-primary btn-sm">
-                                    <input type="radio" name="options" id="postotci" autocomplete="off">%
-                                </label>
-                            </div>
                             <div id="aktivnostiDiv" class="panel-body">
                                 <canvas id="aktivnostiGraf" width="800" height="400"></canvas>
                             </div>
@@ -119,6 +100,15 @@
 </div>
 
 <script type="text/javascript" language="javascript">
+
+    $('#sati').change('click', function () {
+        $("#predmeti").change();
+    });
+
+    $('#ects').change('click', function () {
+        $("#predmeti").change();
+    });
+
     $("#predmeti").change(function () {
         var prd = $("#predmeti").children(":selected")[0].value;
         $.post('@Url.Action("OsvjeziAktivnosti", "Statistika")', { predmetId: prd }, OsvjeziAktivnosti, "json");
@@ -127,11 +117,15 @@
     $("#aktivnosti").change(function () {
         var prd = $("#predmeti").children(":selected")[0].value;
         var akt = $("#aktivnosti").children(":selected")[0].value;
-        $.post('@Url.Action("OsvjeziPredmet", "Statistika")', { predmetId: prd, tipAktivnostiID: akt }, OsvjeziPredmet, "json");
+        var mj;
+        if ($('#sati').is(':checked')) mj = "sati";
+        else mj = "ects";
+        $.post('@Url.Action("OsvjeziPredmet", "Statistika")', { predmetId: prd, tipAktivnostiID: akt, mjernaJedinica: mj }, OsvjeziPredmet, "json");
     });
 
     function OsvjeziAktivnosti(data) {
         var $el = $("#aktivnosti");
+        var $id = $("#aktivnosti").children(":selected")[0].value;
         $el.empty();
         var len = data.id.length;
         for (var i = 0; i < len; i++) {
@@ -140,6 +134,19 @@
             opt.innerHTML = data.naziv[i];
             var sel = $("#aktivnosti");
             sel.append($('<option></option>').val(opt.value).html(opt.innerHTML));
+        }
+        var exists = false;
+        $('#aktivnosti option').each(function () {
+            if (this.value == $id) {
+                exists = true;
+                return false;
+            }
+        });
+
+        if (exists) {
+            $("#aktivnosti").val($id);
+        } else {
+            $("#aktivnosti").val($("#aktivnosti option:first").val());
         }
         $("#aktivnosti").change();
     }
