@@ -5,89 +5,171 @@
 
 \begin{document}
 
-% TODO: Navedite broj rada.
-\thesisnumber{000}
+\thesisnumber{4439}
 
-% TODO: Navedite naslov rada.
-\title{Naslov}
+\title{Baza podataka i Web aplikacija za upravljanje vremenom tijekom studija}
 
-% TODO: Navedite vaše ime i prezime.
-\author{Arthur Dent}
+\author{Vedran Biđin}
 
 \maketitle
 
-% Ispis stranice s napomenom o umetanju izvornika rada. Uklonite naredbu \izvornik ako želite izbaciti tu stranicu.
-\izvornik
+\textbf{Izvornik}\\\hspace*{\fill}
 
-% Dodavanje zahvale ili prazne stranice. Ako ne želite dodati zahvalu, naredbu ostavite radi prazne stranice.
+Oblikovati model baze podataka za praćenje vremena utrošenog na aktivnosti tijekom direktne nastave, učenje i ostale nastavne obaveze studenta tijekom studija. Model treba, između ostalog, obuhvatiti podatke o predmetima i njihovom predviđenom opterećenju izraženom u ECTS bodovima, fiksnim nastavnim obavezama studenta tijekom semestra i stvarno utrošenom vremenu tijekom samostalnog rada studenta. Na osnovi izgrađenog modela implementirati bazu podataka i pripadnu web aplikaciju. Aplikacija treba putem prikladnog sučelja korisniku omogućiti evidentiranje i pregled utrošenog vremena te usporedbu stvarnog utroška vremena s vremenom koje je ECTS bodovima propisano za uspješno savladavanje nastavnih obaveza. Uz otisnuti primjerak rada priložiti optički disk s izgrađenom programskom potporom u izvornom i izvršnom obliku, te tekstom rada.
+
 \zahvala{}
 
 \tableofcontents
 
 \chapter{Uvod}
-Uvod rada. Nakon uvoda dolaze poglavlja u kojima se obrađuje tema.
+TODO
 
 \chapter{Baza podataka}
 
 \section{ER model}
 
-Baza podataka može se modelirati na vše načina. Jedan od tih načina zove se ER model. ER model podataka sastoji se od skupa entiteta koji su opisani atributima i njihovih veza. 
+Baza podataka može se predočiti uz pomoć modela. Jedan od tih modela zove se ER model (engl. Entity-Relationship model). ER model podataka sastoji se od skupa entiteta koji su opisani atributima i vezama entiteta. 
 
-Entitet predstavlja bilo kakav stvarni ili apstraktni pojam čije podatke možemo i želimo trajno pohraniti. U sklopu baze podataka, entitete fizički predstavljaju tablice baze podataka. Svaki entitet se razlikuje od svih ostalih entiteta. Na primjer, osobu koja pohađa određeno sveučilište možemo definirati kao entitet. Entitet ne treba nužno biti živo biće ili dio stvarnog svijeta, on takoder može biti apstraktan koncept kao što je narudžba hrane, ili rezervacija sobe. 
+\subsection{Entitet}
 
-Svaki entitet se sastoji od atributa, te n-torki (članovi entiteta).
-Ako se entitet grafički predoči kao tablica, stupci te tablice bili bi atributi entiteta, a svaki red tablice predstavljao bi jednog jedinstvenog člana entiteta. Naprimjer, ako entitet opisuje osobu, onda bi njezini atributi mogli bili: OIB, ime, prezime, datum rođenja, mjesto rođenja. Tada bi za svaku osobu bio definiran skup vrijednosti koji odgovora skupu atributa entiteta, naprimjer: "012390123812", "Pero", "Perić", "23.7.1987.", "Zagreb". Svaki atribut je određeni tip podataka: u slučaju imena ili prezimena to je običan niz slova, ali atributi mogu također biti brojevi, datumi, decimalni brojevi sa određenim stopama preciznosti, nizovi bitovi itd. Svaki skup vrijednosti jednog člana entiteta mora odgovarati po tipovima podataka skupu atributa. Naprimjer, ako je atribut 'mjesto rođenja' definiran kao niz znakova, onda se kao vrijednost tog atributa ne može unesti broj ili niz bitova, već samo niz znakova. U ovom slučaju, entitet osoba bi mogli predočiti kao sljedeću tablicu:
+Entitet predstavlja bilo kakav stvarni ili apstraktni pojam čije podatke možemo i želimo trajno pohraniti. U sklopu baze podataka, entiteti fizički predstavljaju tablice baze podataka. Svaki entitet se razlikuje od svih ostalih entiteta. Entitet ne treba nužno biti živo biće ili dio stvarnog svijeta, on takoder može biti apstraktan koncept kao što je to narudžba hrane, ili rezervacija sobe.
 
---- SLIKA ENTITETA SA ATRIBUTIMA ---
+Svaki entitet se sastoji od atributa i od n-torki (članovi entiteta). Ako se entitet grafički predoči kao tablica, stupci te tablice bili bi atributi entiteta, a svaki red tablice predstavljao bi jednog jedinstvenog člana entiteta. Naprimjer, ako entitet opisuje osobu, onda bi njezini atributi mogli bili: OIB, ime, prezime. Tada bi za svaku osobu bio definiran skup vrijednosti koji odgovora skupu atributa entiteta, primjerice:\\
+
+\begin{table}[H]
+\caption{Atributi}
+\label{tbl:atributi}
+\centering
+\begin{tabular}{llr}
+\hline
+OIB & Ime & Prezime\\
+\hline
+012390123812 & Pero & Perić\\
+\hline
+\end{tabular}
+\end{table}
+
+U ER modelu entiteti se grafički predočuju kao pravokutnik unutar kojega se nalazi ime entiteta, zajedno sa elipsama koje predstavljaju atribute entiteta.\\
+
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.8]{img/osoba.pdf}
+\caption{Osoba}
+\label{fig:osoba}
+\end{figure}
 
 Važno je uočiti da više n-torki jednog entiteta može imati iste vrijednosti atributa. Naprimjer, više osoba može kao mjesto rođenja imati Zagreb. Međutim, važno svojstvo svakog člana entiteta je da je on jedinstven. To znači da za svaki entitet mora postojati skup atributa (ili samo jedan atribut) koji jednoznačno određuje svaki član. Tada ne smije postojati više članova koji za taj jedinstveni skup atributa imaju jednake vrijednosti.
 
-Taj skup atributa koji jednoznačno određuje jednu n-torku entiteta zove se PRIMARNI KLJUČ. U slučaju sa entiteom Osoba dobar odabir za primarni ključ bio bi 'OIB' pošto znamo sa sigurnošću da svaka osoba ima jedinstveni OIB. Primarni ključ obično se grafički prikazuje podcrtavanjem atributa koje obuhvaća:
+Taj skup atributa koji jednoznačno određuje jednu n-torku entiteta zove se \emph{primarni ključ}. U slučaju sa entitetom 'Osoba' dobar odabir za primarni ključ bio bi atribut 'OIB' pošto znamo sa sigurnošću da svaka osoba ima jedinstveni OIB. Primarni ključ obično se grafički prikazuje podcrtavanjem atributa koje obuhvaća. Moguće je i da n-torku jednoznačno određuje više od samo jednog atributa. Naprimjer, u slučaju entiteta 'Ispit', koji predstavlja ispite iz određenog predmeta kojima su pristupili određeni studenti, entitet bi mogao biti grafički predočen na sljedeći način:\\
 
---- SLIKA ENTITETA SA PODCRTANIM PRIMARNIM KLJUČEM ---
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.8]{img/ispit.pdf}
+\caption{Ispit}
+\label{fig:ispit}
+\end{figure}
+\clearpage
 
-Moguće je i da n-torku jednoznačno određuje više atributa. Naprimjer, u slučaju entiteta 'Ispit', koji predstavlja ispite iz određenog predmeta kojima su pristupili određeni studenti mogao bi izgledati ovako:
+Sada nije toliko lagano odrediti primarni ključ pošto nemamo unikatni atribut kao što je to bio slučaj za entitet 'Osoba'. Međutim, moguće je jednoznačno definirati svaki član ispita sa skupom atributa: 'Predmet' i 'Osoba'. 'Predmet' definira iz kojeg predmeta se održavao ispit, a 'Osoba' definira osobu koja je pristupila ispitu. Ako uzmemo u obzir da ista osoba može više puta pristupiti ispitu za jedan predmet, možemo u primarni ključ dodati i novi atribut 'Datum polaganja'. Ovakav primarni ključ zove se \emph{kompozitni ključ}, pošto se sastoji od kompozicije više atributa.\\
 
---- SLIKA ENTITETA SA ATRIBUTIMA ---
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.8]{img/kom-ispit.pdf}
+\caption{Primjer kompozitnog ključa}
+\label{fig:kom-ispit}
+\end{figure}
 
-Sada nije toliko lagano odrediti primarni ključ pošto nemamo unikatni atribut kao što je to bio slučaj za entitet 'Osoba'. Međutim, moguće je jednoznačno definirati svaki član ispita sa SKUPOM atributa: 'Predmet', 'Osoba', te 'Datum polaganja'. 'Predmet' definira iz kojeg predmeta se održavao ispit, a 'Osoba' definira osobu koja je pristupila ispitu. Ako uzmemo u obzir da ista osoba može više puta pristupiti ispitu za jedan predmet, možemo u skup dodati i atribut 'Datum polaganja'. Ovakav primarni ključ zove se KOMPOZITNI KLJUČ, pošto se sastoji od kompozicije više atributa.
+Moguće je također u postojeći entitet dodati novi atribut, naziva 'ID', koji samo predstavlja identifikator svake n-torke entiteta, a osim toga ne nosi nikavku drugu informaciju. U tom slučaju možemo kao primarni ključ koristiti isključivo taj atribut, umjesto da koristimo 'prirodni' kompozitni ključ. Takav tip primarnog ključa zove se \emph{surogatni} ili \emph{umjetni} ključ.\\
 
---- SLIKA ENTITETA SA KOMPOZITNIM KLJUČEM ---
 
-Moguće je također u postojeći entitet dodati novi atribut, naziva 'ID', koji samo predstavlja identifikator svake n-torke entiteta, a osim toga ne nosi nikavku informaciju. U tom slučaju možemo kao primarni ključ koristiti isključivo samo taj atribut, umjesto da koristimo 'prirodni' kompozitni ključ. Takav tip ključa zove se SUROGATNI KLJUČ.
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.8]{img/sur-ispit.pdf}
+\caption{Primjer surogatnog ključa}
+\label{fig:sur-ispit}
+\end{figure}
+\clearpage
 
---- SLIKA ENTITETA SA SUROGATNIM KLJUČEM ---
+\subsection{Veza}
 
 Veza je odnos između skupa entiteta.
-Na primjer ako želimo definirati u bazi podataka da određena osoba ima određeni grad kao svoje mjesto rođenja, možemo za svaku osobu evidentirati njeno mjesto rođenja. Ako samo unutar entiteta 'Osoba' dodamo atribut koji se zove 'Mjesto rođenja', za svaku osobu bi vrijednost tog atributa bio naprimjer naziv grada. Međutim, ako više osoba dijele isti grad kao njihovo mjesto rođenja, naprimjer 'Pero' i 'Ivan' su oboje rođeni u 'Zagrebu', u bazi podataka za svakog od njih kao vrijednost za 'Mjesto rođenja' bit će vrijednost "Zagreb". 
-Osim mjesta rođenja moguća je potreba za evidentiranjem drugih stvari, kao što je prebivalište. U tom slučaju morali bi za svakog zaposlenika definirati dodatno i prebivalište. Ako na taj način evidentiramo podatke u bazi podataka doći će do redundancije. Više zaposlenika može imati kao vrijednost svojih atributa iste vrijednosti, naprimjer 10 osoba može kao mjesto rođenja imati definiran isti grad. Poželjno je na neki način razdvojiti sve takve duplikate na način da osobe mogu umjesto dupliciranja 'djeliti' mjesto rođenja. 
-Tu do izražaja dolazi veza. Poželjno je razdvojiti podatke vezane uz grad iz entiteta osoba u zasebni entitet 'Grad'. Na taj način možemo osigurati da su gradovi skup, te da ne dolazi do ponavljanja istog grada, odnosno da ne dolazi do redundancije. Tada u bazi možemo modelirati vezu između entiteta Osoba i entiteta Grad koja se zove 'Mjesto rođenja', odnosno 'Mjesto prebivališta'. Na tu vezu gledamo na isti način kao i na entitet. Ona će također imati svoje atribute te primarni ključ. U ovom slučaju veza bi mogla izgledati ovako (u ER dijagramu veza se obično prikazuje sa rombom):
+Primjer: želimo definirati u bazi podataka da određena osoba ima određeni grad kao svoje mjesto rođenja. Možemo za svaku osobu evidentirati njeno mjesto rođenja. Ako unutar entiteta 'Osoba' dodamo atribut koji se zove 'MjestoRodenja', za svaku osobu bi vrijednost tog atributa bio primjerice naziv grada. Međutim, ako više osoba dijele isti grad kao njihovo mjesto rođenja, u bazi podataka za svakog od njih atribut 'MjestoRodenja' poprimiti će jednaku vrijednost.
 
---- SLIKA VEZE IZMEĐU ENTITETA OSOBA I GRAD ---
+Osim mjesta rođenja moguća je potreba za evidentiranjem drugih stvari, kao što je prebivalište. U tom slučaju morali bi za svakog zaposlenika definirati dodatno i prebivalište. Ako nastavimo taj način evidentirati podatke u bazi podataka doći će do redundancije. Poželjno je na neki način razdvojiti sve takve duplikate na način da osobe mogu umjesto dupliciranja 'djeliti' mjesto rođenja.
 
-Primarni ključ veze je u ovom slučaju kompozitni ključ, koji se sastoji od primarnog ključa osobe (OIB), te primarnog ključa grada (poštanski broj). Na ovaj način omogućili smo u bazi da više osoba ima kao mjesto rođenja isti grad (i time izbjegli redundanciju). Oznake između veza i entiteta označavaju kardinalonost veze. Kardinalnost označava broj entiteta koji mogu biti asocirani sa drugim entitetom preko veze. U ovom slučaju kardinalnost je N-1, što označava da više osoba može bit vezano sa jednim gradom preko te veze, ali ne i obratno, odnosno više osoba može imati isto mjesto rođenja, ali ne i obratno. Kardinalnosti mogu biti:
+Tu do izražaja dolazi veza. Poželjno je razdvojiti podatke vezane uz grad iz entiteta osoba u zasebni entitet 'Grad'. Na taj način možemo osigurati da su gradovi skup, te da ne dolazi do ponavljanja istog grada, odnosno ne dolazi do redundancije. Tada u bazi možemo modelirati vezu između entiteta 'Osoba' i entiteta 'Grad' koja se zove 'MjestoRodenja', ili 'MjestoPrebivalista'. Na tu vezu gledamo na isti način kao i na entitet. Ona će također imati svoje atribute te primarni ključ. U ovom slučaju veza bi mogla izgledati ovako (u ER dijagramu veza se obično prikazuje sa rombom):
 
---- TABLICA/SLIKA KARDINALNOSTI ---
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.7]{img/veza.pdf}
+\caption{Primjer veze}
+\label{fig:veza}
+\end{figure}
 
-Iz slike se također vidi da jedan entitet (odnosno veza) može sadržavati atribut (ili skup atributa) koji su primarni ključ nekog drugog entiteta. Skup takvih atributa zove se STRANI KLJUČ. Veze i strani ključevi omogućuju nam da povežemo entitete baze podataka u logički smislenu cjelinu.
+Primarni ključ veze je u ovom slučaju atribut 'OIB', pošto svaka osoba može imati evidetirano samo jedno mjesto rođenja. Na ovaj način omogućili smo da u bazi više osoba ima kao mjesto rođenja isti grad (i time izbjegli redundanciju). Oznake između veza i entiteta označavaju kardinalnost veze. Kardinalnost označava broj entiteta koji mogu biti asocirani sa drugim entitetom preko navedene veze. U ovom slučaju kardinalnost je N-1, što označava da više osoba može bit vezano sa jednim gradom preko te veze, ali ne i obratno, odnosno više osoba može imati isto mjesto rođenja, ali jedna osoba ne može imati više mjesta rođenja. Kardinalnosti mogu biti:\\
 
-Veze ne trebaju povezivati samo 2 entiteta, moguća je i veza između 2 ili više entiteta:
+--- TABLICA/SLIKA KARDINALNOSTI ---\clearpage
 
---- SLIKA SA VEZOM OD 3 ENTITETA ---
+Moguća je veza između bilo kojeg broja entiteta,\\
 
-kao i refleksivna veza koji jednom entitetu pridjeljuje 2 uloge:
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.8]{img/veza-3.pdf}
+\caption{Primjer ternarne veze}
+\label{fig:veza-3}
+\end{figure}
 
---- SLIKA SA REFLEKSIVNOM VEZOM
+kao i refleksivna veza koji jednom entitetu pridjeljuje 2 uloge:\\
 
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.8]{img/veza-ref.pdf}
+\caption{Primjer refleksivne veze}
+\label{fig:veza-ref}
+\end{figure}
+
+\clearpage
 \section{Relacijski model}
 
-TODO
+Drugi model kojim se može opisati baza podataka zove se relacijski model. Za razliku od ER modela, on nema veze, nego se cijela baza podataka definira pomoću relacija, koje su slične entitetima. Relacijski model je važan jer je to model kojeg koriste većina baza podataka.
 
+\subsection{Relacija}
+
+Osnovna svojstva relacija:
+\begin{enumerate}
+\item Relacija posjeduje ime koj je jedinstveno unutar sheme baze podataka.
+\item Atributi unutar relacije imaju jedinstvena imena.
+\item Jedan atribut može poprimit vrijednost iz samo jedne domene.
+\item U jednoj relaciji ne postoje dvije jednake n-torke.
+\item Redoslijed atributa unutar relacije je nebitan.
+\item Redoslijed n-torki unutar relacije je nebitan.\\
+\end{enumerate}
+
+Svaki atribut relacije je određeni tip podatka: u slučaju imena ili prezimena to je običan niz slova, ali atributi mogu također biti brojevi, datumi, decimalni brojevi sa određenim stopama preciznosti, nizovi bitova, itd. Svaki skup vrijednosti jednog člana relacije mora odgovarati po tipovima podataka skupu atributa. Naprimjer, ako je atribut 'MjestoRodenja' definiran kao niz znakova, onda se kao vrijednost tog atributa može unesti samo niz znakova. Relacije se obično grafički predočuju kao tablice: relaciju 'Osoba' mogli bi prikazati na sljedeći način:\\
+
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.8]{img/rel-osoba.pdf}
+\caption{Relacija}
+\label{fig:rel-osoba}
+\end{figure}
+
+Umjesto veza, odnosi među relacijama vidljivi su pomoću stranih ključeva (engl. foreign key, kratica FK). Strani ključ je atribut ili skup atributa relacije koji u nekoj drugoj relaciji služi kao primarni ključ.\\
+
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.8]{img/strani-kljuc.pdf}
+\caption{Strani ključ}
+\label{fig:strani-kljuc}
+\end{figure}
+
+Iz ovog dijagrama moglo bi se zaključiti da je 'PrebivalistePBR' strani ključ koji se referencira na primarni ključ 'PBR' relacije 'Grad'. Krajevi poveznice označuju kardinalnost, razgranati kraj ovdje označava množinu (N), s time da se mogu koristiti i oznake ER modela (općenito vrijedi sve iz ER modela).
+\clearpage
 \section{Izrada baze podataka}
 \subsection{Zahtjevi}
 
-Općenito, problem je sljedeći:
-Potrebno je napraviti web aplikaciju koji omogućuje korisnicima, odnosno studentima, da evidentiraju vrijeme koje su utrošili tijekom studija na aktivnosti kao što su direktna nastava, učenje, te ostale nastavne obaveze studenata. Sustav također mora omogućiti korisnicima da pregledavaju utrošeno vrijeme te da uspoređuju stvarno utrošeno vrijeme sa vremenom koje je ECTS bodovima propisano za uspješno svladavanje nastavnih obaveza.\\
+Zadatak je sljedeći:
+Potrebno je napraviti web aplikaciju koji omogućuje korisnicima, odnosno studentima, da evidentiraju vrijeme koje su utrošili tijekom studija na aktivnosti kao što su direktna nastava, učenje, te ostale nastavne obaveze studenata. Sustav također mora omogućiti korisnicima da pregledavaju utrošeno vrijeme te da uspoređuju stvarno utrošeno vrijeme sa vremenom koje je ECTS bodovima propisano za uspješno svladavanje nastavnih obaveza.
 
 Zadatak stvaranja baze podataka web aplikacije podrazumijeva dizajn sheme baze podataka. Potrebe korisnika igraju središnju ulogu u konstruiranju sheme. Početna faza dizajna baze podataka je opisati u potpunosti potrebe potencijalnih korisnika. Ishod ove faze u složenijim aplikacijama može biti specifikacija zahtjeva korisnika. Nakon što su definirani svi zahtjevi, iz njih se izvodi konceptualni model baze podataka.\\
 
@@ -95,28 +177,30 @@ Potrebno je definirati koje sve zahtjeve sustav mora zadovoljavati:
 \begin{enumerate}
 \item Da bi svaki korisnik mogao zasebno evidentirati te pregledavati svoje utrošeno vrijeme, sustav mora moći razlikovati između različitih korisnika. To se postiže tako da svaki korisnik ima na raspolaganju svoj vlastiti korisnički račun, te se sve evidencije koje on provodi implicitno vežu na njegov korisnički račun. Odnosno, potrebno je implementirati tipični sustav za prijavljivanje, koji omogućuje korisnicima da se prijave na svoj korisnički račun uporabom korisničkog imena i lozinke, odnosno da naprave novi račun sa svim potrebnim podacima u slučaju ako već nemaju postojeći korisnički račun. Također je korisnicima potrebno omogućiti neke osnovne funkcionalnosti za mijenjanje postojećih korisničih podataka kao što su lozinka, e-mail, i slično.
 
-\item Nakon što je korisnik prijavljen na sustav, mora moći evidentirati svoje utrošeno vrijeme. Evidencija vremena međutim mora biti na neki način vezana uz određenu aktivnost ili nastavnu obavezu. Nema smisla da korisnik samo evidentira utrošeno vrijeme, jer to može značiti da je vrijeme utrošeno na apsolutno bilo koji dio studija, a takve evidencije ne pružaju ikakvu informaciju vrijednu sakupljanja niti pregleda. Dakle, korisnik mora moći na neki (intuitivni) način u sustavu pronaći specifičnu aktivnost za koju želi evidentirati utrošenu vrijeme.
+\item Nakon što je korisnik prijavljen na sustav, mora moći evidentirati svoje utrošeno vrijeme. Evidencija vremena međutim mora biti na neki način vezana uz određenu aktivnost ili nastavnu obavezu. Nema smisla da korisnik samo evidentira utrošeno vrijeme, jer to može značiti da je vrijeme utrošeno na apsolutno bilo koji dio studija, a takve evidencije ne pružaju ikakvu informaciju vrijednu sakupljanja niti pregleda. Dakle, korisnik mora moći na neki (intuitivni) način u sustavu pronaći specifičnu aktivnost za koju želi evidentirati utrošenu vrijeme.\clearpage
 
-\item Također, korisniku je potrebno omogućiti pregled svog trenutačnog utrošenog vremena, i to na taj način tako da se može uspoređivati stvarno utrošeno vijeme korisnika sa vremenom koje je propisano ECTS bodovima, semestralnim opterećenjima, ili na bilo koji drugi način. Da bi to bilo moguće, potrebno je aktivnosti koje korisnik može evidentirati podijeliti na neki način u grupe i propisati im određene očekivane iznose utrošenog vremena koje bi one trebale iznositi. Korisnik bi trebao moći vidjeti ne samo koliko je vremena on utrošio na neku aktivnost, a koliko je 'trebao' utrošiti, nego i koliko je vremena utrošio na sve 'pod-aktivnosti' te aktivnosti (pošto neke aktivnosti implicitno obuhvaćaju druge aktivnosti).
+\item Također, korisniku je potrebno omogućiti pregled svog trenutačnog utrošenog vremena, i to na taj način tako da se može uspoređivati stvarno utrošeno vijeme korisnika sa vremenom koje je propisano ECTS bodovima, semestralnim opterećenjima, ili na bilo koji drugi način. Da bi to bilo moguće, potrebno je aktivnosti koje korisnik može evidentirati podijeliti na neki način u grupe i propisati im određene očekivane iznose utrošenog vremena koje bi one trebale iznositi. Korisnik bi trebao moći vidjeti ne samo koliko je vremena on utrošio na neku aktivnost, a koliko je 'trebao' utrošiti, nego i koliko je vremena utrošio na sve 'pod-aktivnosti' te aktivnosti (pošto neke aktivnosti implicitno obuhvaćaju druge aktivnost).
 \end{enumerate}
 
-Web aplikacija podrazumijeva korištenje baze podataka. U ovom specifičnom slučaju, očito je da je baza podataka ključan dio cijelog sustava: sve evidencije moraju se negdje nalaziti, iznosi utrošenog vremena moraju negdje biti pohranjeni. Potrebno je modelirati bazu tako da omogućava podjelu i grupaciju aktivnosti i pod-aktivnosti na način koji omogućava korisnicima jednostavno korištenje web aplikacije.\\
+Web aplikacija podrazumijeva korištenje baze podataka. U ovom specifičnom slučaju, očito je da je baza podataka ključan dio cijelog sustava: sve evidencije moraju se negdje nalaziti, iznosi utrošenog vremena moraju negdje biti pohranjeni. Potrebno je modelirati bazu tako da omogućava podjelu i grupaciju aktivnosti i pod-aktivnosti na način koji omogućava korisnicima jednostavno korištenje web aplikacije.
 
-Shema razvijena u ovoj konceptualnoj-fazi projektiranja predočuje detaljan pregled sustava. Model entitet-veza (engl. entity-relationship) obično se koristi za zastupanje konceptualnog dizajna. U takvom modelu konceptualna shema određuje objekte odnosno entitete koji su zastupljeni u bazi podataka, atribute entiteta, odnose među entitetima, te ograničenja na entitetima i vezama. Tipično, u konceptualnoj-fazi projektiranja stvara se dijagram ER modela koji pruža grafički prikaz sheme. Fokus konceptualnog ER modela je prikaz objekata i veza između njih, a ne specifičnih detalja u vezi načina pohrane pojedinih tipova podataka.\\
+Shema razvijena u ovoj konceptualnoj-fazi projektiranja predočuje detaljan pregled sustava. Model entitet-veza (engl. entity-relationship) obično se koristi za zastupanje konceptualnog dizajna. U takvom modelu konceptualna shema određuje objekte odnosno entitete koji su zastupljeni u bazi podataka, atribute entiteta, odnose među entitetima, te ograničenja na entitetima i vezama. Tipično, u konceptualnoj-fazi projektiranja stvara se dijagram ER modela koji pruža grafički prikaz sheme. Fokus konceptualnog ER modela je prikaz objekata i veza između njih, a ne specifičnih detalja u vezi načina pohrane pojedinih tipova podataka.
 
-Veći dio procesa dizajna baze podataka je odluka na koji način predstaviti razne vrste stvari, kao što su ljudi, mjesta, proizvodi, i slično. Pojam entitet se odnosi na bilo koju takvu jasno definiranu stavku. Naprimjer, u bazi podataka sveučilišta, primjeri entiteta uključuju djelatnika, studente, organizacijske jedinice, nastavne planove, predmete, itd. Različiti entiteti su međusobno povezani na različite načine, od kojih svi moraju na neki način biti predstavljeni u bazi podataka. Naprimjer, ako želimo u bazu spremiti podatak o tome koji od djelatnika predaje na kojem predmetu, trebamo definirati vezu između entiteta djelatnik i predmet.
+Veći dio procesa dizajna baze podataka je odluka na koji način predstaviti razne vrste stvari, kao što su ljudi, mjesta, proizvodi, i slično. Pojam entitet se odnosi na bilo koju takvu jasno definiranu stavku. Naprimjer, u bazi podataka sveučilišta, primjeri entiteta uključuju djelatnika, studente, organizacijske jedinice, nastavne planove, predmete, itd. Različiti entiteti su međusobno povezani na različite načine, od kojih svi moraju na neki način biti predstavljeni u bazi podataka. Naprimjer, ako želimo u bazu spremiti podatak o tome koji od djelatnika predaje na kojem predmetu, trebamo definirati vezu između entiteta djelatnik i predmet.\clearpage
 
 U izradi sheme baze podataka, moramo osigurati da se izbjegnu dva glavna problema:
-1. Redundancija: Loš dizajn baze podazaka može ponavljati iste informacije.
-NEKI PRIMJER REDUNDANCIJE
-2. Nepotpunost: loš dizajn baze može uzrokovati određene dijelove problema nemogućim za modelirati.
-NEKI PRIMJER NEPOTPUNOSTI
+\begin{enumerate}
+\item Redundancija: Loš dizajn baze podazaka može ponavljati iste informacije.\\
+PRIMJER REDUNDANCIJE
+\item Nepotpunost: loš dizajn baze može uzrokovati određene dijelove problema nemogućim za modelirati.\\
+PRIMJER NEPOTPUNOSTI
+\end{enumerate}
 
 \subsection{Izrada ER modela}
 
-Ovo poglavlje obuhvaća potpunu izradu ER modela baze podataka koji zadovoljava sve zahtjeve i potrebe prethodno navedene web aplikacije.\\
+Ovo poglavlje obuhvaća potpunu izradu ER modela baze podataka koji zadovoljava sve zahtjeve i potrebe prethodno navedene web aplikacije.
 
-Kako bi korisnici bili u mogućnosti prijavljivati se na sustav sa svojim korisničkim podacima, potrebno je u bazu dodati entitet koja predstavlja korisnika i sve podatke vezane neposredno uz njega. U slučaju ove web aplikacije, nije potrebno puno komplicirati stvari, da bi se definirao korisnik potrebno je imati određeno korisničko ime po kojem se taj korisnik raspoznaje od drugih korisnika, potrebna je određena lozinka sa kojom se korisnik može prijaviti na sustav i koja onemogućuje drugim korisnicima (koji nisu on) da se prijave u njegovo ime, te također e-mail adresa, koja bi omogućila korisniku resetiranje lozinke (u slučaju da je zaboravi). Pošto za ovu web aplikaciju postoji razlika između običnih korisnika i korisnika sa većim privilegijama (kao što su moderatori, odnosno administratori), potrebno je također na neki način u bazi podataka definirati koju razinu prava korisnik ima. To se može omogućiti dodavanjem atributa tipa cijelog broja koji označava privilegije korisnika, naprimjer:\\
+Kako bi korisnici bili u mogućnosti prijavljivati se na sustav sa svojim korisničkim podacima, potrebno je u bazu dodati entitet koja predstavlja korisnika i sve podatke vezane neposredno uz njega. U slučaju ove web aplikacije, nije potrebno puno komplicirati stvari, da bi se definirao korisnik potrebno je imati određeno korisničko ime po kojem se taj korisnik raspoznaje od drugih korisnika, potrebna je određena lozinka sa kojom se korisnik može prijaviti na sustav i koja onemogućuje drugim korisnicima (koji nisu on) da se prijave u njegovo ime, te također e-mail adresa, koja bi omogućila korisniku resetiranje lozinke (u slučaju da je zaboravi). Pošto za ovu web aplikaciju postoji razlika između običnih korisnika i korisnika sa većim privilegijama (kao što su moderatori, odnosno administratori), potrebno je također na neki način u bazi podataka definirati koju razinu prava korisnik ima. To se može omogućiti dodavanjem atributa tipa cijelog broja koji označava privilegije korisnika, naprimjer:
 
 \begin{table}[H]
 \caption{Razine prava korisnika}
@@ -142,9 +226,9 @@ Lozinka korisnika je običan niz znakova, međutim spremiti je kao takvu u bazu 
 \label{fig:korisnik}
 \end{figure}
 
-Sljedeće što je potrebno napraviti je omogućiti prijavljenom korisniku da evidentira utrošeno vrijeme. Kako je ovo web aplikacija za evidenciju utrošenog vremena tijekom studija, potrebno je na neki način u bazi definirati sve aktivnosti koje je moguće evidentirati. Zato se definira entitet 'Aktivnost' koji predstavlja bilo koju aktivnost za koju se može evidentirati utrošeno vrijeme. \\
+Sljedeće što je potrebno napraviti je omogućiti prijavljenom korisniku da evidentira utrošeno vrijeme. Kako je ovo web aplikacija za evidenciju utrošenog vremena tijekom studija, potrebno je na neki način u bazi definirati sve aktivnosti koje je moguće evidentirati. Zato se definira entitet 'Aktivnost' koji predstavlja bilo koju aktivnost za koju se može evidentirati utrošeno vrijeme. 
 
-Svaka aktivnost ima određeno ime, naprimjer: '3. laboratorijska vježba iz predmeta Mrežno Programiranje'. Aktivnost također može imati datum početka i trajanje, te je potrebno definirati atribute 'Datum početka' i 'Trajanje', kao što je to u slučaju laboratorijske vježbe ili određenog predavanja. Međutim, neke 'apstraktnije' aktivnosti ne trebaju nužno imati datum početka i trajanje, aktivnosti kao što su 'Učenje za međuispit iz predmeta Baze podataka', ili 'Izrada seminara iz predmeta Vještine komuniciranja'. U tom slučaju aktivnost neće imati datum početka, a to možemo u bazi podataka predočiti tako da u vrijednost tog atributa zapišemo 'NULL'.\\
+Svaka aktivnost ima određeno ime, naprimjer: '3. laboratorijska vježba iz predmeta Mrežno Programiranje'. Aktivnost također može imati datum početka i trajanje, te je potrebno definirati atribute 'Datum početka' i 'Trajanje', kao što je to u slučaju laboratorijske vježbe ili određenog predavanja. Međutim, neke 'apstraktnije' aktivnosti ne trebaju nužno imati datum početka i trajanje, aktivnosti kao što su 'Učenje za međuispit iz predmeta Baze podataka', ili 'Izrada seminara iz predmeta Vještine komuniciranja'. U tom slučaju aktivnost neće imati datum početka, a to možemo u bazi podataka predočiti tako da u vrijednost tog atributa zapišemo 'NULL'.
 
 Trajanje aktivnosti može se interpretirati na više načina. U slučaju neke fiksne aktivnosti kao što je to predavanje, naprimjer '5. predavanje iz predmeta Umjetna inteligencija', koje ima definiran i datum početka i trajanje, odabir trajanja je jednoznačan: trajanje samog predavanje (npr. 3 sata). U slučaju aktivnosti koje nemaju definiran početak, nema smisla ni evidentirati trajanje pa je logično da trajanje također bude NULL. Međutim za aktivnosti koje nemaju fiksno trajanje, može postojati neko 'pretpostavljeno' ili 'očekivano' vrijeme trajanja. Naprimjer, voditelji nekog predmeta su definirali da će se kao dio nekog predmeta obrađivati seminar, odnosno svaki student treba izraditi seminar. U ovom slučaju je očito da je izrada seminara neko nepredviđeno vrijeme koje puno varira, ali upravo zato je zanimljivo evidentirati koliko je vremena utrošeno na seminar, te uspoređivati to vrijeme sa naprimjer prosjekom ili nekim vremenom koje je definirano kao 'očekivano' od strane voditelja, ili predmeta, ili bilo koga. Zato se u slučaju nepostojećeg datuma početka (ili vrijednosti NULL), trajanje definira ili kao NULL, u slučaju kada ne postoji trajanje, ili kao određena vrijednost u slučaju kada postoji neki očekivani vremenski period trajanja te aktivnosti.\\
 
@@ -155,7 +239,7 @@ Trajanje aktivnosti može se interpretirati na više načina. U slučaju neke fi
 \label{fig:aktivnost}
 \end{figure}
 
-Vidljivo je da gotovo svaka aktivnost koja se može evidentirati zapravo vezana na neki predmet. Zato je dobra ideja odvojiti ime predmeta iz naziva aktivnosti, te ga staviti u zasebni entitet u kojem su definirani predmeti. Zatim se definira veza između entiteta 'Aktivnost' i entiteta 'Predmet' koja definira koja aktivnost pripada sklopu kojeg predmeta. Na taj način omogućuje se korisnicima lakši odabir aktivnosti koju žele evidentirati: prvo se može odabrati predmet, a zatim aktivnost tog predmeta, umjesto da su korisnici zatrpani sa tisućama mogućih aktivnosti, većinu od kojih ih uopće ne zanimaju. Uz to, pošto je sad svaka aktivnost vezana uz predmet, moguće je pregledavati utrošeno vrijeme po predmetu, umjesto samo ukupnog utrošenog vremena (kao što je bio slučaj do sada).\\
+Vidljivo je da gotovo svaka aktivnost koja se može evidentirati zapravo vezana na neki predmet. Zato je dobra ideja odvojiti ime predmeta iz naziva aktivnosti, te ga staviti u zasebni entitet u kojem su definirani predmeti. Zatim se definira veza između entiteta 'Aktivnost' i entiteta 'Predmet' koja definira koja aktivnost pripada sklopu kojeg predmeta. Na taj način omogućuje se korisnicima lakši odabir aktivnosti koju žele evidentirati: prvo se može odabrati predmet, a zatim aktivnost tog predmeta, umjesto da su korisnici zatrpani sa tisućama mogućih aktivnosti, većinu od kojih ih uopće ne zanimaju. Uz to, pošto je sad svaka aktivnost vezana uz predmet, moguće je pregledavati utrošeno vrijeme po predmetu, umjesto samo ukupnog utrošenog vremena (kao što je bio slučaj do sada).
 
 \begin{figure}[H]
 \centering
@@ -164,44 +248,44 @@ Vidljivo je da gotovo svaka aktivnost koja se može evidentirati zapravo vezana 
 \label{fig:predmet}
 \end{figure}
 
-Entitet predmet, osim samog naziva predmeta, treba sadržavati i godinu održavanja predmeta, pošto je očito da se isti predmeti mogu odravati više godina zaredom, a tijekom godine mogu promijeniti svoje aktivnosti! Primjer: jedne godine predmet 'Komunikacijske mreže' obuhvaća domaće zadaće, a sljedeće godine umjesto domaćih zadaća održava se projekt, ili slično. Na ovaj način se isti predmet predavan u različitoj godini tretira kao potpuno različiti predmet, što je u ovom slučaju poželjno. Osim toga svaki predmet ima definiran iznos ECTS bodova, koji zapravo definiraju koliko vremena bi student trebao potrošiti na taj predmet. Važnost ECTS bodova je očito ključna, ona omogućuje usporedbu stvarnog utrošenog vremena predmeta sa očekivanim utrošenim vremenom.\\
+Entitet predmet, osim samog naziva predmeta, treba sadržavati i godinu održavanja predmeta, pošto je očito da se isti predmeti mogu odravati više godina zaredom, a tijekom godine mogu promijeniti svoje aktivnosti! Primjer: jedne godine predmet 'Komunikacijske mreže' obuhvaća domaće zadaće, a sljedeće godine umjesto domaćih zadaća održava se projekt, ili slično. Na ovaj način se isti predmet predavan u različitoj godini tretira kao potpuno različiti predmet, što je u ovom slučaju poželjno. Osim toga svaki predmet ima definiran iznos ECTS bodova, koji zapravo definiraju koliko vremena bi student trebao potrošiti na taj predmet. Važnost ECTS bodova je očito ključna, ona omogućuje usporedbu stvarnog utrošenog vremena predmeta sa očekivanim utrošenim vremenom.
 
-Kako definirati primarne ključeve ovih entiteta? U slučaju predmeta obično postoji određena šifra koja jednoznačno definira predmet, a osim te šifre mogli bismo kao ključ koristiti kompozitni ključ 'Ime' predmeta i 'Godina', pošto ne postoji predmet koji se održava više puta iste godine (uz pretpostavku da su imena predmeta unikatna, kao što bi to moglo bitu u sklopu jednog zasebnog fakulteta). Međutim, u slučaju aktivnosti uistinu ne postoji prirodni ključ. Zbog tog razloga dobra ideja je dodati novi atribut imena primjerice 'ID' koje će služiti kao surogatni ključ entiteta 'Aktivnost'.\\
+Kako definirati primarne ključeve ovih entiteta? U slučaju predmeta obično postoji određena šifra koja jednoznačno definira predmet, a osim te šifre mogli bismo kao ključ koristiti kompozitni ključ 'Ime' predmeta i 'Godina', pošto ne postoji predmet koji se održava više puta iste godine (uz pretpostavku da su imena predmeta unikatna, kao što bi to moglo bitu u sklopu jednog zasebnog fakulteta). Međutim, u slučaju aktivnosti uistinu ne postoji prirodni ključ. Zbog tog razloga dobra ideja je dodati novi atribut imena primjerice 'ID' koje će služiti kao surogatni ključ entiteta 'Aktivnost'.
 
 Veza entiteta 'Predmet' i 'Aktivnost' je jednostavna: to je veza koja nema svoje vlastite atribute nego samo sadrži primarne ključeve entiteta koje povezuje. Pošto je kardinalnost veze 1-N (1 predmet obuhvaća N aktivnosti), primarni ključ veze je primarni ključ entiteta na N strani veze: primarni ključ entiteta Aktivnost (ID).
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{img/predmet-aktivnost.pdf}
+\includegraphics[scale=0.7]{img/predmet-aktivnost.pdf}
 \caption{Predmet i Aktivnost}
 \label{fig:predmet-aktivnost}
 \end{figure}
 
-Iz trenutačnog stanja ER modela, vidljivo je da se određene aktivnosti mogu dalje grupirati u cjeline. Trenutačno su grupirane po predmetima, što omogućuje pregled utrošenog vremena po predmetu, kao i po pojedinačnoj aktivnosti, međutim, određene aktivnosti predmeta međusobno su povezane ne samo po predmetima, nego i po tipovima aktivnosti. Aktivnost '1. laboratorijska vježba' i '2. laboratorijska vježba', obje iz predmeta 'Baze podataka', bi mogle oboje biti dio cjeline koja se zove 'laboratorijske vježbe'. Na ovaj način, korisnicima bi bilo još lakše evidentirati aktivnost: prvo bi se odabrao predmet, zatim grupa aktivnosti, zatim sama aktivnost. Osim toga, tijekom pregleda utrošenog vremena moglo bi se uspoređivati koliko je vremena utrošeno po grupama aktivnosti, što može predstavljati jako zanimljivu informaciju. Zato se definira novi entitet imena 'TipAktivnosti', koja definira moguće tipove aktivnost: predavanja, laboratorijske vježbe, domaće zadaće, seminari, ispiti, itd.\\
+Iz trenutačnog stanja ER modela, vidljivo je da se određene aktivnosti mogu dalje grupirati u cjeline. Trenutačno su grupirane po predmetima, što omogućuje pregled utrošenog vremena po predmetu, kao i po pojedinačnoj aktivnosti, međutim, određene aktivnosti predmeta međusobno su povezane ne samo po predmetima, nego i po tipovima aktivnosti. Aktivnost '1. laboratorijska vježba' i '2. laboratorijska vježba', obje iz predmeta 'Baze podataka', bi mogle oboje biti dio cjeline koja se zove 'laboratorijske vježbe'. Na ovaj način, korisnicima bi bilo još lakše evidentirati aktivnost: prvo bi se odabrao predmet, zatim grupa aktivnosti, zatim sama aktivnost. Osim toga, tijekom pregleda utrošenog vremena moglo bi se uspoređivati koliko je vremena utrošeno po grupama aktivnosti, što može predstavljati jako zanimljivu informaciju. Zato se definira novi entitet imena 'TipAktivnosti', koja definira moguće tipove aktivnost: predavanja, laboratorijske vježbe, domaće zadaće, seminari, ispiti, itd.
 
 \begin{figure}[H]
 \centering
-\includegraphics[keepaspectratio]{img/tip-aktivnosti.pdf}
+\includegraphics[scale=0.8]{img/tip-aktivnosti.pdf}
 \caption{TipAktivnosti}
 \label{fig:tip-aktivnosti}
 \end{figure}
 
-Zatim se svaka aktivnost preko veze povezuje sa odgovarajućim tipom aktivnosti. Entitet 'TipAktivnosti' sam po sebi nije osobito zanimljiv: to je samo naziv tipa aktivnosti. Ovaj entitet sadrži relativno malen broj n-torki, broja sigurno manjeg od 100, pa nije loša ideja dodati primarni ključ 'ID', radi konzistentnosti.\\
+Zatim se svaka aktivnost preko veze povezuje sa odgovarajućim tipom aktivnosti. Entitet 'TipAktivnosti' sam po sebi nije osobito zanimljiv: to je samo naziv tipa aktivnosti. Ovaj entitet sadrži relativno malen broj n-torki, broja sigurno manjeg od 100, pa nije loša ideja dodati primarni ključ 'ID', radi konzistentnosti.
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{img/predmet-aktivnost-tip.pdf}
+\includegraphics[scale=0.55]{img/predmet-aktivnost-tip.pdf}
 \caption{Predmet, Aktivnost i TipAktivnosti}
 \label{fig:predmet-aktivnost-tip}
-\end{figure}
+\end{figure}\clearpage
 
-Sada kad je definirana struktura aktivnosti, treba omogućiti korisnicima da evidentiraju svoje utrošeno vrijeme. U bazi podataka te evidencije moraju se negdje spremati. Potrebno je definirati entitet 'Evidencija' koji predstavlja jednu evidenciju jednog korisnika za jednu aktivnost. Međutim, pošto je ovo ER model, evidencije se mogu predstaviti u obliku veze, a ne entiteta. U ovom slučaju to je veza između entiteta 'Korisnik' i 'Aktivnost', koja prikazuje koji korisnik evidentira koji predmet. Kako je kardinalnost veze N-N (jedan korisnik može evidentirati više aktivnosti, i jedna aktivnost može biti evidentirana od strane jednog korisnika) primarni ključ bit će unija primarnih ključeva entiteta koje povezuje: 'KorisnickoIme' i 'AktivnostID'.\\
+Sada kad je definirana struktura aktivnosti, treba omogućiti korisnicima da evidentiraju svoje utrošeno vrijeme. U bazi podataka te evidencije moraju se negdje spremati. Potrebno je definirati entitet 'Evidencija' koji predstavlja jednu evidenciju jednog korisnika za jednu aktivnost. Međutim, pošto je ovo ER model, evidencije se mogu predstaviti u obliku veze, a ne entiteta. U ovom slučaju to je veza između entiteta 'Korisnik' i 'Aktivnost', koja prikazuje koji korisnik evidentira koji predmet. Kako je kardinalnost veze N-N (jedan korisnik može evidentirati više aktivnosti, i jedna aktivnost može biti evidentirana od strane jednog korisnika) primarni ključ bit će unija primarnih ključeva entiteta koje povezuje: 'KorisnickoIme' i 'AktivnostID'.
 
-Osim toga moguće je da jedan korisnik jednu aktivnost evidentira više puta, primjerice za aktivnosti poput laboratorijske vježbe moglo bi prvo biti evidentirano vrijeme utrošeno za izradu pripreme, pa zatim vrijeme na samoj laboratorijskoj vježbi, u kojem slučaju trenutačni primarni ključ ne bi bio dovoljan: više n-torki imale bi kao primarni ključ istu vrijednost, što nije dopustivo. Zato je potrebno dodati u skup atributa primarnog ključa još jedan atribut koji razrješava prethodno navedeni slučak. Dobar odabir bio bi 'Datum unosa', koji predstavlja datum pohranjivanja evidencije, čime se omogućuje više evidencija od strane jednog korisnika za istu aktivnost. Dalje, potrebno je definirati sam utrošak vremena, pa se dodaje vlastiti atribut veze 'Trajanje' koji predstavlja koliko vremena je utrošeno na aktivnost koju referencira evidencija. Dalje od interesa mogao bi biti eventualno opis evidencije, ukoliko je potreban.\\ 
+Osim toga moguće je da jedan korisnik jednu aktivnost evidentira više puta, primjerice za aktivnosti poput laboratorijske vježbe moglo bi prvo biti evidentirano vrijeme utrošeno za izradu pripreme, pa zatim vrijeme na samoj laboratorijskoj vježbi, u kojem slučaju trenutačni primarni ključ ne bi bio dovoljan: više n-torki imale bi kao primarni ključ istu vrijednost, što nije dopustivo. Zato je potrebno dodati u skup atributa primarnog ključa još jedan atribut koji razrješava prethodno navedeni slučak. Dobar odabir bio bi 'Datum unosa', koji predstavlja datum pohranjivanja evidencije, čime se omogućuje više evidencija od strane jednog korisnika za istu aktivnost. Dalje, potrebno je definirati sam utrošak vremena, pa se dodaje vlastiti atribut veze 'Trajanje' koji predstavlja koliko vremena je utrošeno na aktivnost koju referencira evidencija. Dalje od interesa mogao bi biti eventualno opis evidencije, ukoliko je potreban. 
 
 \begin{figure}[H]
 \centering
-\includegraphics{img/evidencija.pdf}
+\includegraphics[scale=0.7]{img/evidencija.pdf}
 \caption{Evidencija}
 \label{fig:evidencija}
 \end{figure}
@@ -210,12 +294,13 @@ Moguće je dalje poboljšati konceptualni model baze: trenutačno, da bi korisni
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{img/pretplata.pdf}
+\includegraphics[scale=0.8]{img/pretplata.pdf}
 \caption{Pretplata}
 \label{fig:pretplata}
 \end{figure}
+\clearpage
 
-Trenutačno baza podataka omogućava korisnicima intuitivan način evidencije utrošenog vremena, kao i sve podatke potrebne za pregled utrošenog vremena po predmetu, tipovima aktivnosti, kao i samim aktivnostima. Međutim, za svaki predmet službeno se definiraju 'opterećenja'. To je iznos sati ili ECTS bodova za određene tipove aktivnosti toga predmeta. Naprimjer za predmet 'Mrežno programiranje' mogla bi biti definirana sljedeća opterećenja:\\
+Trenutačno baza podataka omogućava korisnicima intuitivan način evidencije utrošenog vremena, kao i sve podatke potrebne za pregled utrošenog vremena po predmetu, tipovima aktivnosti, kao i samim aktivnostima. Međutim, za svaki predmet službeno se definiraju 'opterećenja'. To je iznos sati ili ECTS bodova za određene tipove aktivnosti toga predmeta. Naprimjer za predmet 'Mrežno programiranje' mogla bi biti definirana sljedeća opterećenja:
 
 \begin{table}[H]
 \caption{Opterećenja}
@@ -228,11 +313,11 @@ Laboratorijske vježbe & 15 \\ \hline
 \end{tabular}
 \end{table}
 
-Ovo je jedna dodatna informacija koju je korisno pohraniti uz svaki predmet. Zato se na postojeći model može dodati nova veza 'Opterećenje' koja povezuje predmet sa njegovim pripadajućim tipovima aktivnosti, i definira koliko sati (odnosno ECTS bodova) svaki tip aktivnosti oduzima. Sada se prilikom pregleda statistike može uspoređivati utrošeno vrijeme po tipu aktivnosti, sa definiranim vremenom tipa aktivnosti (u slučaju da postoji definicija). Čak iako službeno za neki predmet ne postoji semestralno opterećenje za određeni tip aktivnosti kao što su 'domaće zadaće', prilikom dodavanja tog predmeta u bazu podataka moglo bi se ručno podesiti koliko se vremena očekuje da će biti utrošeno za taj tip aktivnosti.\\
+Ovo je jedna dodatna informacija koju je korisno pohraniti uz svaki predmet. Zato se na postojeći model može dodati nova veza 'Opterećenje' koja povezuje predmet sa njegovim pripadajućim tipovima aktivnosti, i definira koliko sati (odnosno ECTS bodova) svaki tip aktivnosti oduzima. Sada se prilikom pregleda statistike može uspoređivati utrošeno vrijeme po tipu aktivnosti, sa definiranim vremenom tipa aktivnosti (u slučaju da postoji definicija). Čak iako službeno za neki predmet ne postoji semestralno opterećenje za određeni tip aktivnosti kao što su 'domaće zadaće', prilikom dodavanja tog predmeta u bazu podataka moglo bi se ručno podesiti koliko se vremena očekuje da će biti utrošeno za taj tip aktivnosti.
 
 \begin{figure}[H]
 \centering
-\includegraphics{img/opterecenje.pdf}
+\includegraphics[scale=0.6]{img/opterecenje.pdf}
 \caption{Opterecenje}
 \label{fig:opterecenje}
 \end{figure}
@@ -245,16 +330,17 @@ Konačni ER konceptualni model:
 \caption{Konačni ER model}
 \label{fig:er-model}
 \end{figure}
+\clearpage
 
 \subsection{Pretvorba u relacijski model}
 ER konceptualni model koristan je za grafički prikaz baze podataka i opis veza između entiteta. Međutim, stvarne baze podataka koje koriste web aplikacije (poput ove) su opisane relacijskom shemom. Potrebno je ER model pretvoriti u relacijski. To se radi po sljedećim pravilima:
 
 \begin{enumerate}
-\item Entiteti i veze se direktno preslikavaju u relacije.\\
+\item Entiteti i veze se direktno preslikavaju u relacije.
 \item Relacije sa jednakim primarnim ključevima se stapaju zajedno.
 \end{enumerate}
 
-Preslikavanje entiteta i veza u relacije je trivijalno: relacije su po atributima jednake entitetu odnosno vezi, naprimjer: entitet predmet preslikao bi se na sljedeći način:\\
+Preslikavanje entiteta i veza u relacije je trivijalno: relacije su po atributima jednake entitetu odnosno vezi, naprimjer: entitet 'Predmet' preslikao bi se na sljedeći način:\\
 
 \begin{figure}[H]
 \centering
@@ -262,6 +348,7 @@ Preslikavanje entiteta i veza u relacije je trivijalno: relacije su po atributim
 \caption{Pretvorba entiteta u relaciju}
 \label{fig:relacija-predmet}
 \end{figure}
+\clearpage
 
 Veze se preslikavaju na identičan način.
 Nakon što su svi entiteti i veze preslikani, potrebnu je spojiti one relacije koje imaju jednake primarne ključeve. Općenito vrijedi da se veze kardinalnosti 1-N pri preslikavanju stapaju sa entitetom na N strani veze. U ovom slučaju veze 'AktivnostiPredmeta' i 'TipoviAktivnosti' stapaju se sa relacijom 'Aktivnost', čime ona poprima njihove atribute. U ovom slučaju su to atributi 'TipAktivnostiID' i 'PredmetID', koju ujedno postaju strani ključevi.\\
@@ -282,7 +369,7 @@ Još postoje novo nastale relacije 'Opterecenje', 'Pretplata' i 'Evidencija'. Ka
 \label{fig:relacija-evidencija}
 \end{figure}
 
-Sada je vidljivo da neke relacije sadrže strane ključeve (primarne ključevi drugih relacija), koje grafički možemo prikazati na sljedeći način:
+Sada je vidljivo da neke relacije sadrže strane ključeve (primarne ključevi drugih relacija), koje grafički možemo prikazati na sljedeći način:\\
 
 \begin{figure}[H]
 \centering
@@ -290,8 +377,8 @@ Sada je vidljivo da neke relacije sadrže strane ključeve (primarne ključevi d
 \caption{Notacija stranih ključeva}
 \label{fig:strani-kljucevi}
 \end{figure}
-
-Konačni relacijski model:
+\clearpage
+Konačni relacijski model:\\
 
 \begin{figure}[H]
 \centering
@@ -299,7 +386,9 @@ Konačni relacijski model:
 \caption{Relacijski model}
 \label{fig:relacijski-model}
 \end{figure}
+\clearpage
 
+\subsection{SQL kod}
 \lstset{language=SQL, tabsize=4}
 \lstinputlisting{sql/baza.sql}
 
@@ -314,9 +403,10 @@ Da bi korisnik uopće mogao koristiti bilo koji dio aplikacije, treba se prvo pr
 \caption{Prijava}
 \label{fig:prijava}
 \end{figure}
+\clearpage
 
 Stranica za prijavu sastoji se od polja za unos korisničkog imena i polja za unos lozinke, gdje korisnik upisuje svoje korisničke podatke. Nakon unosa podataka korisnik odabire tipku 'Prijava' čime se šalje zahtjev za autentifikaciju. Server tada uzima korisničko ime od klijenta te provjerava da li navedeni korisnik usitinu postoji u bazi podataka. Ako korisničko ime ne postoji, klijentu se ispisuje odgovarajuća greška. Ako postoji, to znači da u bazi postoji u relaciji 'Korisnik' n-torka koja sadrži sve korisnikove podatke, uključujući i njegovu kriptiranu lozinku. Lozinka koju je korisnik unio prilikom prijave sada se enkriptira te se uspoređuje sa lozinkom pohranjenom u bazi. Ako su jednake, autorizacija uspijeva te korisnik biva prijavljen, u suprotnom se korisniku vraća greška.
-Prilikom prijave moguće je označiti dodatnu opciju 'Zapamti me?'. Bez te opcije, nakon prijave, korisnik će nakon jedog vremenskog perioda neaktivnosti biti automatski odjavljen. Sa tom opcijom, serveru se daje do znanja da zapamti korisnika i da ga ne odjavi nakon navedenog vremenskog perioda, nega da ga zapamti dokle god se u 'kolačićima' klijentovih zahtjeva nalazi identifikator sjednice (engl. session id).\\
+Prilikom prijave moguće je označiti dodatnu opciju 'Zapamti me?'. Bez te opcije, nakon prijave, korisnik će nakon jedog vremenskog perioda neaktivnosti biti automatski odjavljen. Sa tom opcijom, serveru se daje do znanja da zapamti korisnika i da ga ne odjavi nakon navedenog vremenskog perioda, nega da ga zapamti dokle god se u 'kolačićima' klijentovih zahtjeva nalazi identifikator sjednice (engl. session id).
 
 U slučaju da korisnik nema već postojeći račun na koji se može prijaviti, postoji i mogućnost registracije novog korisničkog računa:\\
 
@@ -326,11 +416,12 @@ U slučaju da korisnik nema već postojeći račun na koji se može prijaviti, p
 \caption{Registracija}
 \label{fig:registracija}
 \end{figure}
+\clearpage
 
 Kao što je vidljivo iz slike, potrebno je unesti osnovne podatke: korisničko ime, email adresu, te lozinku. U slučaju da navedeno korisničko ime već postoji u bazi, registracija neće biti moguća, pošto korisnička imenu moraju biti unikatna. Lozinku je potrebnu unesti dva puta, kako bi se smanjila mogućnost registracije sa pogrešno unesenom lozinkom.
 
 \section{Pretplata}
-Nakon što je korisnik prijavljen, on može evidentirati te pregledavati svoje utrošeno vrijeme. Međutim, kako se sve evidencije zapravo vežu uz određeni predmet, evidentiranje i pregled se izvršavaju u odnosu na jedan od mnogih dostupnih predmeta. Zato korisnik uvijek prije evidencije odnosno pregleda mora odabrati jedan od tih predmeta. Kako broj predmeta može biti poprilično velik, korisnik bi prije svake evidencije i pregleda morao tražiti od svih mogućih predmeta onaj za koji želi evidentirati odnosno pregledavati statistiku. Zato je korisniku omogućena pretplata na predmet:\\
+Nakon što je korisnik prijavljen, on može evidentirati te pregledavati svoje utrošeno vrijeme. Međutim, kako se sve evidencije zapravo vežu uz određeni predmet, evidentiranje i pregled se izvršavaju u odnosu na jedan od mnogih dostupnih predmeta. Zato korisnik uvijek prije evidencije odnosno pregleda mora odabrati jedan od tih predmeta. Kako broj predmeta može biti poprilično velik, korisnik bi prije svake evidencije i pregleda morao tražiti od svih mogućih predmeta onaj za koji želi evidentirati odnosno pregledavati statistiku. Zato je korisniku omogućena pretplata na predmet:
 
 \begin{figure}[H]
 \centering
@@ -339,7 +430,7 @@ Nakon što je korisnik prijavljen, on može evidentirati te pregledavati svoje u
 \label{fig:pretplata-web}
 \end{figure}
 
-U ovom dijelu trenutno prijavljeni korisnik može definirati na koje predmete želi biti pretplaćen. U lijevoj listi nalaze se svi dostupni predmeti, a u desnoj listi se nalaze svi pretplaćeni predmeti. Korisnik može selekcijom na bilo koje od predmeta ili bilo koje grupe predmeta dodavati odnosno brisati odgovarajuće pretplate. Pošto broj predmeta može biti velik na vrhu svakih od listi nalazi se polje za filtriranje. U to polje može se unesti niz znakova (dio ili cijeli naziv predmeta) nakon čega se lista odmah ažurira, te prikazuje samo one predmete koje sadrže navedeni niz znakova:\\
+U ovom dijelu trenutno prijavljeni korisnik može definirati na koje predmete želi biti pretplaćen. U lijevoj listi nalaze se svi dostupni predmeti, a u desnoj listi se nalaze svi pretplaćeni predmeti. Korisnik može selekcijom na bilo koje od predmeta ili bilo koje grupe predmeta dodavati odnosno brisati odgovarajuće pretplate. Pošto broj predmeta može biti velik na vrhu svakih od listi nalazi se polje za filtriranje. U to polje može se unesti niz znakova (dio ili cijeli naziv predmeta) nakon čega se lista odmah ažurira, te prikazuje samo one predmete koje sadrže navedeni niz znakova:
 
 \begin{figure}[H]
 \centering
@@ -349,9 +440,10 @@ U ovom dijelu trenutno prijavljeni korisnik može definirati na koje predmete ž
 \end{figure}
 
 Nakon svih izmjena, pritiskom na tipku 'Ažuriraj' provode se sve promjene te se ažurira popis pretplata odabrane od strane korisnika. Nakon toga u ostalim dijelovima web aplikacije korisnik na raspolaganju za odabir ima samo predmete na koje se unutar ove stranice pretplatio.
+\clearpage
 
 \section{Evidencija}
-Ovaj dio web aplikacije omogućava prijavljenim korisnicima da evidentiraju svoje utrošeno vrijeme za predmete na koje su pretplaćeni:\\
+Ovaj dio web aplikacije omogućava prijavljenim korisnicima da evidentiraju svoje utrošeno vrijeme za predmete na koje su pretplaćeni:
 
 \begin{figure}[H]
 \centering
@@ -365,7 +457,7 @@ Evidencija se sastoji od 3 dijela:
 \begin{enumerate}
 \item Na vrhu je padajuća lista koja sadrži sve pretplaćene predmete trenutno prijavljenog korisnika. Ovdje korisnik odabire predmet za koji želi evidentirati utrošeno vrijeme.
 
-\item Izbornik aktivnosti. Nakon što korisnik odabere jedan od njegovih pretplaćenih predmeta putem padajuće liste, ovaj izbornik dinamički se ažurira sa svim novim aktivnostima toga predmeta. Aktivnosti su podijeljene prema tipu aktivnosti: odabirom jednog od tipova aktivnosti otvara se nova padajuća lista koja sadrži sve aktivnosti toga tipa. Naprimjer ako za predmet 'Mrežno programiranje' odaberemo tip aktivnosti 'Predavanja', stranica bi mogla izgledati ovako:\\
+\item Izbornik aktivnosti. Nakon što korisnik odabere jedan od njegovih pretplaćenih predmeta putem padajuće liste, ovaj izbornik dinamički se ažurira sa svim novim aktivnostima toga predmeta. Aktivnosti su podijeljene prema tipu aktivnosti: odabirom jednog od tipova aktivnosti otvara se nova padajuća lista koja sadrži sve aktivnosti toga tipa. Naprimjer ako za predmet 'Mrežno programiranje' odaberemo tip aktivnosti 'Predavanja', stranica bi mogla izgledati ovako:
 
 \begin{figure}[H]
 \centering
@@ -374,7 +466,7 @@ Evidencija se sastoji od 3 dijela:
 \label{fig:selekcija}
 \end{figure}
 
-Nakon što je odabran tip aktivnosti, korisnik ima pregled svih aktivnosti toga tipa, te tada odabire jednu od tih aktivnosti, onu za koju želi evidentirati utrošeno vrijeme. Nakon odabira aktivnosti otvara se novi modalni prozor:\\
+Nakon što je odabran tip aktivnosti, korisnik ima pregled svih aktivnosti toga tipa, te tada odabire jednu od tih aktivnosti, onu za koju želi evidentirati utrošeno vrijeme. Nakon odabira aktivnosti otvara se novi modalni prozor:
 
 \begin{figure}[H]
 \centering
@@ -383,15 +475,15 @@ Nakon što je odabran tip aktivnosti, korisnik ima pregled svih aktivnosti toga 
 \label{fig:modal}
 \end{figure}
 
-Modalni prozor sastoji se od polja u koje se unosi iznos utrošenog vremena, i padajuće liste u kojoj se odabire mjerna jedinica utrošenog vremena (minute ili sati). Nakon što korisnik unese podatke, odabere se opcija spremi čime se vrši validacija. U slučaju pogreške unosa podataka, naprimjer ako se umjesto iznosa vremena unese riječ ili slično, korisniku se ispisuje odgovarajući tekst pogreške. Ako je validacija prošla, unos se trajno pohranjuje u bazu, nakon čega se kao i sve ostale pohranjene evidencije koristi prilikom računanja statistike koja je dostupna na stranici imena 'Statistika'. U slučaju pogreške od strane korisnika, modalni prozor može se ugasiti pritiskom na 'x' gumb u gornjem desnom kutu prozora čime se evidentiranje za tu specifičnu aktivnost otkazuje. Bez obzira na rezultat evidencije, korisnik opet može proizvoljno odabirati i evidentirati aktivnosti koliko god je potrebno.\\
+Modalni prozor sastoji se od polja u koje se unosi iznos utrošenog vremena, i padajuće liste u kojoj se odabire mjerna jedinica utrošenog vremena (minute ili sati). Nakon što korisnik unese podatke, odabere se opcija spremi čime se vrši validacija. U slučaju pogreške unosa podataka, naprimjer ako se umjesto iznosa vremena unese riječ ili slično, korisniku se ispisuje odgovarajući tekst pogreške. Ako je validacija prošla, unos se trajno pohranjuje u bazu, nakon čega se kao i sve ostale pohranjene evidencije koristi prilikom računanja statistike koja je dostupna na stranici imena 'Statistika'. U slučaju pogreške od strane korisnika, modalni prozor može se ugasiti pritiskom na 'x' gumb u gornjem desnom kutu prozora čime se evidentiranje za tu specifičnu aktivnost otkazuje. Bez obzira na rezultat evidencije, korisnik opet može proizvoljno odabirati i evidentirati aktivnosti koliko god je potrebno.
 
 \item Kalendar
 
 TODO: dodaj sliku kalendara sa aktivnostima:
 
-Osim prethodno navedenog načina evidentiranja (odabirom aktivnosti putem izbornika), korisniku se dodatno omogućuje i evidentiranje putem kalendara. Sve aktivnosti odabranoga predmeta koje imaju u bazi definiran datum početka i/ili trajanje, mogu se vidjeti na kalendaru, ukoliko su to aktivnosti trenutnog predmeta. Korisnik može pregledavati sve aktivnosti putem kalendara, te ih aktivirati pritiskom na njih. Nakon takvog odabira, opet se otvara isti modalni prozor kao i prilikom klasičnog evidentiranja koji korisniku omogućuje evidentiranje. Važno je za napomenuti da neke aktivnosti nemaju definiran datum početka. U tom slučaju te aktivnosti se očito nemogu aktivirati putem kalendara, već se moraju odabrati putem izbornika.\\
-
+Osim prethodno navedenog načina evidentiranja (odabirom aktivnosti putem izbornika), korisniku se dodatno omogućuje i evidentiranje putem kalendara. Sve aktivnosti odabranoga predmeta koje imaju u bazi definiran datum početka i/ili trajanje, mogu se vidjeti na kalendaru, ukoliko su to aktivnosti trenutnog predmeta. Korisnik može pregledavati sve aktivnosti putem kalendara, te ih aktivirati pritiskom na njih. Nakon takvog odabira, opet se otvara isti modalni prozor kao i prilikom klasičnog evidentiranja koji korisniku omogućuje evidentiranje. Važno je za napomenuti da neke aktivnosti nemaju definiran datum početka. U tom slučaju te aktivnosti se očito nemogu aktivirati putem kalendara, već se moraju odabrati putem izbornika.
 \end{enumerate}
+\clearpage
 
 \section{Statistika}
 Ovaj dio web aplikacije omogućava prijavljenim korisnicima da pregledaju svoje trenutačno utrošeno vrijeme, te da ga uspoređuju sa drugim korisnicima kao i sa definiranim očekivanim utrošenim vremenom. Kao i kod drugih dijelova aplikacije, korisnik mora biti prijavljen na sustav. Nakon odabira stranice evidencija korisnik ima na raspolaganju dvije kartice, prva od kojih omogućuje sljedeći pregled:
@@ -405,14 +497,14 @@ Ovaj dio web aplikacije omogućava prijavljenim korisnicima da pregledaju svoje 
 
 Korisnik ovdje može odabrati jedan od predmeta na koje je trenutačno pretplaćen. U slučaju da predmet koji korisnik želi pregledavati nije na ovom popisu, potrebno je u izborniku 'Predmeti' pretplatiti se na taj predmet, nakon čega će on postati vidljiv u padajućoj listi.\\
 
-Nakon odabira korisnika, odmah se ažurira statistika predmeta, tipova aktivnosti, te i samih aktivnosti. Korisnik ima na raspologanja 3 grafa. Prvi graf 'Predmet' omogućuje korisniku pregled utrošenog vremena na razini cijelog predmeta, odnosno obuhvaća ukupan iznos utrošenog vremena. Sve evidencije koje je korisnik ikada evidentirao za trenutačno navedeni predmet bit će pokazane u obliku stupičastog grafa u trenutno odabranim mjernim jedinicama. Osim samih korisnikovih podataka, također su i na raspolaganju drugi podaci: jedan od njih je prosjek utrošenog vremena svih evidencija za taj predmet. Pod time se zapravo misli na prosjek utrošenog vremena svih korisnika koji su ikada evidentirali ovaj predmet.\\
+Nakon odabira korisnika, odmah se ažurira statistika predmeta, tipova aktivnosti, te i samih aktivnosti. Korisnik ima na raspologanja 3 grafa. Prvi graf 'Predmet' omogućuje korisniku pregled utrošenog vremena na razini cijelog predmeta, odnosno obuhvaća ukupan iznos utrošenog vremena. Sve evidencije koje je korisnik ikada evidentirao za trenutačno navedeni predmet bit će pokazane u obliku stupičastog grafa u trenutno odabranim mjernim jedinicama. Osim samih korisnikovih podataka, također su i na raspolaganju drugi podaci: jedan od njih je prosjek utrošenog vremena svih evidencija za taj predmet. Pod time se zapravo misli na prosjek utrošenog vremena svih korisnika koji su ikada evidentirali ovaj predmet.
 
-Osim tog podatka, također postoji i iznos ECTS bodova koji je definiran za svaki predmet prilikom njegovog unosa. Sa ECTS bodovima može se izračunati očekivani utrošak vremena za taj predmet, pošto se uzima da jedan ECTS bod iznosi ~28 sati. Korisnik može vidjeti koliko je vremena utrošio on, koliki je prosjek utrošenog vremena, te koliko je vremena 'trebalo' (otprilike) biti utrošeno. To je korisna informacija koja može pokazati koliko je dobro definiran predmet: da li uzima manje vremena nego što bi trebao, više nego što bi trebao, te u kojim iznosu prekoračuje očekivano vrijeme.\\
+Osim tog podatka, također postoji i iznos ECTS bodova koji je definiran za svaki predmet prilikom njegovog unosa. Sa ECTS bodovima može se izračunati očekivani utrošak vremena za taj predmet, pošto se uzima da jedan ECTS bod iznosi ~28 sati. Korisnik može vidjeti koliko je vremena utrošio on, koliki je prosjek utrošenog vremena, te koliko je vremena 'trebalo' (otprilike) biti utrošeno. To je korisna informacija koja može pokazati koliko je dobro definiran predmet: da li uzima manje vremena nego što bi trebao, više nego što bi trebao, te u kojim iznosu prekoračuje očekivano vrijeme.
 
 \begin{figure}[H]
 \centering
 \includegraphics{img/statistika-predmet.png}
-\caption{Statistika - Predmet}
+\caption{Statistika - predmet}
 \label{fig:statistika-predmet}
 \end{figure}
 
@@ -421,11 +513,11 @@ Osim pregleda ukupno utrošenog vremena, korisnik također može pregledavati ut
 \begin{figure}[H]
 \centering
 \includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{img/statistika-tip-aktivnosti.png}
-\caption{Statistika - Tipovi aktivnosti}
+\caption{Statistika - tipovi aktivnosti}
 \label{fig:statistika-tip-aktivnosti}
 \end{figure}
 
-Stupčasti graf sadrži iste 3 komponente kao i graf predmeta: iznos utrošenog vremena korisnika, prosječno utrošeno vrijeme, te očekivano utrošeno vrijeme (ukoliko postoji). Iznosi ovih komponenti definirani su za svaki tip aktivnosti trenutno odabranog predmeta. U slučaju tipa aktivnosti kao što su 'predavanja', u sklopu predmeta može biti definirano semestralno opterećenje sa određenim iznosom, koje određuje koliko vremena bi trebalo biti utrošeno za taj tip aktivnosti. To vrijeme se tada može direktno prikazati u grafu, čime se može vidjeti odstupanje od očekivane vrijednosti. Osim slučaja gdje je trajanje nekog tipa aktivnosti službeno definiran, očekivani utrošak vremena može se definirati 'ručno', za bilo koji tip aktivnosti, čime se može sustavu dati do znanja koliko bi vremena trebalo biti utrošeno za taj tip aktivnosti. Isto tako, moguće je da očekivano vrijeme ne postoji ili nije definirano, u kojem slučaju ono neće biti ni prikazano.\\
+Stupčasti graf sadrži iste 3 komponente kao i graf predmeta: iznos utrošenog vremena korisnika, prosječno utrošeno vrijeme, te očekivano utrošeno vrijeme (ukoliko postoji). Iznosi ovih komponenti definirani su za svaki tip aktivnosti trenutno odabranog predmeta. U slučaju tipa aktivnosti kao što su 'predavanja', u sklopu predmeta može biti definirano semestralno opterećenje sa određenim iznosom, koje određuje koliko vremena bi trebalo biti utrošeno za taj tip aktivnosti. To vrijeme se tada može direktno prikazati u grafu, čime se može vidjeti odstupanje od očekivane vrijednosti. Osim slučaja gdje je trajanje nekog tipa aktivnosti službeno definiran, očekivani utrošak vremena može se definirati 'ručno', za bilo koji tip aktivnosti, čime se može sustavu dati do znanja koliko bi vremena trebalo biti utrošeno za taj tip aktivnosti. Isto tako, moguće je da očekivano vrijeme ne postoji ili nije definirano, u kojem slučaju ono neće biti ni prikazano.
 
 Ova statistika također prikazuje zanimljive podatke. Pregled utrošenog vremena po predmetu daje nam opći pogled na predmet, dok sa ovom statistikom ulazimo jedan sloj dublje: sada je dostupan pregled utrošenog vremena po tipu aktivnosti. Sa ovim pogledom možemo vidjeti na koji način je raspodijeljeno utrošeno vrijeme: da li premalo ljudi ide na predavanja, da li laboratorijske vježbe oduzimaju previše vremena, da li su domaće zadaće previše lagane i slično.
 
@@ -434,13 +526,15 @@ Još postoji i treći graf: iznos utrošenog vremena po aktivnostima. Kada se od
 \begin{figure}[H]
 \centering
 \includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{img/statistika-aktivnosti.png}
-\caption{Statistika - Aktivnosti}
+\caption{Statistika - aktivnosti}
 \label{fig:statistika-aktivnosti}
 \end{figure}
 
-Kao i na prijašnjoj kartici, na vrhu se nalazi padajuća lista. Međutim, sada padajuća lista sadrži sve tipove aktivnosti, i to sve tipove aktivnosti trenutačno odabranog predmeta na kartici 'Predmet'. Nakon odabira novog predmeta na prethodnoj kartici, ova padajuća lista odmah se osvježava, sa novim vrijednostima koje odgovaraju odabranom predmetu. Korisnik može izabrati jedan od ponuđenih tipova aktivnosti. Prilikom izbora novog tipa aktivnosti, dohvaćaju se sve aktivnosti koje su tog tipa, i koje pripadaju prethodno odabranome predmetu, zajedno sa svim njihovim evidencijama, te se grafički predočuje iznos utrošenog vremena po specifičnoj aktivnosti. Sa ovim grafom najdetaljnije se predočuje utrošeno vrijeme: može se vidjeti točno koliko je vremena utrošeno na pojedinačnu aktivnost što isto može biti korisna informacija. Naprimjer, ako se pregledavaju sve laboratorijske vježbe određenoga predmeta, može se vidjeti koliko je vremena utrošena na jednu laboratorijsku vježbu, što je već samo po sebi dovoljan razlog za pregled ovog grafa. Međutim također se može vidjeti koliko je vremena utrošeno na specifičnu laboratorijsku vježbu (odnosno bilo koju aktivnost) u odnosu na druge aktivnosti. Time se može naprimjer uočiti da je određena laboratorijska vježba oduzela premalo vremena s obzirom na druge laboratorijske vježbe, ili da je priprema za laboratorijsku vježbu preteška s obzirom na samu laboratorijsku vježbu ili na druge pripreme.\\
+Kao i na prijašnjoj kartici, na vrhu se nalazi padajuća lista. Međutim, sada padajuća lista sadrži sve tipove aktivnosti, i to sve tipove aktivnosti trenutačno odabranog predmeta na kartici 'Predmet'. Nakon odabira novog predmeta na prethodnoj kartici, ova padajuća lista odmah se osvježava, sa novim vrijednostima koje odgovaraju odabranom predmetu. Korisnik može izabrati jedan od ponuđenih tipova aktivnosti. Prilikom izbora novog tipa aktivnosti, dohvaćaju se sve aktivnosti koje su tog tipa, i koje pripadaju prethodno odabranome predmetu, zajedno sa svim njihovim evidencijama, te se grafički predočuje iznos utrošenog vremena po specifičnoj aktivnosti. Sa ovim grafom najdetaljnije se predočuje utrošeno vrijeme: može se vidjeti točno koliko je vremena utrošeno na pojedinačnu aktivnost što isto može biti korisna informacija. \\
 
-Osim samog iznosa utrošenog vremena za korisnika i za prosjek, za svaku aktivnost u bazi podataka može biti evidentirano trajanje te aktivnosti. U slučaju primjerice predavanja to trajanje doslovce predstavlja predefinirani iznos trajanja predavanja određenog termina kao što je određeno po predmetu. Međutim, za aktivnosti koji nemaju već strogo definirana trajanja moguće je prilikom unosa aktivnosti definirati 'očekivano' trajanje, koje korisnicima daje do znanja koliko je vremena otprilike trebalo biti potrebno, ili koliki je očekivani utrošak vremena za tu aktivnost. U svakom slučaju, ako ta vrijednost nije poznata, ili čak nije ni važna, nije ju potrebnu ni unesti, pa će ta vrijednost tada ovdje biti neprikazana.\\
+Naprimjer, ako se pregledavaju sve laboratorijske vježbe određenoga predmeta, može se vidjeti koliko je vremena utrošena na jednu laboratorijsku vježbu, što je već samo po sebi dovoljan razlog za pregled ovog grafa. Međutim također se može vidjeti koliko je vremena utrošeno na specifičnu laboratorijsku vježbu (odnosno bilo koju aktivnost) u odnosu na druge aktivnosti. Time se može naprimjer uočiti da je određena laboratorijska vježba oduzela premalo vremena s obzirom na druge laboratorijske vježbe, ili da je priprema za laboratorijsku vježbu preteška s obzirom na samu laboratorijsku vježbu ili na druge pripreme.
+
+Osim samog iznosa utrošenog vremena za korisnika i za prosjek, za svaku aktivnost u bazi podataka može biti evidentirano trajanje te aktivnosti. U slučaju primjerice predavanja to trajanje doslovce predstavlja predefinirani iznos trajanja predavanja određenog termina kao što je određeno po predmetu. Međutim, za aktivnosti koji nemaju već strogo definirana trajanja moguće je prilikom unosa aktivnosti definirati 'očekivano' trajanje, koje korisnicima daje do znanja koliko je vremena otprilike trebalo biti potrebno, ili koliki je očekivani utrošak vremena za tu aktivnost. U svakom slučaju, ako ta vrijednost nije poznata, ili čak nije ni važna, nije ju potrebnu ni unesti, pa će ta vrijednost tada ovdje biti neprikazana.
 
 \section{Unos podataka}
 
@@ -451,7 +545,7 @@ TODO
 TODO
 
 \chapter{Zaključak}
-Zaključak.
+TODO
 
 \bibliography{literatura}
 \bibliographystyle{fer}

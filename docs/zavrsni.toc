@@ -2,16 +2,20 @@
 \contentsline {chapter}{\numberline {1}Uvod}{1}
 \contentsline {chapter}{\numberline {2}Baza podataka}{2}
 \contentsline {section}{\numberline {2.1}ER model}{2}
-\contentsline {section}{\numberline {2.2}Relacijski model}{4}
-\contentsline {section}{\numberline {2.3}Izrada baze podataka}{5}
-\contentsline {subsection}{\numberline {2.3.1}Zahtjevi}{5}
-\contentsline {subsection}{\numberline {2.3.2}Izrada ER modela}{7}
-\contentsline {subsection}{\numberline {2.3.3}Pretvorba u relacijski model}{18}
-\contentsline {chapter}{\numberline {3}Web aplikacija}{25}
-\contentsline {section}{\numberline {3.1}Prijava}{25}
-\contentsline {section}{\numberline {3.2}Pretplata}{27}
-\contentsline {section}{\numberline {3.3}Evidencija}{28}
-\contentsline {section}{\numberline {3.4}Statistika}{31}
-\contentsline {section}{\numberline {3.5}Unos podataka}{36}
-\contentsline {section}{\numberline {3.6}Razvoj i pobolj\IeC {\v s}anja}{36}
-\contentsline {chapter}{\numberline {4}Zaklju\IeC {\v c}ak}{37}
+\contentsline {subsection}{\numberline {2.1.1}Entitet}{2}
+\contentsline {subsection}{\numberline {2.1.2}Veza}{5}
+\contentsline {section}{\numberline {2.2}Relacijski model}{8}
+\contentsline {subsection}{\numberline {2.2.1}Relacija}{8}
+\contentsline {section}{\numberline {2.3}Izrada baze podataka}{10}
+\contentsline {subsection}{\numberline {2.3.1}Zahtjevi}{10}
+\contentsline {subsection}{\numberline {2.3.2}Izrada ER modela}{12}
+\contentsline {subsection}{\numberline {2.3.3}Pretvorba u relacijski model}{22}
+\contentsline {subsection}{\numberline {2.3.4}SQL kod}{26}
+\contentsline {chapter}{\numberline {3}Web aplikacija}{28}
+\contentsline {section}{\numberline {3.1}Prijava}{28}
+\contentsline {section}{\numberline {3.2}Pretplata}{30}
+\contentsline {section}{\numberline {3.3}Evidencija}{32}
+\contentsline {section}{\numberline {3.4}Statistika}{35}
+\contentsline {section}{\numberline {3.5}Unos podataka}{39}
+\contentsline {section}{\numberline {3.6}Razvoj i pobolj\IeC {\v s}anja}{39}
+\contentsline {chapter}{\numberline {4}Zaklju\IeC {\v c}ak}{40}
