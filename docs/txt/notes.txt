@@ -1,33 +1,12 @@
 TODO:
-dodaj registraciju
-dodaj pretplate predmeta
 dodaj unos predmeta
 dodaj unos aktivnosti
-dodaj promjenu profila
 
-+---+
-|rad|
-+---+
-sadržaj
-1. uvod
-- govori šta ćeš sve pisati, šta je u svakom poglavlju, itd.
-2. opis problema
-- funkcionalni zahtjevi
-- nefunkcionalni zahtjevi
-- zahtjevi domene primjene
 - postojeća rješenja
-    - ne postoje za moju specifičnu temu
-    - nađi i prodiskutiraj neka općenita rješenja za evidenciju vremena
-- redom prolazi kroz sve probleme i zahtjeva i objašnjavaj kako će bit rješeni
-3. baza
-- slike baza tijekom razvoja! prvo pokaži ER konceptualni model, pa ga promijeni par puta (dodaj ili makni određene relacije i reci zašto je to tako napravljeno), te eventualno počni opisivati funkcionalni relacijski model, sve dok ne dođeš do krajnjeg koja onda opišeš u cijelosti u detaljima. Sa hrpom slika i dosadnih definicija!!! 
 - alati i tehnologije: management studio, sql server, whatever?
-- opis baze, slike, atributi, ključevi, veze, sve vezano uz bazu
 - prirodni i surogatni ključevi, dodaj neke religijske ratove između njih dvoje reci zašto si koristio surogatne (jer su kompozitni shit)
 - spomeni moguću refleksivnu vezu (predmet-kategorija n razina)
-- prirodni ključevi za studenta i predmet (JMBAG, šifra)
-- spomeni salt (lol)
-4. web aplikacija
-- alati i tehnologije: ASP.NET, jquery, ajax, chart.js, fullcalendar.js, duallsitbox.js...
-- opiši općenito svaki dio web aplikacije
-- također detaljno opiši svaki dio uz puno slika i ključne dijelove koda
+- alati i tehnologije: ASP.NET, Entity Framework, jquery, ajax, chart.js, fullcalendar.js, duallsitbox.js...
+- dodaj ključne dijelove koda
+- autoincrement id
+- sql kod manje kičast
