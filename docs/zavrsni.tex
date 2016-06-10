@@ -1,7 +1,98 @@
 \documentclass[times, utf8, zavrsni, numeric]{fer}
 \usepackage{booktabs}
 \usepackage{listings}
+\usepackage{listingsutf8}
 \usepackage{float}
+\usepackage[T1]{fontenc}
+\usepackage[scaled]{beramono}
+\usepackage{xcolor}
+
+\definecolor{bluekeywords}{rgb}{0.13,0.13,1}
+\definecolor{greencomments}{rgb}{0,0.5,0}
+\definecolor{redstrings}{rgb}{0.9,0,0}
+
+\lstdefinestyle{csharp}
+{
+language=[Sharp]C,
+showspaces=false,
+showtabs=false,
+tabsize=4,
+breaklines=true,
+showstringspaces=false,
+escapeinside={(*@}{@*)},
+commentstyle=\color{greencomments},
+keywordstyle=\color{bluekeywords}\bfseries,
+stringstyle=\color{redstrings},
+inputencoding=utf8/latin4,
+basicstyle=\fontsize{11}{10}\selectfont\ttfamily
+}
+
+\lstdefinestyle{sql}
+{
+language=SQL,
+showspaces=false,
+showtabs=false,
+tabsize=4,
+breaklines=true,
+showstringspaces=false,
+breakatwhitespace=true,
+escapeinside={(*@}{@*)},
+commentstyle=\color{greencomments},
+keywordstyle=\color{bluekeywords}\bfseries,
+stringstyle=\color{redstrings},
+inputencoding=utf8/latin4,
+basicstyle=\fontsize{11}{10}\selectfont\ttfamily
+}
+
+\lstdefinestyle{html}
+{
+language=html,
+showspaces=false,
+showtabs=false,
+tabsize=4,
+breaklines=true,
+showstringspaces=false,
+breakatwhitespace=true,
+escapeinside={(*@}{@*)},
+commentstyle=\color{greencomments},
+keywordstyle=\color{bluekeywords}\bfseries,
+stringstyle=\color{redstrings},
+inputencoding=utf8/latin4,
+basicstyle=\fontsize{11}{10}\selectfont\ttfamily
+}
+
+\lstdefinelanguage{JavaScript}{
+  keywords={typeof, new, true, false, catch, function, return, null, catch, switch, var, if, in, while, do, else, case, break},
+  keywordstyle=\color{blue}\bfseries,
+  ndkeywords={class, export, boolean, throw, implements, import, this},
+  ndkeywordstyle=\color{darkgray}\bfseries,
+  identifierstyle=\color{black},
+  sensitive=false,
+  comment=[l]{//},
+  morecomment=[s]{/*}{*/},
+  commentstyle=\color{purple}\ttfamily,
+  stringstyle=\color{red}\ttfamily,
+  morestring=[b]',
+  morestring=[b]"
+}
+
+
+\lstdefinestyle{js}
+{
+language=JavaScript,
+showspaces=false,
+showtabs=false,
+tabsize=4,
+breaklines=true,
+showstringspaces=false,
+breakatwhitespace=true,
+escapeinside={(*@}{@*)},
+commentstyle=\color{greencomments},
+keywordstyle=\color{bluekeywords}\bfseries,
+stringstyle=\color{redstrings},
+inputencoding=utf8/latin4,
+basicstyle=\fontsize{11}{10}\selectfont\ttfamily
+}
 
 \begin{document}
 
@@ -137,7 +228,7 @@ Ovo je jedna dodatna informacija koju je korisno pohraniti uz svaki predmet. Zat
 
 \begin{figure}[H]
 \centering
-\includegraphics[scale=0.6]{img/er-model.pdf}
+\includegraphics[scale=0.6]{img/relacijski-model.pdf}
 \caption{Konačni ER model}
 \label{fig:er-model}
 \end{figure}
@@ -153,8 +244,8 @@ Ovo je jedna dodatna informacija koju je korisno pohraniti uz svaki predmet. Zat
 \end{figure}
 
 \subsection{SQL kod}
-\lstset{language=SQL, tabsize=2}
-\lstinputlisting{sql/baza.sql}
+\lstset{style=sql}
+\lstinputlisting{code/baza.sql}
 
 \chapter{Web aplikacija}
 \section{Alati i tehnologije}
@@ -165,7 +256,6 @@ Ovo je jedna dodatna informacija koju je korisno pohraniti uz svaki predmet. Zat
 \item \textbf{ASP.NET}
 \item \textbf{jQuery}
 \item \textbf{AJAX}
-\item \textbf{Javascript}
 \end{enumerate}
 
 \section{Implementacija}
@@ -179,7 +269,13 @@ Da bi korisnik uopće mogao koristiti bilo koji dio aplikacije, treba se prvo pr
 \label{fig:prijava}
 \end{figure}
 
-Stranica za prijavu sastoji se od polja za unos korisničkog imena i polja za unos lozinke, gdje korisnik upisuje svoje korisničke podatke. Nakon unosa podataka korisnik odabire tipku 'Prijava' čime se šalje zahtjev za autentifikaciju. Server tada uzima korisničko ime od klijenta te provjerava da li navedeni korisnik usitinu postoji u bazi podataka. Ako korisničko ime ne postoji, klijentu se ispisuje odgovarajuća greška. Ako postoji, to znači da u bazi postoji u relaciji 'Korisnik' n-torka koja sadrži sve korisnikove podatke, uključujući i njegovu kriptiranu lozinku. Lozinka koju je korisnik unio prilikom prijave sada se enkriptira te se uspoređuje sa lozinkom pohranjenom u bazi. Ako su jednake, autorizacija uspijeva te korisnik biva prijavljen, u suprotnom se korisniku vraća greška.
+Stranica za prijavu sastoji se od polja za unos korisničkog imena i polja za unos lozinke, gdje korisnik upisuje svoje korisničke podatke. Nakon unosa podataka korisnik odabire tipku 'Prijava' čime se šalje zahtjev za autentifikaciju. Server tada uzima korisničko ime od klijenta te provjerava da li navedeni korisnik usitinu postoji u bazi podataka. Ako korisničko ime ne postoji, klijentu se ispisuje odgovarajuća greška. Ako postoji, to znači da u bazi postoji n-torka u relaciji 'Korisnik' koja sadrži sve korisnikove podatke, uključujući i njegovu kriptiranu lozinku. Lozinka koju je korisnik unio prilikom prijave sada se enkriptira te se uspoređuje sa lozinkom pohranjenom u bazi.
+
+\lstset{style=csharp}
+\lstinputlisting{code/prijava.cs}
+
+Ako su jednake, autorizacija uspijeva te korisnik biva prijavljen, nakon čega ga se preusmjerava na stranicu za odabir predmeta. U slučaju pogreške ispisuje se odgovarajuća greška: nepostojeće korisničko ime, ili pogrešna lozinka.
+
 Prilikom prijave moguće je označiti dodatnu opciju 'Zapamti me?'. Bez te opcije, nakon prijave, korisnik će nakon jedog vremenskog perioda neaktivnosti biti automatski odjavljen. Sa tom opcijom, serveru se daje do znanja da zapamti korisnika i da ga ne odjavi nakon navedenog vremenskog perioda, nega da ga zapamti dokle god se u 'kolačićima' klijentovih zahtjeva nalazi identifikator sjednice (engl. session id).
 
 U slučaju da korisnik nema već postojeći račun na koji se može prijaviti, postoji i mogućnost registracije novog korisničkog računa:
@@ -191,8 +287,28 @@ U slučaju da korisnik nema već postojeći račun na koji se može prijaviti, p
 \label{fig:registracija}
 \end{figure}
 
-
 Kao što je vidljivo iz slike, potrebno je unesti osnovne podatke: korisničko ime, email adresu, te lozinku. U slučaju da navedeno korisničko ime već postoji u bazi, registracija neće biti moguća, pošto korisnička imenu moraju biti unikatna. Lozinku je potrebnu unesti dva puta, kako bi se smanjila mogućnost registracije sa pogrešno unesenom lozinkom.
+
+Prijava i registracije oboje se provode koristeći klasični HTTP POST zahtjev, čija se obrada znatno olakšava korištenjem modela:
+Model je obični razred koji sadrži neki broj polja, koja mogu biti bilo kojih tipova. Za svako polje mogu biti definirani određeni atributi, koji postavljaju dodatna ograničenja (da li polje nužno mora biti uneseno, da li mora sadržavati barem \textbf{N} broj znakova, i slično):
+
+\lstset{style=csharp}
+\lstinputlisting{code/registracija-model.cs}
+
+Na početku pogleda (na prvoj liniji) deklarira se put do modela koji predstavlja sve podatke koji mogu biti unešeni:
+
+\lstset{style=html}
+\lstinputlisting{code/model.cshtml}
+
+Tada se u pogledu definiraju elementi koji odgovaraju podacima iz modela. Za sve podatke koje je potrebno unesti, postavljaju se odgovarajući \textbf{input} elementi (koji mogu biti tekstovna polja, gumbi, padajuće liste i slično) koji služe za pohranu unesenih korisnikovih podataka te napokon \textbf{submit} tipka čijom pritiskom se šalje POST zahtjev. Svi elementi se dodatno enkapsuliraju sa \textbf{form} elementom, čime se podaci koji sadrže šalju u POST zahtjevu.
+
+\lstset{style=html}
+\lstinputlisting{code/registracija-view.cshtml}
+
+Zatim se u kontroleru koji prima HTTP zahtjev kao jedan od parametara dodaje prethodno definirani model, čime se tijekom svake obrade HTTP zahtjeva može podacima iz forme na jednostavan način pristupiti preko parametra koji predtavlja taj model:
+
+\lstset{style=csharp}
+\lstinputlisting{code/registracija-cont.cs}
 
 \subsection{Pretplata}
 Nakon što je korisnik prijavljen, on može evidentirati te pregledavati svoje utrošeno vrijeme. Međutim, kako se sve evidencije zapravo vežu uz određeni predmet, evidentiranje i pregled se izvršavaju u odnosu na jedan od mnogih dostupnih predmeta. Zato korisnik uvijek prije evidencije odnosno pregleda mora odabrati jedan od tih predmeta. Kako broj predmeta može biti poprilično velik, korisnik bi prije svake evidencije i pregleda morao tražiti od svih mogućih predmeta onaj za koji želi evidentirati odnosno pregledavati statistiku. Zato je korisniku omogućena pretplata na predmet:
@@ -204,7 +320,26 @@ Nakon što je korisnik prijavljen, on može evidentirati te pregledavati svoje u
 \label{fig:pretplata-web}
 \end{figure}
 
-U ovom dijelu trenutno prijavljeni korisnik može definirati na koje predmete želi biti pretplaćen. U lijevoj listi nalaze se svi dostupni predmeti, a u desnoj listi se nalaze svi pretplaćeni predmeti. Korisnik može selekcijom na bilo koje od predmeta ili bilo koje grupe predmeta dodavati odnosno brisati odgovarajuće pretplate. Pošto broj predmeta može biti velik na vrhu svakih od listi nalazi se polje za filtriranje. U to polje može se unesti niz znakova (dio ili cijeli naziv predmeta) nakon čega se lista odmah ažurira, te prikazuje samo one predmete koje sadrže navedeni niz znakova:
+U ovom dijelu trenutno prijavljeni korisnik može definirati na koje predmete želi biti pretplaćen. U lijevoj listi nalaze se svi dostupni predmeti, a u desnoj listi se nalaze svi pretplaćeni predmeti. Korisnik može selekcijom na bilo koje od predmeta ili bilo koje grupe predmeta dodavati odnosno brisati odgovarajuće pretplate. 
+
+\textbf{Bootstrap Dual Listbox}\\
+Popisi pretplaćenih i nepretplaćenih predmeta ostvareni su pomoću \textbf{Bootstrap Dual Listbox} plugin-a koji omogućava lagano upravljanje dvojnom listom. U pogledu za pretplate definira se \textbf{select} element, nad kojim se tijekom učitavanja stranice poziva funkcija \emph{bootstrapDualListbox()} sa pripadajućim opcijama:
+
+\lstset{style=js}
+\lstinputlisting{code/duallistbox.js}
+
+Nakon svih izmjena, pritiskom na tipku 'Ažuriraj' provode se sve promjene te se ažurira popis pretplata odabrane od strane korisnika. Nakon toga u ostalim dijelovima web aplikacije korisnik na raspolaganju za odabir ima samo predmete na koje se unutar ove stranice pretplatio.
+
+Ako se slanje novih pretplaćenih predmeta radi klasničnim POST zahtjevom, cijela stranica nakon ažuriranja se ponovno učitava, kako je to i inače slučaj sa običnim HTTP POST zahtjevima. Međutim, poželjno je ažurirati popis pretplaćenih predmeta bez ponovnog učitanja cijele stranice, jer to podrazumijeva ponovno čitanje \textbf{svih} predmeta iz baze podataka, što nepotrebno troši vrijeme servera, pošto su svi predmeti već bili učitani prilikom prvog otvaranja stranice.
+
+Zato se slanje ažuriranih pretplata radi korištenjem \textbf{AJAX}-a. Definira se funkcija koja se poziva tijekom pritiska tipke 'Ažuriraj', koja prvo iz liste predmeta pronalazi sve one na koje je korisnik pretplaćen te ih sprema u polje koje sadrži njihove identifikatore. Zatim se koristi jQuery funkcija \emph{post()} (koja je omotač oko poziva funkcije \emph{ajax()}) koja prosljeđuje navedene identifikatore pretplaćenih predmeta serveru:
+
+\lstset{style=js}
+\lstinputlisting{code/pretplate-ajax.js}
+
+Kontroler tada na osnovi dobivenih identifikatora, odnosno primarnih ključeva predmeta, ažurira korisnikove pretplaćene predmete.
+
+Pošto broj predmeta može biti velik, dodatno na vrhu svakih od listi nalazi se polje za filtriranje. U to polje može se unesti niz znakova (dio ili cijeli naziv predmeta) nakon čega se lista odmah ažurira, te prikazuje samo one predmete koje sadrže navedeni niz znakova:
 
 \begin{figure}[H]
 \centering
@@ -212,9 +347,6 @@ U ovom dijelu trenutno prijavljeni korisnik može definirati na koje predmete ž
 \caption{Filtriranje predmeta po godini}
 \label{fig:filtriranje}
 \end{figure}
-
-Nakon svih izmjena, pritiskom na tipku 'Ažuriraj' provode se sve promjene te se ažurira popis pretplata odabrane od strane korisnika. Nakon toga u ostalim dijelovima web aplikacije korisnik na raspolaganju za odabir ima samo predmete na koje se unutar ove stranice pretplatio.
-
 
 \subsection{Evidencija}
 Ovaj dio web aplikacije omogućava prijavljenim korisnicima da evidentiraju svoje utrošeno vrijeme za predmete na koje su pretplaćeni:

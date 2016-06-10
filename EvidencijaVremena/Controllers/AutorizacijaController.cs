@@ -36,25 +36,19 @@ namespace EvidencijaVremena.Controllers
 					{
 						if (Crypto.VerifyHashedPassword(korisnik.Lozinka, model.Lozinka))
 						{
-							Debug.WriteLine("uspjesna prijava");
 							FormsAuthentication.SetAuthCookie(model.KorisnickoIme, false);
 							return RedirectToAction("Index", "Predmet");
 						}
 						else
 						{
-							Debug.WriteLine("kriva lozinka");
-							ModelState.AddModelError("error_loz", "Pogrešna Lozinka");
+							ModelState.AddModelError("lozinka_error", "Pogrešna lozinka");
 						}
 					}
 				}
 				else
 				{
-					ModelState.AddModelError("error_kor_ime", "Nepostojeće korisničko ime");
+					ModelState.AddModelError("korisnik_error", "Nepostojeće korisničko ime");
 				}
-			else
-			{
-				Debug.WriteLine("model not valid");
-			}
 			return View();
 		}
 
@@ -79,7 +73,7 @@ namespace EvidencijaVremena.Controllers
 			}
 			if (db.Korisnik.Where(k => k.KorisnickoIme == model.KorisnickoIme).Count() != 0)
 			{
-				ModelState.AddModelError("kor_ime_uniq", "Odabrano korisničko ime već postoji");
+				ModelState.AddModelError("ime_error", "Odabrano korisničko ime već postoji");
 				return View();
 			}
 

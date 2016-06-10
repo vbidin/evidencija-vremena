@@ -13,12 +13,12 @@ namespace EvidencijaVremena.Models
 		public string KorisnickoIme { get; set; }
 
 		[Required(ErrorMessage = "Nedostaje e-mail adresa")]
-		[EmailAddress(ErrorMessage = "Neispravna Email adresa")]
+		[EmailAddress(ErrorMessage = "Neispravna email adresa")]
 		[Display(Name = "Email adresa")]
 		public string Email { get; set; }
 
 		[Required(ErrorMessage = "Nedostaje lozinka")]
-		[StringLength(100, ErrorMessage = "{0} mora sadržavati barem {2} znakova", MinimumLength = 6)]
+		[StringLength(100, ErrorMessage = "Lozinka mora sadržavati barem 6 znakova", MinimumLength = 6)]
 		[DataType(DataType.Password)]
 		[Display(Name = "Lozinka")]
 		public string Lozinka { get; set; }
@@ -26,7 +26,7 @@ namespace EvidencijaVremena.Models
 		[Required(ErrorMessage = "Nedostaje ponovljena lozinka")]
 		[DataType(DataType.Password)]
 		[Display(Name = "Ponovi lozinku")]
-		[Compare("Lozinka", ErrorMessage = "Nova lozinka se ne podudara sa potvrđenom lozinkom")]
+		[Compare("Lozinka", ErrorMessage = "Lozinka se ne podudara")]
 		public string PonovljenaLozinka { get; set; }
 	}
 }

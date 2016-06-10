@@ -11,12 +11,12 @@
 \contentsline {subsection}{\numberline {2.3.2}SQL kod}{10}
 \contentsline {chapter}{\numberline {3}Web aplikacija}{13}
 \contentsline {section}{\numberline {3.1}Alati i tehnologije}{13}
-\contentsline {section}{\numberline {3.2}Implementacija}{14}
-\contentsline {subsection}{\numberline {3.2.1}Prijava}{14}
-\contentsline {subsection}{\numberline {3.2.2}Pretplata}{15}
-\contentsline {subsection}{\numberline {3.2.3}Evidencija}{17}
-\contentsline {subsection}{\numberline {3.2.4}Statistika}{20}
-\contentsline {subsection}{\numberline {3.2.5}Unos podataka}{25}
-\contentsline {section}{\numberline {3.3}Razvoj i pobolj\IeC {\v s}anje}{25}
-\contentsline {chapter}{\numberline {4}Zaklju\IeC {\v c}ak}{26}
-\contentsline {chapter}{Literatura}{27}
+\contentsline {section}{\numberline {3.2}Implementacija}{13}
+\contentsline {subsection}{\numberline {3.2.1}Prijava}{13}
+\contentsline {subsection}{\numberline {3.2.2}Pretplata}{17}
+\contentsline {subsection}{\numberline {3.2.3}Evidencija}{20}
+\contentsline {subsection}{\numberline {3.2.4}Statistika}{23}
+\contentsline {subsection}{\numberline {3.2.5}Unos podataka}{28}
+\contentsline {section}{\numberline {3.3}Razvoj i pobolj\IeC {\v s}anje}{28}
+\contentsline {chapter}{\numberline {4}Zaklju\IeC {\v c}ak}{29}
+\contentsline {chapter}{Literatura}{30}
