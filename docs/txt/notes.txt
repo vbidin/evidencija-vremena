@@ -9,3 +9,4 @@ dodaj unos aktivnosti
 - alati i tehnologije: ASP.NET, Entity Framework, jquery, ajax, chart.js, fullcalendar.js, duallsitbox.js...
 - dodaj ključne dijelove koda
 - autoincrement id
+- tablice ER modela

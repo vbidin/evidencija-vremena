@@ -1,4 +1,4 @@
-\documentclass[times, utf8, zavrsni, numeric]{fer}
+\documentclass[times, utf8, zavrsni]{fer}
 \usepackage{booktabs}
 \usepackage{listings}
 \usepackage{listingsutf8}
@@ -7,6 +7,7 @@
 \usepackage[scaled]{beramono}
 \usepackage{xcolor}
 \usepackage{hyperref}
+\usepackage{caption}
 
 \definecolor{bluekeywords}{rgb}{0.13,0.13,1}
 \definecolor{greencomments}{rgb}{0,0.5,0}
@@ -25,7 +26,9 @@ commentstyle=\color{greencomments},
 keywordstyle=\color{bluekeywords}\bfseries,
 stringstyle=\color{redstrings},
 inputencoding=utf8/latin4,
-basicstyle=\fontsize{11}{10}\selectfont\ttfamily
+basicstyle=\fontsize{12}{10}\selectfont\ttfamily,
+frame=single,
+numbers=left
 }
 
 \lstdefinestyle{sql}
@@ -42,7 +45,9 @@ commentstyle=\color{greencomments},
 keywordstyle=\color{bluekeywords}\bfseries,
 stringstyle=\color{redstrings},
 inputencoding=utf8/latin4,
-basicstyle=\fontsize{11}{10}\selectfont\ttfamily
+basicstyle=\fontsize{12}{10}\selectfont\ttfamily,
+frame=single,
+numbers=left
 }
 
 \lstdefinestyle{html}
@@ -59,7 +64,9 @@ commentstyle=\color{greencomments},
 keywordstyle=\color{bluekeywords}\bfseries,
 stringstyle=\color{redstrings},
 inputencoding=utf8/latin4,
-basicstyle=\fontsize{11}{10}\selectfont\ttfamily
+basicstyle=\fontsize{12}{10}\selectfont\ttfamily,
+frame=single,
+numbers=left
 }
 
 \lstdefinelanguage{JavaScript}{
@@ -77,7 +84,6 @@ basicstyle=\fontsize{11}{10}\selectfont\ttfamily
   morestring=[b]"
 }
 
-
 \lstdefinestyle{js}
 {
 language=JavaScript,
@@ -92,7 +98,9 @@ commentstyle=\color{greencomments},
 keywordstyle=\color{bluekeywords}\bfseries,
 stringstyle=\color{redstrings},
 inputencoding=utf8/latin4,
-basicstyle=\fontsize{11}{10}\selectfont\ttfamily
+basicstyle=\fontsize{12}{10}\selectfont\ttfamily,
+frame=single,
+numbers=left
 }
 
 \begin{document}
@@ -142,8 +150,7 @@ U izradi sheme, moramo osigurati da se izbjegnu dva glavna problema \cite{dbsysc
 
 \section{ER model}
 \subsection{Entiteti}
-\begin{enumerate}[leftmargin=*]
-\item \textbf{Korisnik}\\
+\textbf{Korisnik}\\
 Kako bi korisnici bili u mogućnosti prijavljivati se na sustav sa svojim korisničkim podacima, potrebno je u bazu dodati entitet koja predstavlja korisnika i sve podatke vezane neposredno uz njega. U slučaju ove web aplikacije, nije potrebno puno komplicirati stvari, da bi se definirao korisnik potrebno je imati određeno korisničko ime po kojem se taj korisnik raspoznaje od drugih korisnika, potrebna je određena lozinka sa kojom se korisnik može prijaviti na sustav i koja onemogućuje drugim korisnicima (koji nisu on) da se prijave u njegovo ime, te također e-mail adresa, koja bi omogućila korisniku resetiranje lozinke (u slučaju da je zaboravi). Pošto za ovu web aplikaciju postoji razlika između običnih korisnika i korisnika sa većim privilegijama (kao što su moderatori, odnosno administratori), potrebno je također na neki način u bazi podataka definirati koju razinu prava korisnik ima. To se može omogućiti dodavanjem atributa tipa cijelog broja koji označava privilegije korisnika:
 
 \begin{table}[H]
@@ -163,32 +170,42 @@ Vrijednost & Uloga\\
 
 Lozinka korisnika je običan niz znakova, međutim spremiti je kao takvu u bazu podataka je loša ideja: na taj način bilo tko sa pristupom bazi podataka ima i pristup svim lozinkama korisnika te ih može zlouporabiti. Bolji način je kriptirati lozinku te je kao takvu spremiti u bazu. Svaki puta kada se korisnik prijavljuje na sustav on unosi svoju lozinku koja se zatim ponovno kriptira, nakon čega se kriptirana verzija trenutno unešene lozinke uspoređuje sa onom koja se pohranila u bazu tijekom registracije tog korisnika. Na taj način i dalje je omogućena prijava korisnika kao i inače, ali je sama lozinka sada sigurna. Moglo bi se otići korak dalje i dodati takozvani 'salt', da bi se daljnje povećala sigurnost lozinke, ali je to za ovakav sustav poprilično nepotrebno.
 
-\item \textbf{Aktivnost}\\
-Sljedeće što je potrebno napraviti je omogućiti prijavljenom korisniku da evidentira utrošeno vrijeme. Kako je ovo web aplikacija za evidenciju utrošenog vremena tijekom studija, potrebno je na neki način u bazi definirati sve aktivnosti koje je moguće evidentirati. Zato se definira entitet 'Aktivnost' koji predstavlja bilo koju aktivnost za koju se može evidentirati utrošeno vrijeme.
+\textbf{Aktivnost}\\
+Potrebno je omogućiti prijavljenom korisniku da evidentira utrošeno vrijeme. Kako je ovo web aplikacija za evidenciju utrošenog vremena tijekom studija, potrebno je na neki način u bazi definirati sve aktivnosti koje je moguće evidentirati. Zato se definira entitet 'Aktivnost' koji predstavlja bilo koju aktivnost za koju se može evidentirati utrošeno vrijeme.
 
 Svaka aktivnost ima određeno ime, primjerice: '3. laboratorijska vježba iz predmeta Mrežno Programiranje'. Aktivnost također može imati datum početka i trajanje, te je potrebno definirati atribute 'Datum početka' i 'Trajanje', kao što je to u slučaju laboratorijske vježbe ili određenog predavanja. Međutim, neke 'apstraktnije' aktivnosti ne trebaju nužno imati datum početka i trajanje, aktivnosti kao što su 'Učenje za međuispit iz predmeta Baze podataka', ili 'Izrada seminara iz predmeta Vještine komuniciranja'. U tom slučaju aktivnost neće imati datum početka, a to se u bazi podataka predočuje tako da se u vrijednost tog atributa zapiše 'NULL'.
 
+\begin{table}[H]
+\caption{Trajanje aktivnosti}
+\label{tbl:tablica-trajanje}
+\centering
+\begin{tabular}{lr} \hline
+Aktivnost & Trajanje\\ \hline
+Predavanje & 2 sata\\ 
+Projekt & NULL\\
+Laboratorijska vježba & \textasciitilde10 sati\\
+\end{tabular}
+\end{table}
+
 Trajanje aktivnosti može se interpretirati na više načina. U slučaju neke fiksne aktivnosti kao što je to predavanje, naprimjer '5. predavanje iz predmeta Umjetna inteligencija', koje ima definiran i datum početka i trajanje, odabir trajanja je jednoznačan: trajanje samog predavanje (npr. 3 sata). U slučaju aktivnosti koje nemaju definiran početak, nema smisla ni evidentirati trajanje pa je logično da trajanje također bude NULL. Međutim za aktivnosti koje nemaju fiksno trajanje, može postojati neko 'pretpostavljeno' ili 'očekivano' vrijeme trajanja. Ako su voditelji nekog predmeta odredili da će se kao dio tog predmeta obrađivati seminar, očito je da je izrada seminara neko nepredviđeno vrijeme koje puno varira, ali upravo zato je zanimljivo evidentirati koliko je vremena utrošeno na seminar, te uspoređivati to vrijeme sa naprimjer prosjekom ili nekim očekivanim vremenom koje je definirano od strane voditelja. Zato se u slučaju nepostojećeg datuma početka (ili vrijednosti NULL), trajanje definira ili kao NULL, u slučaju kada ne postoji trajanje, ili kao stvarna vrijednost, u slučaju kada postoji neki očekivani vremenski period trajanja te aktivnosti.
 
-\item \textbf{Predmet}\\
-Vidljivo je da gotovo svaka aktivnost koja se može evidentirati zapravo vezana na neki predmet. Zato je potrebno odvojiti ime predmeta iz naziva aktivnosti, te ga staviti u zasebni entitet u kojem su definirani predmeti. Zatim se definira veza između entiteta 'Aktivnost' i entiteta 'Predmet' koja definira koja aktivnost pripada sklopu kojeg predmeta. Na taj način omogućuje se korisnicima lakši odabir aktivnosti koju žele evidentirati: prvo se može odabrati predmet, a zatim aktivnost tog predmeta, umjesto da su korisnici zatrpani sa tisućama mogućih aktivnosti, većinu od kojih ih uopće ne zanimaju. Uz to, pošto je sad svaka aktivnost vezana uz predmet, moguće je pregledavati utrošeno vrijeme po predmetu, umjesto samo ukupnog utrošenog vremena (kao što je bio slučaj do sada).
+\textbf{Predmet}\\
+Gotovo svaka aktivnost koja se može evidentirati zapravo vezana je na neki predmet. Zato je potrebno odvojiti ime predmeta iz naziva aktivnosti, te ga staviti u zasebni entitet u kojem su definirani predmeti. Zatim se definira veza između entiteta 'Aktivnost' i entiteta 'Predmet' koja definira koja aktivnost pripada sklopu kojeg predmeta. Na taj način omogućuje se korisnicima lakši odabir aktivnosti koju žele evidentirati: prvo se može odabrati predmet, a zatim aktivnost tog predmeta, umjesto da su korisnici zatrpani sa tisućama mogućih aktivnosti, većinu od kojih ih uopće ne zanimaju. Uz to, pošto je sad svaka aktivnost vezana uz predmet, moguće je pregledavati utrošeno vrijeme po predmetu, umjesto samo ukupnog utrošenog vremena (kao što je bio slučaj do sada).
 
 Entitet predmet, osim samog naziva predmeta, treba sadržavati i godinu održavanja predmeta, pošto je očito da se isti predmeti mogu održavati više godina zaredom, a tijekom godine mogu promijeniti svoje aktivnosti! Primjer: jedne godine predmet 'Komunikacijske mreže' obuhvaća domaće zadaće, a sljedeće godine umjesto domaćih zadaća održava se projekt, ili slično. Na ovaj način se isti predmet predavan u različitoj godini tretira kao potpuno različiti predmet, što je u ovom slučaju poželjno. Osim toga svaki predmet ima definirani iznos ECTS bodova, koji zapravo definira koliko vremena bi student trebao potrošiti na taj predmet (jedan ECTS bod je ekvivalentan ~28 sati). Važnost ECTS bodova je očito ključna, ona omogućuje usporedbu stvarnog utrošenog vremena predmeta sa očekivanim utrošenim vremenom.
 
-Kako definirati primarne ključeve ovih entiteta? U slučaju predmeta obično postoji određena šifra koja jednoznačno definira predmet, a osim te šifre mogli bismo kao ključ koristiti kompozitni ključ 'Ime' predmeta i 'Godina', pošto ne postoji predmet koji se održava više puta iste godine (uz pretpostavku da su imena predmeta unikatna, kao što je obično istina u sklopu jednog zasebnog fakulteta). Međutim, u slučaju aktivnosti uistinu ne postoji prirodni ključ. Zbog tog razloga dobra ideja je dodati novi atribut imena 'ID' koje će služiti kao surogatni ključ entiteta 'Aktivnost'.
+Kako definirati primarne ključeve ovih entiteta? U slučaju predmeta obično postoji određena šifra koja jednoznačno definira predmet, a osim te šifre kao ključ mogao bi se koristiti kompozitni ključ 'Ime' predmeta i 'Godina', pošto ne postoji predmet koji se održava više puta iste godine (uz pretpostavku da su imena predmeta unikatna, kao što je obično istina u sklopu jednog zasebnog fakulteta). Međutim, u slučaju aktivnosti uistinu ne postoji prirodni ključ. Zbog tog razloga dobra ideja je dodati novi atribut imena 'ID' koji će služiti kao surogatni ključ entiteta 'Aktivnost'.
 
 Veza entiteta 'Predmet' i 'Aktivnost' je jednostavna: to je veza koja nema svoje vlastite atribute nego samo sadrži primarne ključeve entiteta koje povezuje. Pošto je kardinalnost veze 1-N (1 predmet obuhvaća N aktivnosti, a svaka aktivnost pripada samo jednom predmetu), primarni ključ veze je primarni ključ entiteta na N strani veze: primarni ključ entiteta Aktivnost (ID).
 
-\item \textbf{TipAktivnosti}\\
-Određene aktivnosti mogu se dalje grupirati u cjeline. Trenutačno su grupirane po predmetima, što omogućuje pregled utrošenog vremena po predmetu, kao i po pojedinačnoj aktivnosti, međutim, određene aktivnosti predmeta međusobno su povezane ne samo po predmetima, nego i po tipovima aktivnosti. Aktivnost '1. laboratorijska vježba' i '2. laboratorijska vježba', obje iz predmeta 'Baze podataka', bi mogle oboje biti dio cjeline koja se zove 'laboratorijske vježbe'. Na ovaj način, korisnicima bi bilo još lakše evidentirati aktivnost: prvo bi se odabrao predmet, zatim grupa aktivnosti, zatim sama aktivnost. Osim toga, tijekom pregleda utrošenog vremena moglo bi se uspoređivati koliko je vremena utrošeno po grupama aktivnosti, što može predstavljati jako zanimljivu informaciju. Zato se definira novi entitet imena 'TipAktivnosti', koja definira moguće tipove aktivnost: predavanja, laboratorijske vježbe, domaće zadaće, seminari, ispiti, itd.
+\textbf{TipAktivnosti}\\
+Određene aktivnosti mogu se osim po predmetu, dodatno grupirati u cjeline. Trenutačno su grupirane po predmetima, što omogućuje pregled utrošenog vremena po predmetu, kao i po pojedinačnoj aktivnosti, međutim, određene aktivnosti predmeta međusobno su povezane ne samo po predmetima, nego i po tipovima aktivnosti. Aktivnost '1. laboratorijska vježba' i '2. laboratorijska vježba', obje iz predmeta 'Baze podataka', bi mogle oboje biti dio cjeline koja se zove 'laboratorijske vježbe'. Na ovaj način, korisnicima bi bilo još lakše evidentirati aktivnost: prvo bi se odabrao predmet, zatim grupa aktivnosti, zatim sama aktivnost. Osim toga, tijekom pregleda utrošenog vremena moglo bi se uspoređivati koliko je vremena utrošeno po grupama aktivnosti, što može predstavljati jako zanimljivu informaciju. Zato se definira novi entitet imena 'TipAktivnosti', koja definira moguće tipove aktivnost: predavanja, laboratorijske vježbe, domaće zadaće, seminari, ispiti, itd.
 
 Zatim se svaka aktivnost preko veze povezuje sa odgovarajućim tipom aktivnosti. Entitet 'TipAktivnosti' sam po sebi nije osobito zanimljiv: to je samo naziv tipa aktivnosti. Ovaj entitet sadrži relativno malen broj n-torki, broja sigurno manjeg od 100, pa nije loša ideja dodati primarni ključ 'ID', radi konzistentnosti sa ostalim dijelom baze podataka.
-\end{enumerate}
 
 \subsection{Veze}
-\begin{enumerate}[leftmargin=*]
-\item \textbf{Evidencija}\\
-Sada kad je definirana struktura aktivnosti, treba omogućiti korisnicima da evidentiraju svoje utrošeno vrijeme. U bazi podataka te evidencije moraju se negdje spremati. Potrebno je definirati entitet 'Evidencija' koji predstavlja jednu evidenciju jednog korisnika za jednu aktivnost. Međutim, pošto je ovo ER model, evidencije se mogu predstaviti u obliku veze, a ne entiteta. U ovom slučaju to je veza između entiteta 'Korisnik' i 'Aktivnost', koja prikazuje koji korisnik evidentira koji predmet. Kako je kardinalnost veze N-N (jedan korisnik može evidentirati više aktivnosti, i jedna aktivnost može biti evidentirana od strane jednog korisnika) primarni ključ bit će unija primarnih ključeva entiteta koje povezuje: 'KorisnickoIme' i 'AktivnostID'.
+\textbf{Evidencija}\\
+Korisnicima treba omogućiti da evidentiraju svoje utrošeno vrijeme. Potrebno je definirati entitet 'Evidencija' koji predstavlja jednu evidenciju jednog korisnika za jednu aktivnost. Međutim, evidencije se u ER modelu mogu predstaviti u obliku veze, a ne entiteta. U ovom slučaju to je veza između entiteta 'Korisnik' i 'Aktivnost', koja prikazuje koji korisnik evidentira koji predmet. Kako je kardinalnost veze N-N (jedan korisnik može evidentirati više aktivnosti, i jedna aktivnost može biti evidentirana od strane više korisnika) primarni ključ bit će unija primarnih ključeva entiteta koje povezuje: 'KorisnickoIme' i 'AktivnostID'.
 
 Osim toga moguće je da jedan korisnik jednu aktivnost evidentira više puta, primjerice za aktivnosti poput laboratorijske vježbe moglo bi prvo biti evidentirano vrijeme utrošeno za izradu pripreme, pa zatim vrijeme na samoj laboratorijskoj vježbi, u kojem slučaju trenutačni primarni ključ ne bi bio dovoljan: više n-torki imale bi kao primarni ključ istu vrijednost, što nije dopustivo. 
 
@@ -205,13 +222,13 @@ Završni rad & 7.5 sati & Promijenjen stil aplikacije\\
 \end{tabular}
 \end{table}
 
-Zato je potrebno dodati u skup atributa primarnog ključa još jedan atribut koji razrješava prethodno navedeni slučaj. Dobar odabir bio bi 'Datum unosa', koji predstavlja datum pohranjivanja evidencije, čime se omogućuje više evidencija od strane jednog korisnika za istu aktivnost. Dalje, potrebno je definirati sam utrošak vremena, pa se dodaje vlastiti atribut veze 'Trajanje' koji predstavlja koliko vremena je utrošeno na aktivnost koju referencira evidencija. Dalje od interesa mogao bi biti eventualno opis evidencije, ukoliko je potreban. 
+Zato je potrebno dodati u skup atributa primarnog ključa još jedan atribut koji razrješava prethodno navedeni slučaj. Dobar odabir bio bi 'Datum unosa', koji predstavlja datum pohranjivanja evidencije, čime se omogućuje više evidencija od strane jednog korisnika za istu aktivnost. Dalje, potrebno je definirati sam utrošak vremena, pa se dodaje vlastiti atribut veze 'Trajanje' koji predstavlja koliko vremena je utrošeno na aktivnost koju referencira evidencija. Dalje od interesa mogao bi biti eventualno opis evidencije, 
 
-\item \textbf{Pretplata}\\
-Moguće je dalje poboljšati konceptualni model baze: trenutačno, da bi korisnik mogao evidentirati utrošeno vrijeme, mora prvo odabrati predmet, kojih može biti veoma mnogo. Čak i sa nekim načinom pretraživanja predmeta, korisnik bi morao tijekom svake evidencije birati 'svoj' predmet od svih mogućih predmeta (kojih može biti stotine!). Bilo bi korisno kada bi svaki korisnik mogao imati neki predefinirani skup predmeta na koje je 'pretplaćen', te da mu se tijekom evidencije i pregleda pokazuju samo ti predmeti. Zato se uvodi nova veza 'Pretplata' koja povezuje entitet 'Korisnik' i 'Predmet', čime se može označiti koji korisnik trenutačno evidentira koji predmet. Na taj način korisnik može odabrati svoje predmete samo jednom prilikom naprimjer registracije ili početka novog semestra, a zatim tijekom semestra evidentira te pretplaćene predmete. Također je moguće izbrisati pretplatu iz baze, čime se korisnikova pretplata briše (ako je naprimjer semestar završen).
+\textbf{Pretplata}\\
+Moguće je dalje poboljšati konceptualni model baze: da bi korisnik mogao evidentirati utrošeno vrijeme na neku aktivnost, prvo mora odabrati predmet njezin predmet, kojih može biti veoma mnogo. Čak i sa nekim načinom pretraživanja predmeta, korisnik bi morao tijekom svake evidencije birati 'svoj' predmet od svih mogućih predmeta (kojih može biti stotine!). Bilo bi korisno kada bi svaki korisnik mogao imati neki predefinirani skup predmeta na koje je 'pretplaćen', te da mu se tijekom evidencije i pregleda pokazuju samo ti predmeti. Zato se uvodi nova veza 'Pretplata' koja povezuje entitet 'Korisnik' i 'Predmet', čime se može u bazi definirati koji korisnik trenutačno evidentira koji predmet. Na taj način korisnik može odabrati svoje predmete samo jednom prilikom registracije ili početka novog semestra, a zatim tijekom semestra evidentirati te pretplaćene predmete. Također je moguće izbrisati pretplatu iz baze, čime se korisnikova pretplata prekida (ako je naprimjer semestar završen).
 
-\item \textbf{Opterećenje}\\
-Trenutačno baza podataka omogućava korisnicima intuitivan način evidencije utrošenog vremena, kao i sve podatke potrebne za pregled utrošenog vremena po predmetu, tipovima aktivnosti, kao i samim aktivnostima. Međutim, za svaki predmet službeno se definiraju  i 'semestralna opterećenja'. To je iznos sati ili ECTS bodova za određene tipove aktivnosti toga predmeta. Naprimjer za predmet 'Mrežno programiranje' mogla bi biti definirana sljedeća opterećenja:
+\textbf{Opterećenje}\\
+Dodatno, za svaki predmet službeno se definiraju i 'semestralna opterećenja'. To je iznos sati ili ECTS bodova za određene tipove aktivnosti toga predmeta. Naprimjer, za predmet 'Mrežno programiranje' mogla bi biti definirana sljedeća opterećenja:
 
 \begin{table}[H]
 \caption{Opterećenja}
@@ -224,8 +241,7 @@ Laboratorijske vježbe & 15 \\ \hline
 \end{tabular}
 \end{table}
 
-Ovo je jedna dodatna informacija koju je korisno pohraniti uz svaki predmet. Zato se na postojeći model može dodati nova veza 'Opterećenje' koja povezuje predmet sa njegovim pripadajućim tipovima aktivnosti, i definira koliko sati (odnosno ECTS bodova) svaki tip aktivnosti oduzima. Sada se prilikom pregleda statistike može uspoređivati utrošeno vrijeme po tipu aktivnosti, sa definiranim vremenom tipa aktivnosti (u slučaju da postoji definicija). Čak iako službeno za neki predmet ne postoji semestralno opterećenje za određeni tip aktivnosti kao što su 'domaće zadaće', prilikom dodavanja tog predmeta u bazu podataka moglo bi se ručno podesiti koliko se vremena očekuje da će biti utrošeno za taj tip aktivnosti.
-\end{enumerate}
+Ovo je jedna dodatna informacija koju je korisno pohraniti uz svaki predmet. Zato se na u model može dodati nova veza 'Opterećenje' koja povezuje predmet sa njegovim pripadajućim tipovima aktivnosti, i definira koliko sati (odnosno ECTS bodova) svaki tip aktivnosti oduzima. Sada se prilikom pregleda statistike može uspoređivati utrošeno vrijeme po tipu aktivnosti, sa definiranim vremenom tipa aktivnosti (u slučaju da postoji definicija). Čak ako službeno za neki predmet ne postoji semestralno opterećenje za određeni tip aktivnosti kao što su 'domaće zadaće', prilikom dodavanja tog predmeta u bazu podataka moglo bi se ručno podesiti koliko se vremena očekuje da će biti utrošeno za taj tip aktivnosti, čime se taj iznos vremena može uspoređivati sa stvarnim tijekom pregleda statistike (što opet može biti korisna informacija).
 
 \subsection{Dijagram}
 
@@ -236,15 +252,24 @@ Ovo je jedna dodatna informacija koju je korisno pohraniti uz svaki predmet. Zat
 \label{fig:er-model}
 \end{figure}
 
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.8]{img/er-model-opis.pdf}
+\caption{Entiteti i veze}
+\label{fig:er-model-opis}
+\end{figure}
+
+Svi postojeći kompozitni ključevi zamijenjeni su sa surogatnim ključevima radi lakšeg rada web aplikacije. U slučajevima poput veze 'Evidencija', kompozitni ključ samo donosi dodatna opterećenje u web aplikaciju: prilikom svakog dohvata evidencije potrebno je pretraživati po svim troje vrijednostima (KorisnikID, AktivnostID i DatumUnosa), a tijekom komunikacije između servera i klijenta putem Ajax-a trebaju se prenositi sve troje vrijednosti, dok sami kompozitni ključ ne donosi u ovom slučaju ikakve prednosti. Ostali entiteti i veze zamijenjeni su zbog istih razloga ili radi konzistentnosti.
+
 \section{Relacijski model}
 
-ER konceptualni model koristan je za grafički prikaz baze podataka i opis veza između entiteta. Međutim, stvarne baze podataka koje koriste web aplikacije (poput ove) su opisane relacijskom shemom. Zato se ER model pretvara u relacijski čime se dobiva sljedeća shema:
+ER konceptualni model koristan je za grafički prikaz baze podataka i opis veza između entiteta. Međutim, stvarne baze podataka koje koriste web aplikacije (poput ove) su opisane relacijskom shemom. Zato se ER model pretvara u relacijski čime se dobiva sljedeća shema (grane označavaju višestrukost):
 
 \subsection{Dijagram}
 
 \begin{figure}[H]
 \centering
-\includegraphics[scale=0.6]{img/relacijski-model.pdf}
+\includegraphics[scale=0.7]{img/relacijski-model.pdf}
 \caption{Relacijski model}
 \label{fig:relacijski-model}
 \end{figure}
@@ -255,14 +280,46 @@ ER konceptualni model koristan je za grafički prikaz baze podataka i opis veza 
 
 \chapter{Web aplikacija}
 \section{Alati i tehnologije}
+\textbf{SQL Server Management Studio}\\
+\textbf{SQL Server 2016}\\
+\textbf{Entity Framework}\\
+\textbf{ASP.NET}\\
+\textbf{jQuery}\\
+\textbf{Ajax}\\
+Ajax je skup tehnologija koje omogućavaju dodatne funkcionalnosti u radu sa web aplikacijama:
 \begin{enumerate}
-\item \textbf{SQL Server Management Studio}
-\item \textbf{SQL Server 2016}
-\item \textbf{Entity Framework}
-\item \textbf{ASP.NET}
-\item \textbf{jQuery}
-\item \textbf{AJAX}
+\item Ažuriranje bez osvježavanja cijele web stranice.
+\item Slanje podataka poslužitelju nakon učitavanja stranice.
+\item Primanje podataka od poslužitelja nakon učitavanja stranice.
+\item Pozadinsko slanje podataka poslužitelju.
 \end{enumerate}
+
+Ajax je komuniciranje sa web poslužiteljem bez osvježavanja cijele stranice.\citep{ajax}
+
+Na tradicionalnim web stranicama, preglednik (engl. browser) šalje zahtjev poslužitelju za cijelom stranicom. Tada, korisnik odabire poveznicu ili predaje formu čime preglednik šalje zahtjev poslužitelju, poslužitelj opet vraća cijelu stranica kao odgovor, te se ciklus nastavlja.
+
+Ajax metodologija se udaljava od takvog načina rada. Kada korisnik vrši interakciju nad stranicom, preglednik šalje diskretne podatke. Umjesto da poslužitelj ponovno pošalje cijelu novu stranicu kao odgovor, on samo ažurira postojeću u odnosu na pristigle podatke.
+
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.5]{img/ajax-dijagram.pdf}
+\caption{Ajax dijagram}
+\label{fig:ajax-dijagram}
+\end{figure}
+
+Slanje podataka ostvaruje se pozivom \emph{ajax()} funkcije, koja obično izgleda ovako:
+
+\lstset{style=js}
+\lstinputlisting{code/ajax.js}
+
+Nakon uspješnog slanja zahtjeva, \emph{success} funkcija može pristupiti podacima koji su poslani od strane poslužitelja, te ažurirati web stranicu na koji god način je potrebno putem JavaScript-a.
+
+U sklopu ove aplikacije koristi se jQuery funkcija \emph{post()}, koja je zapravo samo omotač oko običnog Ajax poziva:
+
+\lstset{style=js}
+\lstinputlisting{code/jquery-post.js}
+
+Na ovaj način nakon svakog ažuriranja pretplate, evidentiranja utrošenog vremena, ili pregleda statistike, svi podaci web stranice koje je korisnik pohranio putem preglednika (dinamički generirani sadržaj poput grafova, trenutno odabrane postavke, itd.) ostaju pohranjeni, te se samo ažurira onaj dio stranice koji je izmjenjen. Time se komunikacija između klijenta i poslužitelja znatno ubrzava, pošto se ne šalju redundantni podaci putem mreže, a i znatno olakšava, pošto klijent pamti sve podatke web stranice tijekom komunikacije sa poslužiteljem.
 
 \section{Implementacija}
 \subsection{Prijava}
@@ -270,7 +327,7 @@ Da bi korisnik uopće mogao koristiti bilo koji dio aplikacije, treba se prvo pr
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{img/prijava.png}
+\includegraphics{img/prijava.png}
 \caption{Prijava}
 \label{fig:prijava}
 \end{figure}
@@ -311,7 +368,7 @@ Tada se u pogledu definiraju elementi koji odgovaraju podacima iz modela. Za sve
 \lstset{style=html}
 \lstinputlisting{code/registracija-view.cshtml}
 
-Zatim se u kontroleru koji prima HTTP zahtjev kao jedan od parametara dodaje prethodno definirani model, čime se tijekom svake obrade HTTP zahtjeva može podacima iz forme na jednostavan način pristupiti preko parametra koji predtavlja taj model:
+Zatim se u upravljaču koji prima HTTP zahtjev kao jedan od parametara dodaje prethodno definirani model, čime se tijekom svake obrade HTTP zahtjeva može podacima iz forme na jednostavan način pristupiti preko parametra koji predtavlja taj model:
 
 \lstset{style=csharp}
 \lstinputlisting{code/registracija-cont.cs}
@@ -338,12 +395,12 @@ Nakon svih izmjena, pritiskom na tipku 'Ažuriraj' provode se sve promjene te se
 
 Ako se slanje novih pretplaćenih predmeta radi klasničnim POST zahtjevom, cijela stranica nakon ažuriranja se ponovno učitava, kako je to i inače slučaj sa običnim HTTP POST zahtjevima. Međutim, poželjno je ažurirati popis pretplaćenih predmeta bez ponovnog učitanja cijele stranice, jer to podrazumijeva ponovno čitanje \textbf{svih} predmeta iz baze podataka, što nepotrebno troši vrijeme servera, pošto su svi predmeti već bili učitani prilikom prvog otvaranja stranice.
 
-Zato se slanje ažuriranih pretplata radi korištenjem \textbf{AJAX}-a. Definira se funkcija koja se poziva tijekom pritiska tipke 'Ažuriraj', koja prvo iz liste predmeta pronalazi sve one na koje je korisnik pretplaćen te ih sprema u polje koje sadrži njihove identifikatore. Zatim se koristi jQuery funkcija \emph{post()} (koja je omotač oko poziva funkcije \emph{ajax()}) koja prosljeđuje navedene identifikatore pretplaćenih predmeta serveru:
+Zato se slanje ažuriranih pretplata radi korištenjem \textbf{Ajax}-a. Definira se funkcija koja se poziva tijekom pritiska tipke 'Ažuriraj', koja prvo iz liste predmeta pronalazi sve one na koje je korisnik pretplaćen te ih sprema u polje koje sadrži njihove identifikatore. Zatim se koristi jQuery funkcija \emph{post()} (koja je omotač oko poziva funkcije \emph{ajax()}) koja prosljeđuje navedene identifikatore pretplaćenih predmeta serveru:
 
 \lstset{style=js}
 \lstinputlisting{code/pretplate-ajax.js}
 
-Kontroler tada na osnovi dobivenih identifikatora, odnosno primarnih ključeva predmeta, ažurira korisnikove pretplaćene predmete.
+Upravljač tada na osnovi dobivenih identifikatora, odnosno primarnih ključeva predmeta, ažurira korisnikove pretplaćene predmete.
 
 Pošto broj predmeta može biti velik, dodatno na vrhu svakih od listi nalazi se polje za filtriranje. U to polje može se unesti niz znakova (dio ili cijeli naziv predmeta) nakon čega se lista odmah ažurira, te prikazuje samo one predmete koje sadrže navedeni niz znakova:
 
@@ -369,11 +426,19 @@ Evidencija se sastoji od 3 dijela:
 \begin{enumerate}
 \item Na vrhu je padajuća lista koja sadrži sve pretplaćene predmete trenutno prijavljenog korisnika. Ovdje korisnik odabire predmet za koji želi evidentirati utrošeno vrijeme.
 
-\item Izbornik aktivnosti. Nakon što korisnik odabere jedan od njegovih pretplaćenih predmeta putem padajuće liste, ovaj izbornik dinamički se ažurira sa svim novim aktivnostima toga predmeta. Aktivnosti su podijeljene prema tipu aktivnosti: odabirom jednog od tipova aktivnosti otvara se nova padajuća lista koja sadrži sve aktivnosti toga tipa. Naprimjer ako za predmet 'Mrežno programiranje' odaberemo tip aktivnosti 'Predavanja', stranica bi mogla izgledati ovako:
+\item Izbornik aktivnosti. Nakon što korisnik odabere jedan od njegovih pretplaćenih predmeta putem padajuće liste, ova stranica putem Ajax-a dinamički se ažurira sa svim novim aktivnostima toga predmeta: upravljaču se šalje identifikator predmeta, nakon čega on dohvaća sve aktivnosti iz baze podataka koje pripadaju odabranome predmetu te ih vraća pogledu, koji ažurira tipove aktivnosti izbornika tako da odgovaraju svim tipovima aktivnosti odabranoga predmeta, nastanjuje ih sa odgovarajućim aktivnostima, te ažurira kalendar sa svim aktivnostima koji imaju definiran termin.
+
+\textbf{FullCalendar} (http://fullcalendar.io/)
+FullCalendar je jQuery plugin koji omogućava prikazivanje kalendara. Pruža veliki raspon mogućnosti: prikazivanje po mjesecu, tjednu, danu, interaktivnost kalendara (stvaranje novih termina, ažuriranje postojećih), dinamičko mijenjanje sadržaja kalendara putem Ajax zahtjeva, i mnoge druge mogućnosti koje se u ovoj web aplikaciji ne koriste.
+
+\lstset{style=js}
+\lstinputlisting{code/kalendar.js}
+
+Aktivnosti su podijeljene prema tipu aktivnosti: odabirom jednog od tipova aktivnosti otvara se nova padajuća lista koja sadrži sve aktivnosti toga tipa. Naprimjer ako se za predmet 'Mrežno programiranje' odabere tip aktivnosti 'Predavanja', stranica bi mogla izgledati ovako:
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{img/selekcija.png}
+\includegraphics[scale=0.8]{img/selekcija.png}
 \caption{Odabir tipa aktivnosti}
 \label{fig:selekcija}
 \end{figure}
@@ -387,18 +452,26 @@ Nakon što je odabran tip aktivnosti, korisnik ima pregled svih aktivnosti toga 
 \label{fig:modal}
 \end{figure}
 
-Modalni prozor sastoji se od polja u koje se unosi iznos utrošenog vremena, i padajuće liste u kojoj se odabire mjerna jedinica utrošenog vremena (minute ili sati). Nakon što korisnik unese podatke, odabere se opcija spremi čime se vrši validacija. U slučaju pogreške unosa podataka, naprimjer ako se umjesto iznosa vremena unese riječ ili slično, korisniku se ispisuje odgovarajući tekst pogreške. Ako je validacija prošla, unos se trajno pohranjuje u bazu, nakon čega se kao i sve ostale pohranjene evidencije koristi prilikom računanja statistike koja je dostupna na stranici imena 'Statistika'. U slučaju pogreške od strane korisnika, modalni prozor može se ugasiti pritiskom na 'x' gumb u gornjem desnom kutu prozora čime se evidentiranje za tu specifičnu aktivnost otkazuje. Bez obzira na rezultat evidencije, korisnik opet može proizvoljno odabirati i evidentirati aktivnosti koliko god je potrebno.
+Modalni prozor sastoji se od polja u koje se unosi iznos utrošenog vremena, i padajuće liste u kojoj se odabire mjerna jedinica utrošenog vremena (minute ili sati). Nakon što korisnik unese podatke, odabere se opcija spremi čime se vrši validacija. U slučaju pogreške unosa podataka, naprimjer ako se umjesto iznosa vremena unese riječ ili slično, korisniku se ispisuje odgovarajući tekst pogreške. Ako je validacija prošla, unos se trajno pohranjuje u bazu, nakon čega se kao i sve ostale pohranjene evidencije koristi prilikom računanja statistike koja je dostupna na stranici imena 'Statistika'. 
+
+\lstset{style=js}
+\lstinputlisting{code/evidencija-spremi.js}
+
+U slučaju pogreške od strane korisnika, modalni prozor može se ugasiti pritiskom na 'x' gumb u gornjem desnom kutu prozora čime se evidentiranje za tu specifičnu aktivnost otkazuje. Bez obzira na rezultat evidencije, korisnik opet može proizvoljno odabirati i evidentirati aktivnosti koliko god je potrebno.
 
 \item Kalendar
 
-TODO: dodaj sliku kalendara sa aktivnostima:
+Osim prethodno navedenog načina evidentiranja (odabirom aktivnosti putem izbornika), korisniku se dodatno omogućuje i evidentiranje putem kalendara. Sve aktivnosti odabranoga predmeta koje imaju u bazi definiran datum početka i/ili trajanje, mogu se vidjeti na kalendaru, ukoliko su to aktivnosti trenutno odabranoga predmeta. Korisnik može pregledavati sve aktivnosti putem kalendara, te ih aktivirati pritiskom na njih. Nakon takvog odabira, opet se otvara isti modalni prozor kao i prilikom klasičnog evidentiranja. Važno je napomenuti da neke aktivnosti nemaju definiran datum početka. U tom slučaju te aktivnosti se očito nemogu aktivirati putem kalendara, već se moraju odabrati putem izbornika.
 
-Osim prethodno navedenog načina evidentiranja (odabirom aktivnosti putem izbornika), korisniku se dodatno omogućuje i evidentiranje putem kalendara. Sve aktivnosti odabranoga predmeta koje imaju u bazi definiran datum početka i/ili trajanje, mogu se vidjeti na kalendaru, ukoliko su to aktivnosti trenutnog predmeta. Korisnik može pregledavati sve aktivnosti putem kalendara, te ih aktivirati pritiskom na njih. Nakon takvog odabira, opet se otvara isti modalni prozor kao i prilikom klasičnog evidentiranja koji korisniku omogućuje evidentiranje. Važno je za napomenuti da neke aktivnosti nemaju definiran datum početka. U tom slučaju te aktivnosti se očito nemogu aktivirati putem kalendara, već se moraju odabrati putem izbornika.
+FullCalendar interno podržava interaktivnost grafa, nakon pritiska na jedan od termina poziva se funkcija \emph{eventClick} koju se može proizvoljno definirati:
+
+\lstset{style=js}
+\lstinputlisting{code/kalendar-click.js}
+
 \end{enumerate}
 
-
 \subsection{Statistika}
-Ovaj dio web aplikacije omogućava prijavljenim korisnicima da pregledaju svoje trenutačno utrošeno vrijeme, te da ga uspoređuju sa drugim korisnicima kao i sa definiranim očekivanim utrošenim vremenom. Kao i kod drugih dijelova aplikacije, korisnik mora biti prijavljen na sustav. Nakon odabira stranice evidencija korisnik ima na raspolaganju dvije kartice, prva od kojih omogućuje sljedeći pregled:
+Ovaj dio web aplikacije omogućava prijavljenim korisnicima da pregledavaju svoje trenutačno utrošeno vrijeme, te da ga uspoređuju sa drugim korisnicima kao i sa definiranim očekivanim utrošenim vremenom. Kao i kod drugih dijelova aplikacije, korisnik mora biti prijavljen na sustav. Korisnik ima na raspolaganju dvije kartice, prva od kojih omogućuje sljedeći pregled:
 
 \begin{figure}[H]
 \centering
@@ -409,9 +482,9 @@ Ovaj dio web aplikacije omogućava prijavljenim korisnicima da pregledaju svoje 
 
 Korisnik ovdje može odabrati jedan od predmeta na koje je trenutačno pretplaćen. U slučaju da predmet koji korisnik želi pregledavati nije na ovom popisu, potrebno je u izborniku 'Predmeti' pretplatiti se na taj predmet, nakon čega će on postati vidljiv u padajućoj listi.
 
-Nakon odabira korisnika, odmah se ažurira statistika predmeta, tipova aktivnosti, te i samih aktivnosti. Korisnik ima na raspologanja 3 grafa. Prvi graf 'Predmet' omogućuje korisniku pregled utrošenog vremena na razini cijelog predmeta, odnosno obuhvaća ukupan iznos utrošenog vremena. Sve evidencije koje je korisnik ikada evidentirao za trenutačno navedeni predmet bit će pokazane u obliku stupičastog grafa u trenutno odabranim mjernim jedinicama. Osim samih korisnikovih podataka, također su i na raspolaganju drugi podaci: jedan od njih je prosjek utrošenog vremena svih evidencija za taj predmet. Pod time se zapravo misli na prosjek utrošenog vremena svih korisnika koji su ikada evidentirali ovaj predmet.
+Nakon odabira predmeta, odmah se ažurira statistika predmeta, tipova aktivnosti, te i samih aktivnosti. Korisnik ima na raspologanja 3 grafa. Prvi graf 'Predmet' omogućuje korisniku pregled utrošenog vremena na razini cijelog predmeta, odnosno obuhvaća ukupan iznos utrošenog vremena. Sve evidencije koje je korisnik ikada evidentirao za trenutačno navedeni predmet bit će prikazane u obliku stupčastog (engl. bar) grafa u trenutno odabranim mjernim jedinicama. Osim samih korisnikovih podataka, također su i na raspolaganju drugi podaci: jedan od njih je prosjek utrošenog vremena svih evidencija za taj predmet. Pod time se zapravo misli na prosjek utrošenog vremena svih korisnika koji su ikada evidentirali ovaj predmet.
 
-Osim tog podatka, također postoji i iznos ECTS bodova koji je definiran za svaki predmet prilikom njegovog unosa. Sa ECTS bodovima može se izračunati očekivani utrošak vremena za taj predmet, pošto se uzima da jedan ECTS bod iznosi ~28 sati. Korisnik može vidjeti koliko je vremena utrošio on, koliki je prosjek utrošenog vremena, te koliko je vremena 'trebalo' (otprilike) biti utrošeno. To je korisna informacija koja može pokazati koliko je dobro definiran predmet: da li uzima manje vremena nego što bi trebao, više nego što bi trebao, te u kojim iznosu prekoračuje očekivano vrijeme.
+Osim tog podatka, također postoji i iznos ECTS bodova koji je definiran za svaki predmet prilikom njegovog unosa. Sa ECTS bodovima može se izračunati očekivani utrošak vremena za taj predmet, pošto vrijedi da jedan ECTS bod iznosi ~28 sati. Korisnik može vidjeti koliko je vremena utrošio on, koliki je prosjek utrošenog vremena, te koliko je vremena 'trebalo' (otprilike) biti utrošeno. To je korisna informacija koja može pokazati koliko je dobro definiran predmet: da li uzima manje vremena nego što bi trebao, više nego što bi trebao, te u kojim iznosu prekoračuje očekivano vrijeme.
 
 \begin{figure}[H]
 \centering
@@ -419,6 +492,20 @@ Osim tog podatka, također postoji i iznos ECTS bodova koji je definiran za svak
 \caption{Statistika - predmet}
 \label{fig:statistika-predmet}
 \end{figure}
+
+Sami podaci grafa dohvaćaju se korištenjem Ajax-a: nakon svakog odabira novog predmeta, poziva se funkcija koja uzima identifikator trenutačno odabranoga predmeta iz padajuće liste, te ga šalje odgovarajućem upravljaču:
+
+\lstset{style=js}
+\lstinputlisting{code/predmeti-change.js}
+
+Upravljač tada izračunava svu statistiku vezanu uz sami predmet, te ju vraća u obliku JSON-a (JavaScript Object Notation). Nakon dobivene statistike za predmet, ponovno se šalje novi zahtjev, ovaj puta za trenutno odabranu aktivnost, koji onda vraća svu statistiku vezanu uz odabranu aktivnost toga predmeta.
+
+U slučaju da je korisnik odabrao novi predmet, nakon dohvata statistike predmeta implicitno se dohvaća i statistika aktivnosti, pošto svaki predmet ima svoje zasebne aktivnosti koje je potrebno osvježiti. Međutim, u slučaju odabira nove aktivnosti (unutar kartice 'Aktivnosti'), ne dohvaća se statistika predmeta, već samo statistika te odabrane aktivnosti, pošto statistika predmeta ostaje nepromijenjena.
+
+Odabir mjernih jedinica funkcionira na jednak način; jedina razlika je što se tijekom slanja Ajax zahtjeva zajedno sa zahtjevom šalje i niz znakova koji predstavlja mjernu jedinicu za koju je potrebno izgenerirati statistiku (ECTS, odnosno sati), koju upravljač prilikom stvaranja statistike uzima u obzir.
+
+\lstset{style=js}
+\lstinputlisting{code/aktivnosti-change.js}
 
 Osim pregleda ukupno utrošenog vremena, korisnik također može pregledavati utrošeno vrijeme po tipovima aktivnosti koji su definirani za trenutačno odabrani predmet. Naprimjer, ako korisnik odabere predmet 'Mrežno programiranje', mogli bismo vidjeti sljedeću sliku:
 
@@ -459,26 +546,7 @@ nad kojim se prilikom odabira novog predmeta ili aktivnosti, odnosno učitavanja
 \lstset{style=js}
 \lstinputlisting{code/chart.js}
 
-Sami podaci grafa dohvaćaju se korištenjem AJAX-a: nakon svakog odabira novog predmeta, poziva se funkcija koja uzima identifikator trenutačno odabranoga predmeta iz padajuće liste, te ga šalje odgovarajućem kontroleru:
-
-\lstset{style=js}
-\lstinputlisting{code/predmeti-change.js}
-
-Kontroler tada izračunava svu statistiku vezanu uz sami predmet, te ju vraća u obliku JSON-a (JavaScript Object Notation). Nakon dobivene statistike za predmet, ponovno se šalje novi zahtjev, ovaj puta za trenutno odabranu aktivnost, koji onda vraća svu statistiku vezanu uz odabranu aktivnost toga predmeta.
-
-U slučaju da je korisnik odabrao novi predmet, nakon dohvata statistike predmeta implicitno se dohvaća i statistika aktivnosti, pošto svaki predmet ima svoje zasebne aktivnosti koje je potrebno osvježiti. Međutim, u slučaju odabira nove aktivnosti (unutar kartice 'Aktivnosti'), \textbf{ne} dohvaća se statistika predmeta, već samo statistika te odabrane aktivnosti, pošto statistika predmeta ostaje nepromijenjena.
-
-Odabir mjernih jedinica funkcionira na jednak način; jedina razlika je što se tijekom slanja ajax zahtjeva zajedno sa zahtjevom šalje i niz znakova koji predstavlja mjernu jedinicu za koju je potrebno izgenerirati statistiku (ECTS, odnosno sati), koju kontroler prilikom stvaranja statistike uzima u obzir.
-
-\lstset{style=js}
-\lstinputlisting{code/aktivnosti-change.js}
-
-\subsection{Unos podataka}
-
-TODO
-
 \section{Razvoj i poboljšanje}
-
 TODO
 
 \chapter{Zaključak}
