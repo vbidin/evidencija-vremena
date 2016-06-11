@@ -1,6 +1,6 @@
 $(document).ready(function () {
 	$("#pretplate").bootstrapDualListbox({
-		filterTextClear: "Pokaûi sve",
+		filterTextClear: "Poka≈æi sve",
 		selectedListLabel: "Pretplate",
 		nonSelectedListLabel: "Predmeti",
 		infoTextEmpty: "Prazno",

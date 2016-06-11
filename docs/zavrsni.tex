@@ -6,6 +6,7 @@
 \usepackage[T1]{fontenc}
 \usepackage[scaled]{beramono}
 \usepackage{xcolor}
+\usepackage{hyperref}
 
 \definecolor{bluekeywords}{rgb}{0.13,0.13,1}
 \definecolor{greencomments}{rgb}{0,0.5,0}
@@ -189,7 +190,7 @@ Zatim se svaka aktivnost preko veze povezuje sa odgovarajućim tipom aktivnosti.
 \item \textbf{Evidencija}\\
 Sada kad je definirana struktura aktivnosti, treba omogućiti korisnicima da evidentiraju svoje utrošeno vrijeme. U bazi podataka te evidencije moraju se negdje spremati. Potrebno je definirati entitet 'Evidencija' koji predstavlja jednu evidenciju jednog korisnika za jednu aktivnost. Međutim, pošto je ovo ER model, evidencije se mogu predstaviti u obliku veze, a ne entiteta. U ovom slučaju to je veza između entiteta 'Korisnik' i 'Aktivnost', koja prikazuje koji korisnik evidentira koji predmet. Kako je kardinalnost veze N-N (jedan korisnik može evidentirati više aktivnosti, i jedna aktivnost može biti evidentirana od strane jednog korisnika) primarni ključ bit će unija primarnih ključeva entiteta koje povezuje: 'KorisnickoIme' i 'AktivnostID'.
 
-Osim toga moguće je da jedan korisnik jednu aktivnost evidentira više puta, primjerice za aktivnosti poput laboratorijske vježbe moglo bi prvo biti evidentirano vrijeme utrošeno za izradu pripreme, pa zatim vrijeme na samoj laboratorijskoj vježbi, u kojem slučaju trenutačni primarni ključ ne bi bio dovoljan: više n-torki imale bi kao primarni ključ istu vrijednost, što nije dopustivo. Zato je potrebno dodati u skup atributa primarnog ključa još jedan atribut koji razrješava prethodno navedeni slučaj. Dobar odabir bio bi 'Datum unosa', koji predstavlja datum pohranjivanja evidencije, čime se omogućuje više evidencija od strane jednog korisnika za istu aktivnost. Dalje, potrebno je definirati sam utrošak vremena, pa se dodaje vlastiti atribut veze 'Trajanje' koji predstavlja koliko vremena je utrošeno na aktivnost koju referencira evidencija. Dalje od interesa mogao bi biti eventualno opis evidencije, ukoliko je potreban. 
+Osim toga moguće je da jedan korisnik jednu aktivnost evidentira više puta, primjerice za aktivnosti poput laboratorijske vježbe moglo bi prvo biti evidentirano vrijeme utrošeno za izradu pripreme, pa zatim vrijeme na samoj laboratorijskoj vježbi, u kojem slučaju trenutačni primarni ključ ne bi bio dovoljan: više n-torki imale bi kao primarni ključ istu vrijednost, što nije dopustivo. 
 
 \begin{table}[H]
 \caption{Evidencije}
@@ -204,11 +205,13 @@ Završni rad & 7.5 sati & Promijenjen stil aplikacije\\
 \end{tabular}
 \end{table}
 
+Zato je potrebno dodati u skup atributa primarnog ključa još jedan atribut koji razrješava prethodno navedeni slučaj. Dobar odabir bio bi 'Datum unosa', koji predstavlja datum pohranjivanja evidencije, čime se omogućuje više evidencija od strane jednog korisnika za istu aktivnost. Dalje, potrebno je definirati sam utrošak vremena, pa se dodaje vlastiti atribut veze 'Trajanje' koji predstavlja koliko vremena je utrošeno na aktivnost koju referencira evidencija. Dalje od interesa mogao bi biti eventualno opis evidencije, ukoliko je potreban. 
+
 \item \textbf{Pretplata}\\
 Moguće je dalje poboljšati konceptualni model baze: trenutačno, da bi korisnik mogao evidentirati utrošeno vrijeme, mora prvo odabrati predmet, kojih može biti veoma mnogo. Čak i sa nekim načinom pretraživanja predmeta, korisnik bi morao tijekom svake evidencije birati 'svoj' predmet od svih mogućih predmeta (kojih može biti stotine!). Bilo bi korisno kada bi svaki korisnik mogao imati neki predefinirani skup predmeta na koje je 'pretplaćen', te da mu se tijekom evidencije i pregleda pokazuju samo ti predmeti. Zato se uvodi nova veza 'Pretplata' koja povezuje entitet 'Korisnik' i 'Predmet', čime se može označiti koji korisnik trenutačno evidentira koji predmet. Na taj način korisnik može odabrati svoje predmete samo jednom prilikom naprimjer registracije ili početka novog semestra, a zatim tijekom semestra evidentira te pretplaćene predmete. Također je moguće izbrisati pretplatu iz baze, čime se korisnikova pretplata briše (ako je naprimjer semestar završen).
 
 \item \textbf{Opterećenje}\\
-Trenutačno baza podataka omogućava korisnicima intuitivan način evidencije utrošenog vremena, kao i sve podatke potrebne za pregled utrošenog vremena po predmetu, tipovima aktivnosti, kao i samim aktivnostima. Međutim, za svaki predmet službeno se definiraju 'opterećenja'. To je iznos sati ili ECTS bodova za određene tipove aktivnosti toga predmeta. Naprimjer za predmet 'Mrežno programiranje' mogla bi biti definirana sljedeća opterećenja:
+Trenutačno baza podataka omogućava korisnicima intuitivan način evidencije utrošenog vremena, kao i sve podatke potrebne za pregled utrošenog vremena po predmetu, tipovima aktivnosti, kao i samim aktivnostima. Međutim, za svaki predmet službeno se definiraju  i 'semestralna opterećenja'. To je iznos sati ili ECTS bodova za određene tipove aktivnosti toga predmeta. Naprimjer za predmet 'Mrežno programiranje' mogla bi biti definirana sljedeća opterećenja:
 
 \begin{table}[H]
 \caption{Opterećenja}
@@ -228,12 +231,15 @@ Ovo je jedna dodatna informacija koju je korisno pohraniti uz svaki predmet. Zat
 
 \begin{figure}[H]
 \centering
-\includegraphics[scale=0.6]{img/relacijski-model.pdf}
+\includegraphics[scale=0.8]{img/er-model.pdf}
 \caption{Konačni ER model}
 \label{fig:er-model}
 \end{figure}
 
 \section{Relacijski model}
+
+ER konceptualni model koristan je za grafički prikaz baze podataka i opis veza između entiteta. Međutim, stvarne baze podataka koje koriste web aplikacije (poput ove) su opisane relacijskom shemom. Zato se ER model pretvara u relacijski čime se dobiva sljedeća shema:
+
 \subsection{Dijagram}
 
 \begin{figure}[H]
@@ -322,8 +328,8 @@ Nakon što je korisnik prijavljen, on može evidentirati te pregledavati svoje u
 
 U ovom dijelu trenutno prijavljeni korisnik može definirati na koje predmete želi biti pretplaćen. U lijevoj listi nalaze se svi dostupni predmeti, a u desnoj listi se nalaze svi pretplaćeni predmeti. Korisnik može selekcijom na bilo koje od predmeta ili bilo koje grupe predmeta dodavati odnosno brisati odgovarajuće pretplate. 
 
-\textbf{Bootstrap Dual Listbox}\\
-Popisi pretplaćenih i nepretplaćenih predmeta ostvareni su pomoću \textbf{Bootstrap Dual Listbox} plugin-a koji omogućava lagano upravljanje dvojnom listom. U pogledu za pretplate definira se \textbf{select} element, nad kojim se tijekom učitavanja stranice poziva funkcija \emph{bootstrapDualListbox()} sa pripadajućim opcijama:
+\textbf{Bootstrap Dual Listbox} (http://www.virtuosoft.eu/code/bootstrap-duallistbox/)\\
+Popisi pretplaćenih i nepretplaćenih predmeta ostvareni su pomoću Bootstrap Dual Listbox plugin-a koji omogućava lagano upravljanje dvojnom listom. U pogledu za pretplate definira se \textbf{select} element, nad kojim se tijekom učitavanja stranice poziva funkcija \emph{bootstrapDualListbox()} sa pripadajućim opcijama:
 
 \lstset{style=js}
 \lstinputlisting{code/duallistbox.js}
@@ -441,6 +447,31 @@ Kao i na prijašnjoj kartici, na vrhu se nalazi padajuća lista. Međutim, sada 
 Naprimjer, ako se pregledavaju sve laboratorijske vježbe određenoga predmeta, može se vidjeti koliko je vremena utrošena na jednu laboratorijsku vježbu, što je već samo po sebi dovoljan razlog za pregled ovog grafa. Međutim također se može vidjeti koliko je vremena utrošeno na specifičnu laboratorijsku vježbu (odnosno bilo koju aktivnost) u odnosu na druge aktivnosti. Time se može naprimjer uočiti da je određena laboratorijska vježba oduzela premalo vremena s obzirom na druge laboratorijske vježbe, ili da je priprema za laboratorijsku vježbu preteška s obzirom na samu laboratorijsku vježbu ili na druge pripreme.
 
 Osim samog iznosa utrošenog vremena za korisnika i za prosjek, za svaku aktivnost u bazi podataka može biti evidentirano trajanje te aktivnosti. U slučaju primjerice predavanja to trajanje doslovce predstavlja predefinirani iznos trajanja predavanja određenog termina kao što je određeno po predmetu. Međutim, za aktivnosti koji nemaju već strogo definirana trajanja moguće je prilikom unosa aktivnosti definirati 'očekivano' trajanje, koje korisnicima daje do znanja koliko je vremena otprilike trebalo biti potrebno, ili koliki je očekivani utrošak vremena za tu aktivnost. U svakom slučaju, ako ta vrijednost nije poznata, ili čak nije ni važna, nije ju potrebnu ni unesti, pa će ta vrijednost tada ovdje biti neprikazana.
+
+\textbf{Chart.js} (http://www.chartjs.org/)\\
+Za prikaz grafova koristi se Chart.js, koji dodaje funkcionalnost crtanja dinamičkih interaktivnih grafova. Za svaki graf u pogledu se definira \textbf{canvas} element, sa pripadajućom dužinom i širinom grafa,
+
+\lstset{style=html}
+\lstinputlisting{code/canvas.cshtml}
+
+nad kojim se prilikom odabira novog predmeta ili aktivnosti, odnosno učitavanja nove statistike konstruira novi graf:
+
+\lstset{style=js}
+\lstinputlisting{code/chart.js}
+
+Sami podaci grafa dohvaćaju se korištenjem AJAX-a: nakon svakog odabira novog predmeta, poziva se funkcija koja uzima identifikator trenutačno odabranoga predmeta iz padajuće liste, te ga šalje odgovarajućem kontroleru:
+
+\lstset{style=js}
+\lstinputlisting{code/predmeti-change.js}
+
+Kontroler tada izračunava svu statistiku vezanu uz sami predmet, te ju vraća u obliku JSON-a (JavaScript Object Notation). Nakon dobivene statistike za predmet, ponovno se šalje novi zahtjev, ovaj puta za trenutno odabranu aktivnost, koji onda vraća svu statistiku vezanu uz odabranu aktivnost toga predmeta.
+
+U slučaju da je korisnik odabrao novi predmet, nakon dohvata statistike predmeta implicitno se dohvaća i statistika aktivnosti, pošto svaki predmet ima svoje zasebne aktivnosti koje je potrebno osvježiti. Međutim, u slučaju odabira nove aktivnosti (unutar kartice 'Aktivnosti'), \textbf{ne} dohvaća se statistika predmeta, već samo statistika te odabrane aktivnosti, pošto statistika predmeta ostaje nepromijenjena.
+
+Odabir mjernih jedinica funkcionira na jednak način; jedina razlika je što se tijekom slanja ajax zahtjeva zajedno sa zahtjevom šalje i niz znakova koji predstavlja mjernu jedinicu za koju je potrebno izgenerirati statistiku (ECTS, odnosno sati), koju kontroler prilikom stvaranja statistike uzima u obzir.
+
+\lstset{style=js}
+\lstinputlisting{code/aktivnosti-change.js}
 
 \subsection{Unos podataka}
 

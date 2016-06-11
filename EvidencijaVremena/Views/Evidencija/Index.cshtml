@@ -45,7 +45,7 @@
 
         // dodaj drop down za tipove aktivnosti
         var i = 0;
-        var len = data.tipoviAktivnostiID.length
+        var len = data.tipoviAktivnostiID.length;
         while (i < len) {
             var $input = $('<div id="' + data.tipoviAktivnostiID[i] + "tipAktivnosti" + '" class="btn-group"><button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">' + data.tipoviAktivnostiNaziv[i] + '&nbsp;&nbsp;<span class="caret"></span></button></div>');
             $input.appendTo($("#tipoviAktivnosti"));
@@ -56,25 +56,40 @@
             var j = 0;
             var len2 = data.aktivnostiArrayID[i].length;
             while (j < len2) {
-                var $input2 = $('<li class="akt" data-toggle="modal" data-target="#aktModal" onclick="aktivnostOdabrana(this)" id="' + data.aktivnostiArrayID[i][j] + '"><a href="#">' + data.aktivnostiArrayNaziv[i][j] + '</a></li>');
+                var $input2 = $('<li class="akt" data-toggle="modal" data-target="#aktModal" onclick="aktivnostOdabrana(this)" id="' + data.aktivnostiArrayID[i][j] + '" name="' + data.aktivnostiArrayNaziv[i][j] + '"><a href="#">' + data.aktivnostiArrayNaziv[i][j] + '</a></li>');
                 $input2.appendTo($("#" + data.tipoviAktivnostiID[i] + "buttongroup"));
                 j++;
             }
 
             i++;
         }
-    }
 
-    function SpremiEvidenciju(id) {
-        console.log(id);
+        $('#kalendar').fullCalendar('removeEvents');
+        var len = data.termini.length;
+        for (var i = 0; i < len; i++) {
+            var event = {
+                id: data.termini[i].ID,
+                title: data.termini[i].Naziv,
+                start: data.termini[i].Pocetak,
+                end: data.termini[i].Kraj
+            };
+            $('#kalendar').fullCalendar('renderEvent', event, true);
+        }   
     }
 
     $('#kalendar').fullCalendar({
         eventClick: function (calEvent, jsEvent, view) {
-            alert('Event: ' + calEvent.title);
-            alert('Coordinates: ' + jsEvent.pageX + ',' + jsEvent.pageY);
-            alert('View: ' + view.name);
-            $(this).css('border-color', 'red');
+            var akt = {
+                id: String(calEvent.id),
+                name: String(calEvent.title),
+                getAttribute: function (id) {
+                    if (id == "id")
+                        return this.id;
+                    else if (id == "name")
+                        return this.name;
+                }
+            };
+            aktivnostOdabrana(akt);
         },
         defaultView: "agendaWeek",
         lang: "hr",
@@ -86,6 +101,8 @@
 
     function aktivnostOdabrana(akt) {
         var id = akt.getAttribute("id");
+        var name = akt.getAttribute("name");
+        console.log("id:", id, "name:", name);
         var $el = $("#aktModal");
         $el.empty();
         var data =
@@ -94,7 +111,7 @@
                 <div class ="modal-content">
                     <div class ="modal-header">
                         <button type="button" class ="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times; </span></button>
-                        <h4 class ="modal-title" id="myModalLabel">Evidencija</h4>
+                        <h4 class ="modal-title" id="myModalLabel">` + name + `</h4>
                     </div>
                     <div class ="modal-body">
                         <form id="evidencija" class ="form-inline cmxform">
@@ -125,6 +142,7 @@
 
             `
         $el.html(data);
+        $('#aktModal').modal('show');
     };
 
     function SpremiEvidenciju() {
@@ -134,13 +152,10 @@
         if (isNaN(val) || val <= 0) {
             return false;
         }
-        console.log(id, val, mj);
         $.post('@Url.Action("SpremiEvidenciju", "Evidencija")', { aktivnostID: id, trajanje: val, mjernaJedinica: mj }, EvidencijaSpremljena, "json");
     }
 
-    function EvidencijaSpremljena(data) {
-        console.log("Evidencija spremljena!");
-    }
+    function EvidencijaSpremljena(data) {}
 
     $(document).ready(function () {
         $("#predmeti").change();

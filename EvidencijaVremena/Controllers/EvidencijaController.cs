@@ -68,16 +68,21 @@ namespace EvidencijaVremena.Controllers
 				}
 			}
 			*/
-			Test test = new Test();
-			test.ID = 5;
-			test.Naziv = "TEST";
-			return Json(new { tipoviAktivnostiID, tipoviAktivnostiNaziv, aktivnostiArrayID, aktivnostiArrayNaziv });
-		}
 
-		public class Test
-		{
-			public int ID { get; set; }
-			public string Naziv { get; set; }
+			// nabavi sve kalendarske aktivnosti
+			List<Aktivnost> aktivnosti = db.Aktivnost.Where(a => a.PredmetID == predmetID && a.Termin != null).ToList();
+			List<Termin> termini = new List<Termin>();
+			foreach (Aktivnost a in aktivnosti)
+			{
+				Termin t = new Termin();
+				t.ID = a.ID;
+				t.Naziv = a.Ime;
+				t.Pocetak = ((DateTime)a.Termin).ToLocalTime();
+				t.Kraj = t.Pocetak.AddMinutes((double)a.Trajanje).ToLocalTime();
+				termini.Add(t);
+			}
+		
+			return Json(new { tipoviAktivnostiID, tipoviAktivnostiNaziv, aktivnostiArrayID, aktivnostiArrayNaziv, termini });
 		}
 
 		[HttpPost]
