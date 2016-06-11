@@ -37,9 +37,9 @@
                     @if (Request.IsAuthenticated)
                     {
                         <li class="navbar-right">@Html.ActionLink("Odjava", "Odjava", "Autorizacija", null, new { @class = "btn btn-default" })</li>
-                        <li class="navbar-right">@Html.ActionLink(User.Identity.Name, "Index", "Profil", null, new { @class = "btn btn-default" })</li>}
+                        <li class="navbar-right">@Html.ActionLink(User.Identity.Name, "Index", "Predmet", null, new { @class = "btn btn-default" })</li>}
                     else
-                    {
+                    { 
                         <li class="navbar-right">@Html.ActionLink("Registracija", "Registracija", "Autorizacija", null, new { @class = "btn btn-default" })</li>
                         <li class="navbar-right">@Html.ActionLink("Prijava", "Prijava", "Autorizacija", null, new { @class = "btn btn-default" })</li>}
                 </ul>
