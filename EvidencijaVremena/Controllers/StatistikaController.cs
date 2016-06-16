@@ -64,20 +64,11 @@ namespace EvidencijaVremena.Controllers
 
 				evidencije = db.Evidencija.Where(e => e.KorisnikID == Korisnik.ID && e.Aktivnost.PredmetID == predmetID).ToList();
 				double korisnikECTS = evidencije.Select(e => e.Trajanje).Sum() / (60.0 * ECTS);
-
 				evidencije = db.Evidencija.Where(e => e.Aktivnost.PredmetID == predmetID).ToList();
 				double ukupniECTS = evidencije.Select(e => e.Trajanje).Sum() / (60.0 * ECTS);
 				int brojPretplatnika = db.Pretplata.Where(p => p.PredmetID == predmetID).Count();
 				double prosjekECTS = ukupniECTS / brojPretplatnika;
-
 				double predmetECTS = (double)db.Predmet.First(p => p.ID == predmetID).ECTS;
-
-				/*
-				Debug.WriteLine("korisnik: " + korisnikECTS);
-				Debug.WriteLine("prosjek: " + prosjekECTS);
-				Debug.WriteLine("predmet: " + predmetECTS);
-				Debug.WriteLine("--------------------");
-				*/
 
 				stat.Predmet = new PredmetStatistika();
 				stat.Predmet.Korisnik = korisnikECTS;
@@ -97,27 +88,17 @@ namespace EvidencijaVremena.Controllers
 													   && e.Aktivnost.PredmetID == predmetID
 													   && e.Aktivnost.TipAktivnostiID == tipAktivnost.ID).ToList();
 					double korisnikECTS = evidencije.Select(e => e.Trajanje).Sum() / (60.0 * ECTS);
-
 					evidencije = db.Evidencija.Where(e => e.Aktivnost.PredmetID == predmetID
 													   && e.Aktivnost.TipAktivnostiID == tipAktivnost.ID).ToList();
 					double ukupniECTS = evidencije.Select(e => e.Trajanje).Sum() / (60.0 * ECTS);
 					int brojPretplatnika = db.Pretplata.Where(p => p.PredmetID == predmetID).Count();
 					double prosjekECTS = ukupniECTS / brojPretplatnika;
-
 					double tipAktivnostiECTS;
 					double? temp = db.Opterecenje.Where(o => o.PredmetID == predmetID && o.TipAktivnostiID == tipAktivnost.ID).Single().Iznos;
 					if (temp == null)
 						tipAktivnostiECTS = 0;
 					else
 						tipAktivnostiECTS = (double)temp;
-
-					/*
-					Debug.WriteLine("TipAktivnosti: " + tipAktivnost.Ime);
-					Debug.WriteLine("korisnik: " + korisnikECTS);
-					Debug.WriteLine("prosjek: " + prosjekECTS);
-					Debug.WriteLine("tipAktivnosti: " + tipAktivnostiECTS);
-					Debug.WriteLine("--------------------");
-					*/
 
 					TipAktivnostiStatistika aktStat = new TipAktivnostiStatistika()
 					{ Naziv = tipAktivnost.Ime, Korisnik = korisnikECTS, Prosjek = prosjekECTS, TipAktivnosti = tipAktivnostiECTS };
@@ -136,26 +117,16 @@ namespace EvidencijaVremena.Controllers
 					evidencije = db.Evidencija.Where(e => e.KorisnikID == Korisnik.ID
 													   && e.AktivnostID == aktivnost.ID).ToList();
 					double korisnikECTS = evidencije.Select(e => e.Trajanje).Sum() / (60.0 * ECTS);
-
 					evidencije = db.Evidencija.Where(e => e.AktivnostID == aktivnost.ID).ToList();
 					double ukupniECTS = evidencije.Select(e => e.Trajanje).Sum() / (60.0 * ECTS);
 					int brojPretplatnika = db.Pretplata.Where(p => p.PredmetID == predmetID).Count();
 					double prosjekECTS = ukupniECTS / brojPretplatnika;
-
 					double aktivnostECTS;
 					double? temp = db.Aktivnost.Where(a => a.ID == aktivnost.ID).Single().Trajanje;
 					if (temp == null)
 						aktivnostECTS = 0;
 					else
-						aktivnostECTS = (double)temp / (60.0 * ECTS);
-
-					/*
-					Debug.WriteLine("aktivnost: " + aktivnost.Ime);
-					Debug.WriteLine("korisnik: " + korisnikECTS);
-					Debug.WriteLine("prosjek: " + prosjekECTS);
-					Debug.WriteLine("aktivnost:" + aktivnostECTS);
-					Debug.WriteLine("--------------------");
-					*/
+						aktivnostECTS = (double)temp / (60.0 * ECTS);					
 
 					AktivnostStatistika aktStat = new AktivnostStatistika()
 					{ Naziv = aktivnost.Ime, Korisnik = korisnikECTS, Prosjek = prosjekECTS, Aktivnost = aktivnostECTS };

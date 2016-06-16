@@ -1,21 +1,25 @@
 \select@language {croatian}
-\contentsline {chapter}{\numberline {1}Uvod}{1}{chapter.1}
-\contentsline {chapter}{\numberline {2}Baza podataka}{2}{chapter.2}
-\contentsline {section}{\numberline {2.1}Opis problema}{2}{section.2.1}
-\contentsline {section}{\numberline {2.2}ER model}{4}{section.2.2}
-\contentsline {subsection}{\numberline {2.2.1}Entiteti}{4}{subsection.2.2.1}
-\contentsline {subsection}{\numberline {2.2.2}Veze}{7}{subsection.2.2.2}
-\contentsline {subsection}{\numberline {2.2.3}Dijagram}{9}{subsection.2.2.3}
-\contentsline {section}{\numberline {2.3}Relacijski model}{10}{section.2.3}
-\contentsline {subsection}{\numberline {2.3.1}Dijagram}{11}{subsection.2.3.1}
-\contentsline {subsection}{\numberline {2.3.2}SQL kod}{11}{subsection.2.3.2}
-\contentsline {chapter}{\numberline {3}Web aplikacija}{14}{chapter.3}
-\contentsline {section}{\numberline {3.1}Alati i tehnologije}{14}{section.3.1}
-\contentsline {section}{\numberline {3.2}Implementacija}{16}{section.3.2}
-\contentsline {subsection}{\numberline {3.2.1}Prijava}{16}{subsection.3.2.1}
-\contentsline {subsection}{\numberline {3.2.2}Pretplata}{20}{subsection.3.2.2}
-\contentsline {subsection}{\numberline {3.2.3}Evidencija}{22}{subsection.3.2.3}
-\contentsline {subsection}{\numberline {3.2.4}Statistika}{26}{subsection.3.2.4}
-\contentsline {section}{\numberline {3.3}Razvoj i pobolj\IeC {\v s}anje}{32}{section.3.3}
-\contentsline {chapter}{\numberline {4}Zaklju\IeC {\v c}ak}{33}{chapter.4}
-\contentsline {chapter}{Literatura}{34}{chapter*.21}
+\contentsline {chapter}{\numberline {1}Uvod}{1}
+\contentsline {chapter}{\numberline {2}Baza podataka}{2}
+\contentsline {section}{\numberline {2.1}Opis problema}{2}
+\contentsline {section}{\numberline {2.2}ER model}{4}
+\contentsline {subsection}{\numberline {2.2.1}Entiteti}{4}
+\contentsline {subsection}{\numberline {2.2.2}Veze}{7}
+\contentsline {subsection}{\numberline {2.2.3}Dijagram}{10}
+\contentsline {section}{\numberline {2.3}Relacijski model}{11}
+\contentsline {subsection}{\numberline {2.3.1}Dijagram}{11}
+\contentsline {subsection}{\numberline {2.3.2}SQL kod}{12}
+\contentsline {chapter}{\numberline {3}Web aplikacija}{14}
+\contentsline {section}{\numberline {3.1}Alati i tehnologije}{14}
+\contentsline {subsection}{\numberline {3.1.1}Entity Framework}{14}
+\contentsline {subsection}{\numberline {3.1.2}ASP.NET MVC}{16}
+\contentsline {subsection}{\numberline {3.1.3}Ajax}{18}
+\contentsline {section}{\numberline {3.2}Implementacija}{21}
+\contentsline {subsection}{\numberline {3.2.1}Prijava}{21}
+\contentsline {subsection}{\numberline {3.2.2}Pretplata}{24}
+\contentsline {subsection}{\numberline {3.2.3}Evidencija}{27}
+\contentsline {subsection}{\numberline {3.2.4}Statistika}{30}
+\contentsline {section}{\numberline {3.3}Razvoj i pobolj\IeC {\v s}anje}{37}
+\contentsline {chapter}{\numberline {4}Zaklju\IeC {\v c}ak}{39}
+\contentsline {chapter}{Literatura}{40}
+\contentsline {chapter}{\numberline {A}Algoritam ra\IeC {\v c}unanja statistike}{41}
